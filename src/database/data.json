@@ -1,0 +1,77 @@
+{
+    "users": {
+        "name": "Hung Prince",
+        "age": "24",
+        "email": "hunglaanh@gmail.com",
+        "avatar_url": "hungdeptrai.png",
+        "gender": "true",
+        "school": "Học viện kĩ thuật quân sự",
+        "phones": {
+            "phone1": "0967680605",
+            "phone2": "01653766986"
+        },
+        "address": {
+            "city": "Hà Nội",
+            "district": "Cầu Giấy",
+            "street": "Số nhà 5 Ngõ 22 Trần Cung"
+        },
+        "licenses": {
+            "license1": "Có bằng giỏi về ngôn ngữ PHP tại học viện IT Plus",
+            "license2": "Tốt nghiệp chuyên nghành hệ thống thông tin tại MTA"
+        },
+        "description": "Nhanh nhẹn, thông minh, chịu khó tìm hiểu, có trách nhiệm với công việc",
+        "experience": "Có kinh nghiệm lập trình website",
+        "file_url": "file.pdf"
+    },
+    "jobs": {
+        "title": "Tuyển sinh viên thực tập web",
+        "description": "Yêu cầu sinh viên năm cuối các trường đại học, đang học chuyên ngành công nghệ thông tin, yêu thích lập trình, ưu tiên biết ngôn ngữ javascript",
+        "category": "Công nghệ thông tin",
+        "type": "làm giờ hành chính",
+        "date_start": "15-03-2018",
+        "date_end": "15-05-2018",
+        "createdAt": "10-03-2018",
+        "users": {
+            "user1": {
+                "user1_id": "id của user 1"
+            },
+            "user2": {
+                "user2_id": "id của user 2"
+            }
+        },
+        "salary": "100000000",
+        "phones": {
+            "phone1": "0967680605",
+            "phone2": "01653766986"
+        },
+        "address": {
+            "city": "Hà Nội",
+            "district": "Cầu Giấy",
+            "street": "Số nhà 5 Ngõ 22 Trần Cung"
+        }
+    },
+    "companies": {
+        "company1": "PowerGate Software",
+        "company2": "Google"
+    },
+    "roles": {
+        "applicant": "applicant",
+        "recuiter": "recuiter",
+        "admintrator": "admintrator"
+    },
+    "messages": {
+        "userId": "Id của user 1",
+        "toUserId": "id của user nhận tin",
+        "content": "Hello",
+        "createdAt": "20-03-2018"
+    },
+    "categories": {},
+    "types": {
+        "type1": "Làm nửa ngày",
+        "type2": "Làm giờ hành chính"
+    },
+    "address": {
+        "address1": "Hà Nội",
+        "address2": "TP. Hồ Chí Minh"
+    }
+}

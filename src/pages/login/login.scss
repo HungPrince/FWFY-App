@@ -1,0 +1,39 @@
+page-login {
+	.logo {
+		height: 140px;
+		 background: green;
+		text-align: center;
+		position: relative;
+		p {
+			margin: auto;
+		    color: white;
+		    font-size: 20px;
+		    padding-top: 16px;
+		    margin-bottom: 10px;
+		}
+		img {
+			height: 80px;
+		}
+	}
+	.remember-login {
+		ion-checkbox {
+			margin-right: 16px !important;
+		}
+		.item-inner {
+			border: none !important;
+		}
+	}
+	.btn-register {
+		margin-left: 20px;
+    	text-decoration: underline;
+	}
+	.input-text {
+		.label {
+			color: #333;
+		}
+	}
+
+	.logo-icon{
+		margin-left: 2%;
+	}
+}

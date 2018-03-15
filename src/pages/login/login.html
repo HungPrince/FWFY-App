@@ -1,0 +1,39 @@
+<ion-content>
+    <form>
+        <div class="logo" color="green">
+            <p>Find Work For You</p>
+            <img src="assets/imgs/header_login.png">
+        </div>
+        <ion-list>
+            <ion-item class="input-text">
+                <ion-label>
+                    <ion-icon name="md-mail"></ion-icon>
+                </ion-label>
+                <ion-input type="email" [(ngModel)]="email" name="email" placeholder="Enter your email"></ion-input>
+            </ion-item>
+
+            <ion-item class="input-text">
+                <ion-label>
+                    <ion-icon name="md-key"></ion-icon>
+                </ion-label>
+                <ion-input type="password" [(ngModel)]="password" name="password" placeholder="Enter your password"></ion-input>
+            </ion-item>
+
+            <ion-item class="remember-login">
+                <ion-label>Remember login</ion-label>
+                <ion-checkbox color="primary" checked="true"></ion-checkbox>
+            </ion-item>
+
+            <div padding>
+                <button ion-button color="primary" (click)="doLogin()" block>Login</button>
+            </div>
+
+            <div padding>
+                <button ion-button block color="danger" (click)="doGoogleLogin()">Google Login  <ion-icon class="logo-icon" name="logo-googleplus"></ion-icon></button>
+                <button ion-button block color="primary" (click)="doGoogleLogin()">Facebook Login  <ion-icon class="logo-icon" name="logo-facebook"></ion-icon></button>
+                <button ion-button (click)="signup()" color="dark" block>Create new account</button>
+            </div>
+
+        </ion-list>
+    </form>
+</ion-content>

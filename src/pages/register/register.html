@@ -1,0 +1,87 @@
+<ion-header>
+    <ion-navbar color="green">
+        <ion-title>Form Đăng ký</ion-title>
+    </ion-navbar>
+</ion-header>
+<ion-content>
+    <form (submit)="doSignup()">
+
+        <ion-list>
+            <ion-item>
+                <ion-label>
+                    <ion-icon name="md-contact"></ion-icon>
+                </ion-label>
+                <ion-input type="text" [(ngModel)]="name" name="name" placeholder="Full name"></ion-input>
+            </ion-item>
+
+            <ion-item class="input-text">
+                <ion-label>
+                    <ion-icon name="md-mail"></ion-icon>
+                </ion-label>
+                <ion-input type="email" [(ngModel)]="email" name="email" placeholder="Email"></ion-input>
+            </ion-item>
+
+            <ion-item class="input-text">
+                <ion-label>
+                    <ion-icon name="md-key"></ion-icon>
+                </ion-label>
+                <ion-input type="password" [(ngModel)]="password" name="password" placeholder="Password"></ion-input>
+            </ion-item>
+
+            <ion-item class="input-text">
+                <ion-label>
+                    <ion-icon name="md-key"></ion-icon>
+                </ion-label>
+                <ion-input type="password" [(ngModel)]="passwordConfirm" name="passwordConfirm" placeholder="Password confirm"></ion-input>
+            </ion-item>
+
+            <div class="item item-custom">
+                <ion-row>
+                    <ion-col>
+                        <ion-label>{{sex}}</ion-label>
+                        <ion-toggle [(ngModel)]="gender" name="sex" (ionChange)="changeSex(gender)"></ion-toggle>
+                    </ion-col>
+                    <ion-col>
+                        <ion-input type="tel" [(ngModel)]="age" name="age" placeholder="Age"></ion-input>
+                    </ion-col>
+                </ion-row>
+            </div>
+
+            <ion-item id="upload-boxes" class="input-text">
+                <button style="margin-bottom: 30px;" type="button" ion-button (click)="chooseAvatar()">Upload Avatar</button>
+                <!-- <img class="avatar-upload" src="assets/imgs/avatar.png" *ngIf="!user.avatar"> -->
+                <!-- <img class="avatar-upload" style="height: 100px; width: 100px;" src="{{user.avatar_url}}" *ngIf="user.avatar_url"> -->
+            </ion-item>
+
+            <ion-item class="input-text">
+                <ion-label>
+                    <ion-icon name="md-call"></ion-icon>
+                </ion-label>
+                <ion-input type="tel" [(ngModel)]="phone" name="phone" placeholder="Phone"></ion-input>
+            </ion-item>
+
+            <ion-item class="input-text">
+                <ion-label>
+                    <ion-icon name="md-bookmarks"></ion-icon>
+                </ion-label>
+                <ion-input type="text" [(ngModel)]="school" name="school" placeholder="School"></ion-input>
+            </ion-item>
+
+            <ion-item class="input-text">
+                <ion-label>
+                    <ion-icon name="md-map"></ion-icon>
+                </ion-label>
+                <ion-input type="text" [(ngModel)]="address" name="address" placeholder="Address"></ion-input>
+            </ion-item>
+
+            <ion-item class="input-text">
+                <ion-textarea [(ngModel)]="description" row="6" name="description" placeholder="Description"></ion-textarea>
+            </ion-item>
+
+            <div padding>
+                <button ion-button color="primary" block>Đăng ký</button>
+            </div>
+
+        </ion-list>
+    </form>
+</ion-content>
