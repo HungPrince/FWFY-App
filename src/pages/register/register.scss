@@ -58,5 +58,13 @@ page-register {
 		ion-label {
 			margin-bottom: 0;
 		}
-	}
+    }
+    .error{
+        color:red;
+        margin: 5%;
+    }
+    .age{
+        width: 70px !important;
+        float: right;
+    }
 }

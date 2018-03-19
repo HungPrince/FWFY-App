@@ -1,36 +1,61 @@
 <ion-content>
-    <form>
-        <div class="logo" color="green">
-            <p>Find Work For You</p>
-            <img src="assets/imgs/header_login.png">
-        </div>
+    <div class="logo" color="green">
+        <p>Find Work For You</p>
+        <img src="assets/imgs/header_login.png">
+    </div>
+    <form (ngSubmit)="doLogin" [formGroup]="formLogin">
         <ion-list>
             <ion-item class="input-text">
                 <ion-label>
                     <ion-icon name="md-mail"></ion-icon>
                 </ion-label>
-                <ion-input type="email" [(ngModel)]="email" name="email" placeholder="Enter your email"></ion-input>
+                <ion-input type="email" formControlName="email" name="email" placeholder="Enter your email"></ion-input>
             </ion-item>
+
+            <div *ngIf="formLogin.controls['email'].errors && (formLogin.controls['email'].dirty || formLogin.controls['email'].touched)">
+                <div [hidden]="!formLogin.controls['email'].errors.required" class="error">
+                    Email is required field!
+                </div>
+                <div [hidden]="!formLogin.controls['email'].errors.pattern" class="error">
+                    Email incorrect format!
+                </div>
+            </div>
 
             <ion-item class="input-text">
                 <ion-label>
                     <ion-icon name="md-key"></ion-icon>
                 </ion-label>
-                <ion-input type="password" [(ngModel)]="password" name="password" placeholder="Enter your password"></ion-input>
+                <ion-input type="password" formControlName="password" name="password" placeholder="Enter your password"></ion-input>
             </ion-item>
+
+            <div *ngIf="formLogin.controls['password'].errors && (formLogin.controls['password'].dirty || formLogin.controls['password'].touched)">
+                <div [hidden]="!formLogin.controls['password'].errors.required" class="error">
+                    Password is required field!
+                </div>
+                <div [hidden]="!formLogin.controls['password'].errors.minlength" class="error">
+                    Password is least at 6 characters long!
+                </div>
+                <div [hidden]="!formLogin.controls['password'].errors.maxlength" class="error">
+                    Password can not more than 24 characters!
+                </div>
+            </div>
 
             <ion-item class="remember-login">
                 <ion-label>Remember login</ion-label>
-                <ion-checkbox color="primary" checked="true"></ion-checkbox>
+                <ion-checkbox color="primary" formControlName="rememberCbx" name="rememberCbx"></ion-checkbox>
             </ion-item>
 
             <div padding>
-                <button ion-button color="primary" (click)="doLogin()" block>Login</button>
+                <button ion-button color="primary" (click)="doLogin()" block [disabled]="formLogin.invalid">Login</button>
             </div>
 
             <div padding>
-                <button ion-button block color="danger" (click)="doGoogleLogin()">Google Login  <ion-icon class="logo-icon" name="logo-googleplus"></ion-icon></button>
-                <button ion-button block color="primary" (click)="doGoogleLogin()">Facebook Login  <ion-icon class="logo-icon" name="logo-facebook"></ion-icon></button>
+                <button ion-button block color="danger" (click)="doGoogleLogin()">Google Login
+                    <ion-icon class="logo-icon" name="logo-googleplus"></ion-icon>
+                </button>
+                <button ion-button block color="primary" (click)="doGoogleLogin()">Facebook Login
+                    <ion-icon class="logo-icon" name="logo-facebook"></ion-icon>
+                </button>
                 <button ion-button (click)="signup()" color="dark" block>Create new account</button>
             </div>
 
