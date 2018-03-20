@@ -4,6 +4,8 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { AngularFireDatabase } from 'angularfire2/database';
 
+import { Storage } from '@ionic/storage';
+
 import firebase from 'firebase';
 
 import { HomePage } from '../pages/home/home';
@@ -19,11 +21,14 @@ export class MyApp {
 
     pages: Array<{ title: string, component: any }>;
 
-    constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, public af: AngularFireDatabase) {
+    constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen,
+        public af: AngularFireDatabase, private storage: Storage) {
         this.initializeApp();
-        if (!firebase.auth().currentUser) {
-            this.rootPage = LoginPage;
-        }
+        this.storage.get('auth').then(data => {
+            if (!data) {
+                this.rootPage = LoginPage;
+            }
+        }).catch(e => console.log(e));
         // used for an example of ngFor and navigation
         this.pages = [
             { title: 'Home', component: HomePage },

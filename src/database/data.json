@@ -6,6 +6,7 @@
         "avatar_url": "hungdeptrai.png",
         "gender": "true",
         "school": "Học viện kĩ thuật quân sự",
+        "speciality": "Công Nghệ Thông Tin",
         "phones": {
             "phone1": "0967680605",
             "phone2": "01653766986"
@@ -71,7 +72,25 @@
         "type2": "Làm giờ hành chính"
     },
     "address": {
-        "address1": "Hà Nội",
-        "address2": "TP. Hồ Chí Minh"
+        "city": {
+            "city1": "Hà Nội",
+            "city2": "TP. Hồ Chí Minh"
+        },
+        "district": {
+            "district1": "Cầu Giấy",
+            "district2": "Bắc Từ Liêm"
+        },
+        "street": {
+            "street1": "Phường Cổ Nhuế 1",
+            "street2": "Phường Cổ Nhuế 2"
+        }
+    },
+    "schools": {
+        "school1": "Học Viện Kĩ Thuật Quân Sự",
+        "school2": "Đại Học Bách Khoa Hà Nội"
+    },
+    "specialities":{
+        "speciality1":"Công Nghệ Thông Tin",
+        "speciality2":"Cơ khí"
     }
 }
