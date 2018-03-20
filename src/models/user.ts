@@ -17,6 +17,6 @@ export class User {
     avatar_url: string;
     file_url: string;
     favs: object;
-    password: string,
+    password: string;
     passwordConfirm: string;
 }
