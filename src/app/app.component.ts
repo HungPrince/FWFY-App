@@ -9,7 +9,10 @@ import { Storage } from '@ionic/storage';
 import firebase from 'firebase';
 
 import { HomePage } from '../pages/home/home';
+import { TabsPage } from '../pages/tabs/tabs';
 import { LoginPage } from '../pages/login/login';
+import { ListApplicantPage } from '../pages/list-applicant/list-applicant';
+import { ListJobPage } from '../pages/list-job/list-job';
 
 @Component({
     templateUrl: 'app.html'
@@ -17,7 +20,7 @@ import { LoginPage } from '../pages/login/login';
 export class MyApp {
     @ViewChild(Nav) nav: Nav;
 
-    rootPage: any = HomePage;
+    rootPage: any = TabsPage;
 
     pages: Array<{ title: string, component: any }>;
 
@@ -31,7 +34,9 @@ export class MyApp {
         }).catch(e => console.log(e));
         // used for an example of ngFor and navigation
         this.pages = [
-            { title: 'Home', component: HomePage },
+            { title: 'Home', component: TabsPage },
+            { title: 'List Jobs', component: ListJobPage },
+            { title: 'list Applicant', component: ListApplicantPage }
         ];
 
     }

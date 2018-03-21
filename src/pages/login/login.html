@@ -25,7 +25,7 @@
                 <ion-label>
                     <ion-icon name="md-key"></ion-icon>
                 </ion-label>
-                <ion-input type="password" formControlName="password" name="password" placeholder="Enter your password"></ion-input>
+                <ion-input  type="password" formControlName="password" name="password" placeholder="Enter your password"></ion-input>
             </ion-item>
 
             <div *ngIf="formLogin.controls['password'].errors && (formLogin.controls['password'].dirty || formLogin.controls['password'].touched)">
@@ -45,6 +45,10 @@
                 <ion-checkbox color="primary" formControlName="rememberCbx" name="rememberCbx"></ion-checkbox>
             </ion-item>
 
+            <ion-item class="remember-login">
+                <button ion-button (click)="forgotPassword()">Forgot password</button>
+            </ion-item>
+
             <div padding>
                 <button ion-button color="primary" (click)="doLogin()" block [disabled]="formLogin.invalid">Login</button>
             </div>
@@ -53,7 +57,7 @@
                 <button ion-button block color="danger" (click)="doGoogleLogin()">Google Login
                     <ion-icon class="logo-icon" name="logo-googleplus"></ion-icon>
                 </button>
-                <button ion-button block color="primary" (click)="doGoogleLogin()">Facebook Login
+                <button ion-button block color="primary" (click)="doFacebookLogin()">Facebook Login
                     <ion-icon class="logo-icon" name="logo-facebook"></ion-icon>
                 </button>
                 <button ion-button (click)="signup()" color="dark" block>Create new account</button>

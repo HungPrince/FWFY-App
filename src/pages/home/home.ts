@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, MenuController } from 'ionic-angular';
 
 import { Storage } from '@ionic/storage';
 
@@ -11,12 +11,16 @@ import { LoginPage } from '../login/login';
 })
 export class HomePage {
 
-    constructor(public navCtrl: NavController, public storage: Storage) {
+    constructor(public navCtrl: NavController, public storage: Storage, public menuCtrl: MenuController, ) {
 
     }
 
+    ionViewWillEnter() {
+        this.menuCtrl.enable(true);
+    }
+
     public logout() {
-        this.storage.clear();
+        this.storage.set('auth', null);
         this.navCtrl.push(LoginPage);
     }
 

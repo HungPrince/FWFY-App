@@ -26,7 +26,7 @@ export class LoaderService {
         this.loadService.present();
     }
 
-    public dismisLoader() {
-        this.loadService.dismiss();
+    public dismisLoader(): any {
+        return this.loadService.dismiss();
     }
 }
