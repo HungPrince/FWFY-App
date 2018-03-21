@@ -13,6 +13,9 @@ export class User {
     experience: string;
     avatar_url: string;
     file_url: string;
+    favs: object;
+    password: string;
+    passwordConfirm: string;
 
     public constructor(Name: string, UserName, Phone: object, Email: string, Age: number, School: string, Speciality: string, Address: object, Gender: boolean,  Description: string, Experience: string, File_url: string, Avatar_url: string) {
         this.name = Name;
