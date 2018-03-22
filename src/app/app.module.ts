@@ -12,6 +12,8 @@ import { AngularFireModule } from 'angularfire2'
 import { AngularFireDatabaseModule } from 'angularfire2/database'
 import { AngularFireDatabase } from 'angularfire2/database';
 import { AngularFireAuth } from 'angularfire2/auth';
+import { CallNumber } from '@ionic-native/call-number';
+import { EmailComposer } from '@ionic-native/email-composer';
 
 import { FIREBASE_CONFIG } from '../configs/config';
 
@@ -25,6 +27,8 @@ import { TabsPage } from '../pages/tabs/tabs';
 import { ContactPage } from '../pages/contact/contact';
 import { SettingPage } from '../pages/setting/setting';
 import { AboutPage } from '../pages/about/about';
+import { DetailApplicantPage } from '../pages/detail-applicant/detail-applicant';
+import { ModalAddJobPage } from '../pages/modal-add-job/modal-add-job';
 
 import { JobProvider } from '../providers/job/job';
 import { LoaderService } from '../services/loaderService';
@@ -44,6 +48,8 @@ import { UntilHelper } from '../helpers/until.helper';
         ContactPage,
         SettingPage,
         AboutPage,
+        DetailApplicantPage,
+        ModalAddJobPage
     ],
     imports: [
         BrowserModule,
@@ -65,14 +71,19 @@ import { UntilHelper } from '../helpers/until.helper';
         ContactPage,
         SettingPage,
         AboutPage,
+        DetailApplicantPage,
+        ModalAddJobPage
     ],
     providers: [
         StatusBar,
         SplashScreen,
         { provide: ErrorHandler, useClass: IonicErrorHandler },
         Camera,
+        CallNumber,
+        EmailComposer,
         AngularFireDatabase,
         AngularFireAuth,
+
         JobProvider,
         LoaderService,
         ToastService,

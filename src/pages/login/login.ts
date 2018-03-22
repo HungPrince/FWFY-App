@@ -1,18 +1,16 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, MenuController, AlertController, ToastController } from 'ionic-angular';
+import { IonicPage, NavController, MenuController, AlertController } from 'ionic-angular';
 import { Validators, FormControl, FormBuilder } from '@angular/forms';
 
 import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { Storage } from '@ionic/storage';
 import firebase from 'firebase';
-import * as $ from 'jquery'
 
 import { LoaderService } from '../../services/loaderService';
 import { ToastService } from '../../services/toastService';
 
 import { UntilHelper } from '../../helpers/until.helper';
-import { User } from '../../models/user';
 import { HomePage } from '../home/home';
 
 import { RegisterPage } from './../register/register';
@@ -83,7 +81,6 @@ export class LoginPage {
                 this.storage.set('accountUser', null);
             }
             this.storage.set('auth', data.uid);
-            console.log(data);
             this.navCtrl.setRoot(HomePage);
         }).catch(e => { this.toastService.toast(e.message, 1000, 'middle', false) });
     }

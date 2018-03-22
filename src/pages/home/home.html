@@ -1,21 +1,40 @@
 <ion-header>
-    <ion-navbar>
+    <ion-navbar color="primary">
         <button ion-button menuToggle>
             <ion-icon name="menu"></ion-icon>
         </button>
-        <ion-title>Home</ion-title>
+        <ion-title>List Jobs</ion-title>
+        <ion-buttons end color="Secondary" (click)="logout()">
+            <button ion-button>
+                <ion-icon name="md-log-out"></ion-icon>
+            </button>
+        </ion-buttons>
     </ion-navbar>
+
+    <ion-toolbar>
+        <ion-searchbar (ionInput)="getListBus($event)" autocorrect="off"></ion-searchbar>
+    </ion-toolbar>
 </ion-header>
 
 <ion-content padding>
-    <h3>Ionic Menu Starter</h3>
 
-    <p>
-        If you get lost, the
-        <a href="http://ionicframework.com/docs/v2">docs</a> will show you the way.
-    </p>
+    <ion-list>
+        <ion-item *ngFor="let item of listJob">
+            <ion-thumbnail item-start>
+                <img src="{{item.image}}">
+            </ion-thumbnail>
+            {{ item.name }}
+            <button ion-button clear item-end (click)="itemClick(item)">View</button>
+        </ion-item>
+    </ion-list>
 
-    <button ion-button secondary menuToggle>Toggle Menu</button>
+    <button color="danger" ion-fab="" class="fab fab-ios fab-ios-danger" id="add-job" (click)="openModalAdd()">
+        <ion-icon class="fab-close-icon icon icon-ios ion-ios-close" name="close" role="img" aria-label="close"></ion-icon>
+        <span class="button-inner">
+            <ion-icon name="add" role="img" class="icon icon-ios ion-ios-add" aria-label="add"></ion-icon>
+        </span>
+        <div class="button-effect">
+        </div>
+    </button>
 
-    <button ion-button secondary block (click)="logout()">Logout</button>
 </ion-content>

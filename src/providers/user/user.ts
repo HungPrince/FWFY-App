@@ -1,20 +1,25 @@
 import { Injectable } from '@angular/core';
-import { MESSAGE_REGISTER_SUCCESS } from '../../configs/constants';
 
 import { AngularFireDatabase } from 'angularfire2/database';
 import { AngularFireAuth } from 'angularfire2/auth';
+import 'rxjs/add/operator/map';
 
 import { User } from '../../models/user';
+import { Observable } from "rxjs/Observable";
 
 @Injectable()
 export class UserProvider {
 
-    constructor(private af: AngularFireDatabase, private afAuth: AngularFireAuth) {
+    constructor(public af: AngularFireDatabase, private afAuth: AngularFireAuth) {
 
     }
 
+    getAll(): Observable<any> {
+        return this.af.list('users').valueChanges();
+    }
+
     register(password: string, user: User): any {
-        this.afAuth.auth.createUserWithEmailAndPassword(user.email, password).then((auth) => {
+       return  this.afAuth.auth.createUserWithEmailAndPassword(user.email, password).then((auth) => {
             return this.af.database.ref('users').child(auth.uid).set(user, (error) => {
                 if (!error) {
                     return true;

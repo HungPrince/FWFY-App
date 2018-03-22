@@ -6,9 +6,6 @@ import { AngularFireDatabase } from 'angularfire2/database';
 
 import { Storage } from '@ionic/storage';
 
-import firebase from 'firebase';
-
-import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
 import { LoginPage } from '../pages/login/login';
 import { ListApplicantPage } from '../pages/list-applicant/list-applicant';
