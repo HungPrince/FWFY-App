@@ -9,7 +9,7 @@
             </ion-buttons>
             <ion-title>Add Job</ion-title>
             <ion-buttons right>
-                <button ion-button (click)="save()">
+                <button ion-button [disabled]="formAddJob.invalid" (click)="save()">
                     <ion-icon name="md-checkmark"></ion-icon>
                 </button>
             </ion-buttons>
@@ -19,5 +19,121 @@
 </ion-header>
 
 <ion-content padding>
+    <form (ngSubmit)="save()" [formGroup]="formAddJob" action="">
+        <ion-list>
+            <ion-item>
+                <ion-label>
+                    <ion-icon name="logo-google"></ion-icon>
+                </ion-label>
+                <ion-input type="text" formControlName="company" name="company" placeholder="Company name"></ion-input>
+            </ion-item>
 
+            <div *ngIf="formAddJob.controls['company'].errors && (formAddJob.controls['company'].dirty || formAddJob.controls['company'].touched)">
+                <div [hidden]="!formAddJob.controls['company'].errors.required" class="error">
+                    The company name is required field!
+                </div>
+            </div>
+
+            <ion-item id="upload-boxes" class="input-text">
+                <button id="btn-logo" type="button" ion-button (click)="chooseLogo()">Upload Logo</button>
+                <img class="logo" style="height: 100px; width: 100px;" src={{logoUrl}}>
+            </ion-item>
+
+            <ion-item>
+                <ion-label>
+                    <ion-icon name="md-information-circle"></ion-icon>
+                </ion-label>
+                <ion-input type="text" formControlName="title" name="title" placeholder="Title"></ion-input>
+            </ion-item>
+
+            <div *ngIf="formAddJob.controls['title'].errors && (formAddJob.controls['title'].dirty || formAddJob.controls['title'].touched)">
+                <div [hidden]="!formAddJob.controls['title'].errors.required" class="error">
+                    The title is required field!
+                </div>
+            </div>
+
+            <ion-item>
+                <ion-label>
+                    <ion-icon name="md-pin"></ion-icon>
+                </ion-label>
+                <ion-input type="text" formControlName="location" name="location" placeholder="location"></ion-input>
+            </ion-item>
+
+            <div *ngIf="formAddJob.controls['location'].errors && (formAddJob.controls['location'].dirty || formAddJob.controls['location'].touched)">
+                <div [hidden]="!formAddJob.controls['location'].errors.required" class="error">
+                    Location is required field!
+                </div>
+            </div>
+
+            <ion-item>
+                <ion-label>
+                    <ion-icon name="md-cloud"></ion-icon>
+                </ion-label>
+                <ion-input type="text" formControlName="website" name="website" placeholder="website"></ion-input>
+            </ion-item>
+
+            <ion-item>
+                <ion-label>Function</ion-label>
+                <ion-select formControlName="function" name="function">
+                    <ion-option value="Accounting/Auditing">Accounting/Auditing</ion-option>
+                    <ion-option value="Aministrative">Aministrative</ion-option>
+                    <ion-option value="Analyst">Analyst</ion-option>
+                    <ion-option value="Education">Accounting/Auditing</ion-option>
+                    <ion-option value="Finance">Aministrative</ion-option>
+                    <ion-option value="Information Technology">Information Technology</ion-option>
+                </ion-select>
+            </ion-item>
+
+            <ion-item>
+                <ion-label>Employment Type</ion-label>
+                <ion-select formControlName="type" name="type">
+                    <ion-option value="Full-time">Full-time</ion-option>
+                    <ion-option value="Part-time">Past-time</ion-option>
+                    <ion-option value="Contract">Contract</ion-option>
+                    <ion-option value="Temporary">Temporary</ion-option>
+                    <ion-option value="Volunteer">Volunteer</ion-option>
+                    <ion-option value="Internship">Internship</ion-option>
+                </ion-select>
+            </ion-item>
+
+            <ion-item>
+                <ion-label> Seniority level</ion-label>
+                <ion-select formControlName="level" name="level">
+                    <ion-option value="Full-time">Choose one</ion-option>
+                    <ion-option value="Executive">Executive</ion-option>
+                    <ion-option value="Entry level">Entry level</ion-option>
+                    <ion-option value="Assosiate">Assosiate</ion-option>
+                    <ion-option value="Director">Director</ion-option>
+                    <ion-option value="Internship">Internship</ion-option>
+                </ion-select>
+            </ion-item>
+
+            <ion-item>
+                <ion-label>
+                    <ion-icon name="md-calendar"></ion-icon>
+                </ion-label>
+                <ion-datetime displayFormat="MM/DD/YYYY" formControlName="dateFrom" name="dateFrom" placeholder="Date From"></ion-datetime>
+            </ion-item>
+
+            <ion-item>
+                <ion-label>
+                    <ion-icon name="md-calendar"></ion-icon>
+                </ion-label>
+                <ion-datetime displayFormat="MM/DD/YYYY" formControlName="dateTo" name="dateTo" placeholder="Date To"></ion-datetime>
+            </ion-item>
+
+            <ion-item>
+                <ion-textarea rows="6" type="text" formControlName="description" name="description" placeholder="Add 4 to 6 bullets describle the role"></ion-textarea>
+            </ion-item>
+            <div *ngIf="formAddJob.controls['description'].errors && (formAddJob.controls['description'].dirty || formAddJob.controls['description'].touched)">
+                <div [hidden]="!formAddJob.controls['description'].errors.required" class="error">
+                    Description is required field!
+                </div>
+            </div>
+
+            <div padding>
+                <button ion-button color="primary" [disabled]="formAddJob.invalid" block>Save</button>
+            </div>
+        </ion-list>
+    </form>
 </ion-content>

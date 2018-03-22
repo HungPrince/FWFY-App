@@ -15,13 +15,17 @@ import { LoaderService } from '../../services/loaderService';
 })
 export class HomePage {
     private listJob: Array<any>;
+    public user: any;
     constructor(public navCtrl: NavController, public storage: Storage, public menuCtrl: MenuController,
         public jobProvider: JobProvider, public loaderService: LoaderService, public modalCtrl: ModalController) {
+
         this.loaderService.loaderNoSetTime('loading ...');
+
         this.jobProvider.getAll().subscribe((jobs) => {
             this.loaderService.dismisLoader();
             this.listJob = jobs;
         });
+
     }
 
     ionViewWillEnter() {
@@ -41,8 +45,19 @@ export class HomePage {
         myModal.present();
     }
 
-    closeModal(){
-        
+    public getUserByKey(key) {
+        this.jobProvider.getUserByKey(key).subscribe(data => {
+            if (data) {
+                this.user = data;
+                console.log(data);
+                return true;
+            }
+            return false;
+        });
+    }
+
+    closeModal() {
+        return true;
     }
 
 }

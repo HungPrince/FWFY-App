@@ -18,15 +18,44 @@
 
 <ion-content padding>
 
-    <ion-list>
-        <ion-item *ngFor="let item of listJob">
-            <ion-thumbnail item-start>
-                <img src="{{item.image}}">
-            </ion-thumbnail>
-            {{ item.name }}
-            <button ion-button clear item-end (click)="itemClick(item)">View</button>
+    <ion-card *ngFor="let job of listJob">
+
+        <ion-item>
+            <!-- <ion-avatar item-start>
+                <img src="{{user.avatar_url}}">
+            </ion-avatar> -->
+            <h2>{{job.title}}</h2>
+            <p>{{job.company}}</p>
         </ion-item>
-    </ion-list>
+
+        <img src="{{job.logoUrl}}">
+
+        <ion-card-content>
+            <h2></h2>
+            <p>{{job.description}}</p>
+        </ion-card-content>
+
+        <ion-row>
+            <ion-col>
+                <button ion-button icon-left clear small>
+                    <ion-icon name="thumbs-up"></ion-icon>
+                    <div>12 Likes</div>
+                </button>
+            </ion-col>
+            <ion-col>
+                <button ion-button icon-left clear small>
+                    <ion-icon name="text"></ion-icon>
+                    <div>4 Comments</div>
+                </button>
+            </ion-col>
+            <ion-col center text-center>
+                <ion-note>
+                    11h ago
+                </ion-note>
+            </ion-col>
+        </ion-row>
+
+    </ion-card>
 
     <button color="danger" ion-fab="" class="fab fab-ios fab-ios-danger" id="add-job" (click)="openModalAdd()">
         <ion-icon class="fab-close-icon icon icon-ios ion-ios-close" name="close" role="img" aria-label="close"></ion-icon>

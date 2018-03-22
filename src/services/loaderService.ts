@@ -8,25 +8,31 @@ export class LoaderService {
 
     }
 
-    public loaderNoSetTime(content) {
-        this.loadService = this.loadingCtr.create({
-            content: content,
-        });
 
-        this.loadService.present();
+    public loaderNoSetTime(content) {
+        if (!this.loadService) {
+            this.loadService = this.loadingCtr.create({
+                content: content,
+            });
+            this.loadService.present();
+        }
+
     }
 
 
     public loader(content, time) {
-        this.loadService = this.loadingCtr.create({
-            content: content,
-            duration: time
-        });
-
-        this.loadService.present();
+        if (!this.loadService) {
+            this.loadService = this.loadingCtr.create({
+                content: content,
+                duration: time
+            });
+            this.loadService.present();
+        }
     }
 
     public dismisLoader(): any {
-        return this.loadService.dismiss();
+        if (this.loadService) {
+            return this.loadService.dismiss();
+        }
     }
 }

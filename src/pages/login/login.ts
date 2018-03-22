@@ -74,13 +74,22 @@ export class LoginPage {
     doLogin() {
         var email = this.untilHelpr.niceString(this.formLogin.value.email);
         var password = this.untilHelpr.niceString(this.formLogin.value.password);
-        this.afAuth.auth.signInWithEmailAndPassword(email, password).then(data => {
+        this.afAuth.auth.signInWithEmailAndPassword(email, password).then(result => {
             if (this.formLogin.value.rememberCbx) {
                 this.storage.set('accountUser', { email: email, password: password });
             } else {
                 this.storage.set('accountUser', null);
             }
-            this.storage.set('auth', data.uid);
+            var user = {
+                name: result.user.displayName,
+                email: result.user.email,
+                phone: {
+                    phone1: result.user.phoneNumber
+                },
+                avatar_url: result.user.photoURL,
+                uid: result.user.uid
+            };
+            this.storage.set('auth', user);
             this.navCtrl.setRoot(HomePage);
         }).catch(e => { this.toastService.toast(e.message, 1000, 'middle', false) });
     }
@@ -94,11 +103,12 @@ export class LoginPage {
                     phone1: result.user.phoneNumber
                 },
                 avatar_url: result.user.photoURL,
-                type: 'goolge'
+                type: 'goolge',
+                uid: result.user.uid
             };
             this.af.database.ref('users').child(result.user.uid).set(user).then((error) => {
                 if (!error) {
-                    this.storage.set('auth', result.user.uid);
+                    this.storage.set('auth', user);
                     this.navCtrl.setRoot(HomePage);
                 }
             }).catch((error) => console.log(error));
@@ -107,7 +117,6 @@ export class LoginPage {
 
     doFacebookLogin() {
         firebase.auth().signInWithPopup(this.facebookProvider).then((result) => {
-            console.log(result);
             var user = {
                 name: result.user.displayName,
                 email: result.user.email,
@@ -115,11 +124,12 @@ export class LoginPage {
                     phone1: result.user.phoneNumber
                 },
                 avatar_url: result.user.photoURL,
-                type: 'goolge'
+                type: 'goolge',
+                uid: result.user.uid
             };
             this.af.database.ref('users').child(result.user.uid).set(user).then((error) => {
                 if (!error) {
-                    this.storage.set('auth', result.user.uid);
+                    this.storage.set('auth', user);
                     this.navCtrl.setRoot(HomePage);
                 }
             }).catch((error) => console.log(error));

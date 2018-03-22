@@ -12,12 +12,20 @@ export class JobProvider {
         return this.af.list('jobs').valueChanges();
     }
 
+    add(job: any) {
+        return this.af.database.ref('jobs').push(job);
+    }
+
     update(job: any) {
         return this.af.database.ref('jobs').set(job);
     }
 
     delete(job: any) {
         return this.af.database.ref('jobs').remove();
+    }
+
+    getUserByKey(key: string) {
+        return this.af.list(`users/${key}`).valueChanges();
     }
 
 }
