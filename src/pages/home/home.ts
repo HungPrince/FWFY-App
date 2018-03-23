@@ -4,6 +4,7 @@ import { NavController, MenuController, ModalOptions, Modal, ModalController } f
 import { Storage } from '@ionic/storage';
 
 import { JobProvider } from '../../providers/job/job';
+import { UserProvider } from '../../providers/user/user';
 import { LoginPage } from '../login/login';
 import { ModalAddJobPage } from '../modal-add-job/modal-add-job';
 
@@ -14,18 +15,30 @@ import { LoaderService } from '../../services/loaderService';
     templateUrl: 'home.html'
 })
 export class HomePage {
-    private listJob: Array<any>;
+    public listJob: Array<any> = [];
     public user: any;
-    constructor(public navCtrl: NavController, public storage: Storage, public menuCtrl: MenuController,
-        public jobProvider: JobProvider, public loaderService: LoaderService, public modalCtrl: ModalController) {
+    constructor(public navCtrl: NavController, public storage: Storage, public menuCtrl: MenuController, public modalCtrl: ModalController,
+        public jobProvider: JobProvider, public loaderService: LoaderService, private userProvider: UserProvider) {
 
         this.loaderService.loaderNoSetTime('loading ...');
-
         this.jobProvider.getAll().subscribe((jobs) => {
+            jobs.forEach(job => {
+                this.userProvider.getUserByKey(job.userId).then(data => {
+                    this.listJob.push({
+                        job: job,
+                        user: {
+                            avatar_url: data.val()['avatar_url'],
+                            name: data.val()['name'],
+                            age: data.val()['age'],
+                            gender: data.val()['gender'] ? "male" : "female"
+                        }
+                    });
+                });
+            }, (error) => {
+                this.loaderService.dismisLoader();
+            });
             this.loaderService.dismisLoader();
-            this.listJob = jobs;
         });
-
     }
 
     ionViewWillEnter() {
@@ -43,17 +56,6 @@ export class HomePage {
         };
         let myModal: Modal = this.modalCtrl.create(ModalAddJobPage, myModalOptions);
         myModal.present();
-    }
-
-    public getUserByKey(key) {
-        this.jobProvider.getUserByKey(key).subscribe(data => {
-            if (data) {
-                this.user = data;
-                console.log(data);
-                return true;
-            }
-            return false;
-        });
     }
 
     closeModal() {

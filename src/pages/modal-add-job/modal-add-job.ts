@@ -23,8 +23,8 @@ export class ModalAddJobPage {
     constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController,
         public formBuilder: FormBuilder, private storage: Storage, private untilHelper: UntilHelper, private jobProvider: JobProvider,
         public loaderService: LoaderService, public toastService: ToastService) {
-        this.storage.get('auth').then(user => {
-            this.job.userId = user.uid;
+        this.storage.get('auth').then(uid => {
+            this.job.userId = uid;
         })
         this.logoUrl = "https://placehold.it/150x150";
         this.job.userId =
@@ -63,6 +63,7 @@ export class ModalAddJobPage {
         this.job.dateFrom = this.formAddJob.value.dateFrom;
         this.job.dateTo = this.formAddJob.value.dateTo;
         this.job.description = this.formAddJob.value.description;
+        this.job.createdAt = Date.now;
         this.jobProvider.add(this.job).then(data => {
             this.loaderService.dismisLoader().then(data => {
                 this.goBack();

@@ -6,6 +6,7 @@ import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { FormsModule } from '@angular/forms'
 import { IonicStorageModule } from '@ionic/storage';
+import { PipesModule } from '../pipes/pipes.module';
 
 import { Camera } from '@ionic-native/camera';
 import { AngularFireModule } from 'angularfire2'
@@ -29,6 +30,7 @@ import { SettingPage } from '../pages/setting/setting';
 import { AboutPage } from '../pages/about/about';
 import { DetailApplicantPage } from '../pages/detail-applicant/detail-applicant';
 import { ModalAddJobPage } from '../pages/modal-add-job/modal-add-job';
+import { UserModalPage } from '../pages/user-modal/user-modal';
 
 import { JobProvider } from '../providers/job/job';
 import { LoaderService } from '../services/loaderService';
@@ -49,7 +51,8 @@ import { UntilHelper } from '../helpers/until.helper';
         SettingPage,
         AboutPage,
         DetailApplicantPage,
-        ModalAddJobPage
+        ModalAddJobPage,
+        UserModalPage
     ],
     imports: [
         BrowserModule,
@@ -57,7 +60,8 @@ import { UntilHelper } from '../helpers/until.helper';
         FormsModule,
         AngularFireModule.initializeApp(FIREBASE_CONFIG),
         AngularFireDatabaseModule,
-        IonicStorageModule.forRoot()
+        IonicStorageModule.forRoot(),
+        PipesModule
     ],
     bootstrap: [IonicApp],
     entryComponents: [
@@ -72,7 +76,8 @@ import { UntilHelper } from '../helpers/until.helper';
         SettingPage,
         AboutPage,
         DetailApplicantPage,
-        ModalAddJobPage
+        ModalAddJobPage,
+        UserModalPage
     ],
     providers: [
         StatusBar,

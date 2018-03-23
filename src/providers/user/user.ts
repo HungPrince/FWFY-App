@@ -18,8 +18,16 @@ export class UserProvider {
         return this.af.list('users').valueChanges();
     }
 
+    getUserByKey(key: string): any {
+        return this.af.database.ref(`users/${key}`).once('value', data => { return data });
+    }
+
+    update(userId: string, user: any) {
+        return this.af.database.ref(`users/${userId}`).update(user);
+    }
+
     register(password: string, user: User): any {
-       return  this.afAuth.auth.createUserWithEmailAndPassword(user.email, password).then((auth) => {
+        return this.afAuth.auth.createUserWithEmailAndPassword(user.email, password).then((auth) => {
             return this.af.database.ref('users').child(auth.uid).set(user, (error) => {
                 if (!error) {
                     return true;
@@ -29,4 +37,5 @@ export class UserProvider {
             }).catch((e) => console.log(e));
         }).catch((e) => console.log(e));
     }
+
 }

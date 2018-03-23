@@ -23,9 +23,4 @@ export class JobProvider {
     delete(job: any) {
         return this.af.database.ref('jobs').remove();
     }
-
-    getUserByKey(key: string) {
-        return this.af.list(`users/${key}`).valueChanges();
-    }
-
 }

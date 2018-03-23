@@ -1,7 +1,13 @@
 <ion-menu [content]="content">
     <ion-header>
         <ion-toolbar>
-            <ion-title>Menu</ion-title>
+            <ion-avatar item-start>
+                <img src={{user.avatar_url}}>
+            </ion-avatar>
+            <p class="name">{{user.name}}</p>
+            <div class="btn-edit" menuClose (click)="editProfile()">Edit
+                <ion-icon name="md-create"></ion-icon>
+            </div>
         </ion-toolbar>
     </ion-header>
 

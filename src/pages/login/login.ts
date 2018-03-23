@@ -80,16 +80,7 @@ export class LoginPage {
             } else {
                 this.storage.set('accountUser', null);
             }
-            var user = {
-                name: result.user.displayName,
-                email: result.user.email,
-                phone: {
-                    phone1: result.user.phoneNumber
-                },
-                avatar_url: result.user.photoURL,
-                uid: result.user.uid
-            };
-            this.storage.set('auth', user);
+            this.storage.set('auth', result.uid);
             this.navCtrl.setRoot(HomePage);
         }).catch(e => { this.toastService.toast(e.message, 1000, 'middle', false) });
     }
@@ -104,11 +95,10 @@ export class LoginPage {
                 },
                 avatar_url: result.user.photoURL,
                 type: 'goolge',
-                uid: result.user.uid
             };
             this.af.database.ref('users').child(result.user.uid).set(user).then((error) => {
                 if (!error) {
-                    this.storage.set('auth', user);
+                    this.storage.set('auth', result.user.uid);
                     this.navCtrl.setRoot(HomePage);
                 }
             }).catch((error) => console.log(error));
@@ -125,11 +115,10 @@ export class LoginPage {
                 },
                 avatar_url: result.user.photoURL,
                 type: 'goolge',
-                uid: result.user.uid
             };
             this.af.database.ref('users').child(result.user.uid).set(user).then((error) => {
                 if (!error) {
-                    this.storage.set('auth', user);
+                    this.storage.set('auth', result.user.uid);
                     this.navCtrl.setRoot(HomePage);
                 }
             }).catch((error) => console.log(error));
