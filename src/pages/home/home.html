@@ -43,9 +43,10 @@
                         <div>12 Likes</div>
                     </button>
                 </ion-col>
-                <ion-col col-3 class="action-post">
+                <ion-col col-3 class="action-post" (click)="saveJob(job.job.key)">
                     <button ion-button icon-left clear small>
-                        <ion-icon name="heart"></ion-icon>
+                        <ion-icon *ngIf="userCurrent.likes && userCurrent.likes[job.job.key]" name="heart"></ion-icon>
+                        <ion-icon *ngIf="!(userCurrent.likes && userCurrent.likes[job.job.key])" name="heart-outline"></ion-icon>
                         <div>Save</div>
                     </button>
                 </ion-col>
@@ -61,6 +62,11 @@
                     <ion-note>
                         {{job.job.createdAt | timeAgo}}
                     </ion-note>
+                </ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col center text-center>
+                    <button ion-button block small color="primary" (click)="share()">Share</button>
                 </ion-col>
             </ion-row>
         </ion-grid>

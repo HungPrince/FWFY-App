@@ -10,24 +10,20 @@ export class LoaderService {
 
 
     public loaderNoSetTime(content) {
-        if (!this.loadService) {
-            this.loadService = this.loadingCtr.create({
-                content: content,
-            });
-            this.loadService.present();
-        }
+        this.loadService = this.loadingCtr.create({
+            content: content,
+        });
+        this.loadService.present();
 
     }
 
 
     public loader(content, time) {
-        if (!this.loadService) {
-            this.loadService = this.loadingCtr.create({
-                content: content,
-                duration: time
-            });
-            this.loadService.present();
-        }
+        this.loadService = this.loadingCtr.create({
+            content: content,
+            duration: time
+        });
+        this.loadService.present();
     }
 
     public dismisLoader(): any {

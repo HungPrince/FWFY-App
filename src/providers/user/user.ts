@@ -22,8 +22,8 @@ export class UserProvider {
         return this.af.database.ref(`users/${key}`).once('value', data => { return data });
     }
 
-    update(userId: string, user: any) {
-        return this.af.database.ref(`users/${userId}`).update(user);
+    update(user: any) {
+        return this.af.database.ref(`users/${user.uid}`).update(user);
     }
 
     register(password: string, user: User): any {
@@ -37,5 +37,4 @@ export class UserProvider {
             }).catch((e) => console.log(e));
         }).catch((e) => console.log(e));
     }
-
 }

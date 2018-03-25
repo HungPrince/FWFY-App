@@ -72,17 +72,12 @@
                 <ion-input type="text" formControlName="website" name="website" placeholder="website"></ion-input>
             </ion-item>
 
-            <ion-item>
-                <ion-label>Function</ion-label>
-                <ion-select formControlName="function" name="function">
-                    <ion-option value="Accounting/Auditing">Accounting/Auditing</ion-option>
-                    <ion-option value="Aministrative">Aministrative</ion-option>
-                    <ion-option value="Analyst">Analyst</ion-option>
-                    <ion-option value="Education">Accounting/Auditing</ion-option>
-                    <ion-option value="Finance">Aministrative</ion-option>
-                    <ion-option value="Information Technology">Information Technology</ion-option>
-                </ion-select>
-            </ion-item>
+            <ion-auto-complete [dataProvider]="jobProvider" formControlName="city"></ion-auto-complete>
+
+            <tag-input formControlName="function" name="function" [separatorKeyCodes]="[32]" placeholder="chose 3 function" [maxItems]='3'>
+                <tag-input-dropdown [autocompleteItems]="listFunctionJob">
+                </tag-input-dropdown>
+            </tag-input>
 
             <ion-item>
                 <ion-label>Employment Type</ion-label>

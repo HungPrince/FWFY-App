@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
-
+import { trigger, state, style, transition, animate } from '@angular/animations';
 import { Storage } from '@ionic/storage';
 import { Validators, FormControl, FormBuilder } from '@angular/forms';
 
@@ -8,6 +8,10 @@ import { UntilHelper } from '../../helpers/until.helper';
 import { JobProvider } from '../../providers/job/job';
 import { LoaderService } from '../../services/loaderService';
 import { ToastService } from '../../services/toastService';
+
+import { ADDRESS, FUNCTION_JOB } from '../../configs/data';
+import { Observable } from '@firebase/util/dist/esm/src/subscribe';
+
 
 @IonicPage()
 @Component({
@@ -19,28 +23,30 @@ export class ModalAddJobPage {
     private formAddJob: any;
     public logoUrl;
     private job: { [x: string]: any } = {};
-
+    private address = ADDRESS;
+    public listFunctionJob = FUNCTION_JOB;
     constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController,
         public formBuilder: FormBuilder, private storage: Storage, private untilHelper: UntilHelper, private jobProvider: JobProvider,
         public loaderService: LoaderService, public toastService: ToastService) {
         this.storage.get('auth').then(uid => {
             this.job.userId = uid;
-        })
+        });
         this.logoUrl = "https://placehold.it/150x150";
-        this.job.userId =
 
-            this.formAddJob = this.formBuilder.group({
-                'company': new FormControl('', [Validators.required]),
-                'title': new FormControl('', Validators.compose([Validators.required])),
-                'location': new FormControl('', Validators.required),
-                'function': new FormControl('', Validators.required),
-                'type': new FormControl('', Validators.required),
-                'level': new FormControl('', Validators.required),
-                'website': new FormControl(),
-                'dateFrom': new FormControl(new Date(), Validators.required),
-                'dateTo': new FormControl('', Validators.required),
-                'description': new FormControl('', Validators.required),
-            });
+        this.formAddJob = this.formBuilder.group({
+            'company': new FormControl('', [Validators.required]),
+            'title': new FormControl('', Validators.compose([Validators.required])),
+            'city': new FormControl('', Validators.required),
+            'district': new FormControl('', Validators.required),
+            'location': new FormControl('', Validators.required),
+            'function': new FormControl('', Validators.required),
+            'type': new FormControl('', Validators.required),
+            'level': new FormControl('', Validators.required),
+            'website': new FormControl(),
+            'dateFrom': new FormControl(new Date(), Validators.required),
+            'dateTo': new FormControl('', Validators.required),
+            'description': new FormControl('', Validators.required),
+        });
     }
 
     ionViewDidLoad() {

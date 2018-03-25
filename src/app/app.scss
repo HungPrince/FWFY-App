@@ -1,8 +1,10 @@
+@import "../../node_modules/ionic2-auto-complete/auto-complete";
+
 .text-green {
 	color: green !important;
 }
 .text-primary {
-	color:#488aff !important;	
+	color:#488aff !important;
 }
 .clearfix {
 	clear: both;
@@ -13,9 +15,9 @@ ion-menu {
 	.menu-enabled{
 		display: block !important;
 	}
-	
+
 	ion-header {
-		background:#488aff !important; 
+		background:#488aff !important;
 		img {
 			border-radius: 50%;
 			float: left;
@@ -56,6 +58,6 @@ ion-menu {
 	    margin-left: calc(50% - 60px);
     }
     .toolbar-content{
-        background:#488aff !important; 
+        background:#488aff !important;
     }
 }

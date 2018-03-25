@@ -52,7 +52,9 @@ export class UserModalPage {
 
     save() {
         this.loaderService.loaderNoSetTime("saving profile ...");
-        this.userProvider.update(this.user.id, this.formEditUser.value).then(error => {
+        let usr = this.formEditUser.value();
+        usr.id = this.user.id;
+        this.userProvider.update(usr).then(error => {
             if (!error) {
                 this.loaderService.dismisLoader().then(data => {
                     this.goBack();
