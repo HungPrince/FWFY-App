@@ -9,4 +9,8 @@ export class UntilHelper {
     parseDate(date) {
         return date.moment().format('ll');
     }
+
+    convertJsonToArray(obj) {
+        return Object.keys(obj).map((k) => { return obj[k] });
+    }
 }

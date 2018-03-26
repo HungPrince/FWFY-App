@@ -1,9 +1,10 @@
 import { NgModule } from '@angular/core';
 import { MomentPipe, TimeAgoPipe } from './moment/moment';
+import { KeysPipe } from './until/until';
 
 @NgModule({
-    declarations: [MomentPipe, TimeAgoPipe],
+    declarations: [MomentPipe, TimeAgoPipe, KeysPipe],
     imports: [],
-    exports: [MomentPipe, TimeAgoPipe]
+    exports: [MomentPipe, TimeAgoPipe, KeysPipe]
 })
 export class PipesModule { }

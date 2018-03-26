@@ -55,8 +55,6 @@ export class HomePage {
                 this.navCtrl.setRoot(LoginPage);
             }
         }).catch(error => { console.log(error); this.loaderService.dismisLoader() });
-
-
     }
 
     ionViewWillEnter() {

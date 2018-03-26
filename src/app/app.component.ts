@@ -33,7 +33,9 @@ export class MyApp {
         this.storage.get('auth').then(uid => {
             if (!uid) {
                 this.rootPage = LoginPage;
+                console.log('bbbbb');
             } else {
+                console.log(uid);
                 this.userProvider.getUserByKey(uid).then(user => { this.user = user.val(); this.user.id = uid; console.log(this.user) });
             }
         }).catch(e => console.log(e));

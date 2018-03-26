@@ -13,6 +13,7 @@ import { UntilHelper } from '../../helpers/until.helper';
 import firebase from 'firebase';
 import { HomePage } from '../home/home';
 import { LoaderService } from '../../services/loaderService';
+import { CITIES, DISTRICTS, STREETS } from '../../configs/data';
 
 @IonicPage()
 @Component({
@@ -23,6 +24,9 @@ export class RegisterPage {
     typeSignUp: string = "applicant";
     user: User;
     base64Image: string;
+    listCity = [];
+    listDistrict = [];
+    listStreet = [];
     private emailRegex = "^[a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,15})$";
     private phoneRegex = "^(01[2689]|09)[0-9]{8}$"
     private formRegisterApplicant;
@@ -81,7 +85,11 @@ export class RegisterPage {
     }
 
     ionViewDidLoad() {
-
+        CITIES.forEach(element => {
+            for (let key in element) {
+                this.listCity.push(element[key]);
+            }
+        });
     }
 
     doRegisterApplicant() {
@@ -126,6 +134,34 @@ export class RegisterPage {
         this.user.role = 'applicant';
         this.user.description = this.untilHelper.niceString(this.formRegisterRecuiter.value.description.trim());
         this.register(this.user, this.formRegisterRecuiter.value.password);
+    }
+
+    changeCity(city) {
+        this.listDistrict = [];
+        DISTRICTS.forEach(district => {
+            for (let key in district) {
+                if (district[key].parent_code === city.code) {
+                    this.listDistrict.push({
+                        code: district[key].code,
+                        name: district[key].name
+                    });
+                }
+            }
+        });
+    }
+
+    changeDistrict(district) {
+        this.listStreet = [];
+        STREETS.forEach(street => {
+            for (let key in street) {
+                if (street[key].parent_code === district.code) {
+                    this.listStreet.push({
+                        code: street[key].code,
+                        name: street[key].name
+                    });
+                }
+            }
+        });
     }
 
     register(user: User, password: string) {

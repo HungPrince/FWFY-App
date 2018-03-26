@@ -8,15 +8,12 @@ export class LoaderService {
 
     }
 
-
     public loaderNoSetTime(content) {
         this.loadService = this.loadingCtr.create({
             content: content,
         });
         this.loadService.present();
-
     }
-
 
     public loader(content, time) {
         this.loadService = this.loadingCtr.create({

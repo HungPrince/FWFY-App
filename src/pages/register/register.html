@@ -176,27 +176,21 @@
                 <ion-item>
                     <ion-label>City</ion-label>
                     <ion-select formControlName="city" name="city">
-                        <ion-option value="Hà Nộ">Hà Nội</ion-option>
-                        <ion-option value="TP. Hồ Chí Minh">TP. Hồ Chí Minh</ion-option>
-                        <ion-option value="Đà Nẵng">Đà Nẵng</ion-option>
+                        <ion-option *ngFor="let city of listCity" (ionSelect)="changeCity(city)" value="{{city.name_with_type}}">{{city.name_with_type}}</ion-option>
                     </ion-select>
                 </ion-item>
 
                 <ion-item>
                     <ion-label>District</ion-label>
                     <ion-select formControlName="district" name="district">
-                        <ion-option value="Cầu Giấy">Cầu Giấy</ion-option>
-                        <ion-option value="Bắc Từ Liêm">Bắc Từ Liêm</ion-option>
-                        <ion-option value="Nam Từ Liêm">Nam Từ Liêm</ion-option>
+                        <ion-option *ngFor="let district of listDistrict" value="{{district.name}}" (ionSelect)="changeDistrict(district)">{{district.name}}</ion-option>
                     </ion-select>
                 </ion-item>
 
                 <ion-item>
                     <ion-label>Street</ion-label>
                     <ion-select formControlName="street" name="street">
-                        <ion-option value="Phường Cổ Nhuế 1">Phường Cổ Nhuế 1</ion-option>
-                        <ion-option value="Phường Cổ Nhuế 2">Phường Cổ Nhuế 2</ion-option>
-                        <ion-option value="Xuân Thủy">Xuân Thủy</ion-option>
+                        <ion-option *ngFor="let street of listStreet" value="{{street.name}}">{{street.name}}</ion-option>
                     </ion-select>
                 </ion-item>
 

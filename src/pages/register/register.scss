@@ -1,7 +1,7 @@
 page-register {
 	.logo {
 		height: 140px;
-		background: green;
+		background: #488aff;
 		text-align: center;
 		position: relative;
 		p {
@@ -66,5 +66,9 @@ page-register {
     .age{
         width: 70px !important;
         float: right;
+    }
+    ion-select{
+        margin-right: 10px;
+        max-width: 70%;
     }
 }
