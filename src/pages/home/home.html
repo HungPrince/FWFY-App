@@ -37,16 +37,17 @@
         </ion-card-content>
         <ion-grid>
             <ion-row>
-                <ion-col col-4 class="action-post">
+                <ion-col col-4 class="action-post" (click)="likeJob(job.job)">
                     <button ion-button icon-left clear small>
-                        <ion-icon name="thumbs-up"></ion-icon>
-                        <div>12 Likes</div>
+                        <ion-icon *ngIf="userCurrent.likes && userCurrent.likes[job.job.key]" name="thumbs-up"></ion-icon>
+                        <ion-icon *ngIf="!(userCurrent.likes && userCurrent.likes[job.job.key])" name="thumbs-up-outline"></ion-icon>
+                        <div>{{countLikes(job.job.likes)}}</div>
                     </button>
                 </ion-col>
                 <ion-col col-3 class="action-post" (click)="saveJob(job.job.key)">
                     <button ion-button icon-left clear small>
-                        <ion-icon *ngIf="userCurrent.likes && userCurrent.likes[job.job.key]" name="heart"></ion-icon>
-                        <ion-icon *ngIf="!(userCurrent.likes && userCurrent.likes[job.job.key])" name="heart-outline"></ion-icon>
+                        <ion-icon *ngIf="userCurrent.saves && userCurrent.saves[job.job.key]" name="heart"></ion-icon>
+                        <ion-icon *ngIf="!(userCurrent.saves && userCurrent.saves[job.job.key])" name="heart-outline"></ion-icon>
                         <div>Save</div>
                     </button>
                 </ion-col>
@@ -66,7 +67,7 @@
             </ion-row>
             <ion-row>
                 <ion-col center text-center>
-                    <button ion-button block small color="primary" (click)="share()">Share</button>
+                    <button ion-button block small color="primary" (click)="shareJob(job.job)">Share</button>
                 </ion-col>
             </ion-row>
         </ion-grid>

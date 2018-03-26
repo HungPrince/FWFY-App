@@ -10,7 +10,6 @@ import { LoginPage } from '../login/login';
 import { ModalAddJobPage } from '../modal-add-job/modal-add-job';
 
 import { LoaderService } from '../../services/loaderService';
-import firebase from 'firebase';
 
 @Component({
     selector: 'page-list-job',
@@ -75,14 +74,13 @@ export class ListJobPage {
     }
 
     share() {
-        let url =
-            this.socialSharing.canShareVia(
-                "Findwork for you",
-                "Setting app to have many job for you",
-                "Powergate company need 3 developer Node js",
-                "https://scontent.xx.fbcdn.net/v/t1.0-1/p100x100/15823472_1903496763215059_2160427870381018848_n.jpg?_nc_cat=0&oh=d6c75182f5c8cafe4dab2b2573559957&oe=5B48053D",
-                "Powergatesoftware.com").
-                then(data => console.log(data)).catch(error => console.log(error));
+        this.socialSharing.canShareVia(
+            "Findwork for you",
+            "Setting app to have many job for you",
+            "Powergate company need 3 developer Node js",
+            "https://scontent.xx.fbcdn.net/v/t1.0-1/p100x100/15823472_1903496763215059_2160427870381018848_n.jpg?_nc_cat=0&oh=d6c75182f5c8cafe4dab2b2573559957&oe=5B48053D",
+            "Powergatesoftware.com").
+            then(data => console.log(data)).catch(error => console.log(error));
     }
 
     public saveJob(jobId: string) {

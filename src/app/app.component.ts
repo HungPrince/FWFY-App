@@ -21,7 +21,7 @@ export class MyApp {
     @ViewChild(Nav) nav: Nav;
 
     rootPage: any = TabsPage;
-    public user: any = {};
+    public user: any;
 
     pages: Array<{ title: string, component: any }>;
 
@@ -34,7 +34,7 @@ export class MyApp {
             if (!uid) {
                 this.rootPage = LoginPage;
             } else {
-                this.userProvider.getUserByKey(uid).then(user => { this.user = user.val(); this.user.id = uid });
+                this.userProvider.getUserByKey(uid).then(user => { this.user = user.val(); this.user.id = uid; console.log(this.user) });
             }
         }).catch(e => console.log(e));
 

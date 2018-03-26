@@ -10,8 +10,6 @@ import { LoaderService } from '../../services/loaderService';
 import { ToastService } from '../../services/toastService';
 
 import { ADDRESS, FUNCTION_JOB } from '../../configs/data';
-import { Observable } from '@firebase/util/dist/esm/src/subscribe';
-
 
 @IonicPage()
 @Component({

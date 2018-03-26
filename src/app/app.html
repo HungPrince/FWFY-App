@@ -1,6 +1,6 @@
 <ion-menu [content]="content">
     <ion-header>
-        <ion-toolbar>
+        <ion-toolbar *ngIf="user">
             <ion-avatar item-start>
                 <img src={{user.avatar_url}}>
             </ion-avatar>

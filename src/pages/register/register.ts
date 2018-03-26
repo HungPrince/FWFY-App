@@ -132,7 +132,7 @@ export class RegisterPage {
         this.afAuth.auth.createUserWithEmailAndPassword(user.email, password).then((auth) => {
             return this.af.database.ref('users').child(auth.uid).set(this.user, (error) => {
                 if (!error) {
-                    this.storage.set('auth', auth);
+                    this.storage.set('auth', auth.uid);
                     this.navCtrl.setRoot(HomePage);
                     this.loaderService.dismisLoader();
                 } else {
@@ -145,23 +145,23 @@ export class RegisterPage {
 
     chooseAvatar() {
         let actionSheet = this.actionSheetCtrl.create({
-            title: 'Chọn ảnh',
+            title: 'Choose image',
             buttons: [
                 {
-                    text: 'Chọn ảnh từ thư viện',
+                    text: 'Choose from library',
                     role: 'destructive',
                     handler: () => {
                         this.takePicture(0);
                     }
                 },
                 {
-                    text: 'Chụp ảnh',
+                    text: 'Take capture',
                     handler: () => {
                         this.takePicture(1);
                     }
                 },
                 {
-                    text: 'Hủy',
+                    text: 'Cancel',
                     role: 'cancel',
                     handler: () => {
                         console.log('Cancel clicked');
@@ -183,21 +183,22 @@ export class RegisterPage {
         }
 
         this.camera.getPicture(options).then((imageData) => {
-            // imageData is either a base64 encoded string or a file URI
-            // If it's base64:
+            this.loaderService.loaderNoSetTime('uploading ...');
             let base64Image = 'data:image/jpeg;base64,' + imageData;
-            const filename = Math.floor(Date.now() / 1000);
-            const imageRef = this.storageFB.child(`images/${filename}.jpg`);
+            this.base64Image = base64Image;
+            let filename = Math.floor(Date.now() / 1000);
+            let imageRef = this.storageFB.child(`images/${filename}.jpg`);
             imageRef.putString(base64Image, firebase.storage.StringFormat.DATA_URL).then((imageSnapshot) => {
-                // Do something here when the data is succesfully uploaded!
-                this.user.avatar_url = imageSnapshot.downloadURL;
+                this.loaderService.dismisLoader().then((data) => {
+                    this.user.avatar_url = imageSnapshot.downloadURL;
+                }).catch(error => {
+                    console.log(error);
+                    this.loaderService.dismisLoader();
+                });
             });
         }, (err) => {
-            // Handle error
             console.log(err);
+            this.loaderService.dismisLoader();
         });
     }
-
-
-
 }
