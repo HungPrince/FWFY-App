@@ -43,14 +43,14 @@
                         <div>{{countLikes(job)}}</div>
                     </button>
                 </ion-col>
-                <ion-col col-3 class="action-post" (click)="saveJob(job.job.key)">
+                <ion-col col-4 class="action-post" (click)="saveJob(job.job.key)">
                     <button ion-button icon-left clear small>
                         <ion-icon *ngIf="userCurrent.saves && userCurrent.saves[job.job.key]" name="heart"></ion-icon>
                         <ion-icon *ngIf="!(userCurrent.saves && userCurrent.saves[job.job.key])" name="heart-outline"></ion-icon>
                         <div>Save</div>
                     </button>
                 </ion-col>
-                <ion-col col-5 class="action-post">
+                <ion-col col-4 class="action-post">
                     <button ion-button icon-left clear small>
                         <ion-icon name="text"></ion-icon>
                         <div>4 Comments</div>
