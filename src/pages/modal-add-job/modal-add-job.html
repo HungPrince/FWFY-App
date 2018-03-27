@@ -53,6 +53,27 @@
             </div>
 
             <ion-item>
+                <ion-label>City</ion-label>
+                <ion-select formControlName="city" name="city">
+                    <ion-option *ngFor="let city of listCity" (ionSelect)="changeCity(city)" value="{{city.name_with_type}}">{{city.name_with_type}}</ion-option>
+                </ion-select>
+            </ion-item>
+
+            <ion-item>
+                <ion-label>District</ion-label>
+                <ion-select formControlName="district" name="district" [disabled]="formAddJob.controls['city'].invalid">
+                    <ion-option *ngFor="let district of listDistrict" value="{{district.name}}" (ionSelect)="changeDistrict(district)">{{district.name}}</ion-option>
+                </ion-select>
+            </ion-item>
+
+            <ion-item>
+                <ion-label>Street</ion-label>
+                <ion-select formControlName="street" name="street" [disabled]="formAddJob.controls['district'].invalid">
+                    <ion-option *ngFor="let street of listStreet" value="{{street.name}}">{{street.name}}</ion-option>
+                </ion-select>
+            </ion-item>
+
+            <ion-item>
                 <ion-label>
                     <ion-icon name="md-pin"></ion-icon>
                 </ion-label>
@@ -71,8 +92,6 @@
                 </ion-label>
                 <ion-input type="text" formControlName="website" name="website" placeholder="website"></ion-input>
             </ion-item>
-
-            <ion-auto-complete [dataProvider]="jobProvider" formControlName="city"></ion-auto-complete>
 
             <tag-input formControlName="function" name="function" [separatorKeyCodes]="[32]" placeholder="chose 3 function" [maxItems]='3'>
                 <tag-input-dropdown [autocompleteItems]="listFunctionJob">

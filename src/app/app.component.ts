@@ -13,6 +13,7 @@ import { LoginPage } from '../pages/login/login';
 import { ListApplicantPage } from '../pages/list-applicant/list-applicant';
 import { ListJobPage } from '../pages/list-job/list-job';
 import { UserModalPage } from '../pages/user-modal/user-modal';
+import { ManagerPostPage } from '../pages/manager-post/manager-post';
 
 @Component({
     templateUrl: 'app.html'
@@ -33,34 +34,29 @@ export class MyApp {
         this.storage.get('auth').then(uid => {
             if (!uid) {
                 this.rootPage = LoginPage;
-                console.log('bbbbb');
             } else {
-                console.log(uid);
-                this.userProvider.getUserByKey(uid).then(user => { this.user = user.val(); this.user.id = uid; console.log(this.user) });
+                this.userProvider.getUserByKey(uid).then(user => { this.user = user.val(); this.user.id = uid; });
             }
         }).catch(e => console.log(e));
 
-        // used for an example of ngFor and navigation
         this.pages = [
             { title: 'Home', component: TabsPage },
             { title: 'List Favorite Jobs', component: ListJobPage },
-            { title: 'list Applicant', component: ListApplicantPage }
+            { title: 'List Applicant', component: ListApplicantPage },
+            { title: 'Manager Your Post', component: ManagerPostPage }
         ];
 
     }
 
     initializeApp() {
         this.platform.ready().then(() => {
-            // Okay, so the platform is ready and our plugins are available.
-            // Here you can do any higher level native things you might need.
+
             this.statusBar.styleDefault();
             this.splashScreen.hide();
         });
     }
 
     openPage(page) {
-        // Reset the content nav to have just this page
-        // we wouldn't want the back button to show in this scenario
         this.nav.setRoot(page.component);
     }
 

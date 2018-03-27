@@ -8,6 +8,7 @@ import { JobProvider } from '../../providers/job/job';
 import { UserProvider } from '../../providers/user/user';
 import { LoginPage } from '../login/login';
 import { ModalAddJobPage } from '../modal-add-job/modal-add-job';
+import { DetailApplicantPage } from '../detail-applicant/detail-applicant';
 
 import { LoaderService } from '../../services/loaderService';
 
@@ -27,38 +28,36 @@ export class HomePage {
         this.loaderService.loaderNoSetTime('loading ...');
 
         this.storage.get('auth').then(uid => {
-            if (uid) {
-                this.userProvider.getUserByKey(uid).then(data => {
-                    this.userCurrent = data.val();
-                    this.userCurrent.uid = uid;
-                    this.jobProvider.getAll().subscribe((jobs) => {
-                        jobs.forEach(job => {
-                            this.userProvider.getUserByKey(job.userId).then(data => {
-                                this.listJob.push({
-                                    job: job,
-                                    user: {
-                                        avatar_url: data.val()['avatar_url'],
-                                        name: data.val()['name'],
-                                        age: data.val()['age'],
-                                        gender: data.val()['gender'] ? "male" : "female"
-                                    }
-                                });
+            this.userProvider.getUserByKey(uid).then(data => {
+                this.userCurrent = data.val();
+                this.userCurrent.uid = uid;
+                this.jobProvider.getAll().subscribe((jobs) => {
+                    jobs.forEach(job => {
+                        this.userProvider.getUserByKey(job.userId).then(data => {
+                            this.listJob.push({
+                                job: job,
+                                user: data.val()
                             });
-                        }, (error) => {
-                            this.loaderService.dismisLoader();
                         });
+                    }, (error) => {
                         this.loaderService.dismisLoader();
                     });
+                    this.loaderService.dismisLoader();
                 });
-            } else {
-                this.loaderService.dismisLoader();
-                this.navCtrl.setRoot(LoginPage);
-            }
-        }).catch(error => { console.log(error); this.loaderService.dismisLoader() });
+            });
+        }).catch(error => { this.loaderService.dismisLoader(); console.log(error) });
     }
 
     ionViewWillEnter() {
         this.menuCtrl.enable(true);
+    }
+
+    doInfinite(infinititeScroll) {
+        setTimeout(() => {
+            for (let i = 0; i < 5; i++) {
+                this.listJob.concat()
+            }
+        }, 500);
     }
 
     public logout() {
@@ -134,13 +133,21 @@ export class HomePage {
         this.userProvider.update(this.userCurrent).then(error => console.log(error));
     }
 
-    public countLikes(likes) {
-        if (!likes) {
+    countLikes(job) {
+        if (!job.job.likes) {
             return "like";
         } else {
-            let likesNumber = Object.keys(likes).length;
+            let likesNumber = Object.keys(job.job.likes).length;
             return likesNumber == 1 ? likesNumber + " like" : likesNumber + " likes";
         }
+    }
+
+    getNameIconLike(job) {
+        let jobInfo = job.job;
+        if (this.userCurrent.likes && this.userCurrent.likes[jobInfo.key]) {
+            return 'thumbs-up';
+        }
+        return 'thumbs-up-outline';
     }
 
     public likeJob(job: any) {
@@ -156,10 +163,13 @@ export class HomePage {
                     job.likes = {};
                 }
                 job.likes[userId] = (job.likes && job.likes[userId]) ? null : userId;
-                this.jobProvider.update(job);
+                this.jobProvider.update(job).then(job => console.log(job));
             }
         });
+    }
 
+    public viewDetailUserPost(user) {
+        this.navCtrl.push(DetailApplicantPage, { "user": user });
     }
 
 }

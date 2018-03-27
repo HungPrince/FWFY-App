@@ -16,13 +16,13 @@
     </ion-toolbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content padding *ngIf="listJob">
 
     <ion-card *ngFor="let job of listJob">
 
         <ion-item>
             <ion-avatar item-start>
-                <img src="{{job.user.avatar_url}}">
+                <img (click)="viewDetailUserPost(job.user)" src="{{job.user.avatar_url}}">
             </ion-avatar>
             <h2>{{job.user.name}}</h2>
             <p>{{job.user.age}}, {{job.user.gender}}</p>
@@ -39,9 +39,8 @@
             <ion-row>
                 <ion-col col-4 class="action-post" (click)="likeJob(job.job)">
                     <button ion-button icon-left clear small>
-                        <ion-icon *ngIf="userCurrent.likes && userCurrent.likes[job.job.key]" name="thumbs-up"></ion-icon>
-                        <ion-icon *ngIf="!(userCurrent.likes && userCurrent.likes[job.job.key])" name="thumbs-up-outline"></ion-icon>
-                        <div>{{countLikes(job.job.likes)}}</div>
+                        <ion-icon  name="{{getNameIconLike(job)}}"></ion-icon>
+                        <div>{{countLikes(job)}}</div>
                     </button>
                 </ion-col>
                 <ion-col col-3 class="action-post" (click)="saveJob(job.job.key)">

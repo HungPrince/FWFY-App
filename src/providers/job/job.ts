@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { Observable } from 'rxjs/Observable';
 
-import { AutoCompleteService, AutoCompleteComponent } from 'ionic2-auto-complete';
+import { AutoCompleteService } from 'ionic2-auto-complete';
 import { ADDRESS } from '../../configs/data';
 
 @Injectable()

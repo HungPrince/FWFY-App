@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { AngularFireDatabase } from 'angularfire2/database';
+import { AngularFireDatabase, snapshotChanges } from 'angularfire2/database';
 import { AngularFireAuth } from 'angularfire2/auth';
 import 'rxjs/add/operator/map';
 
@@ -16,6 +16,10 @@ export class UserProvider {
 
     getAll(): Observable<any> {
         return this.af.list('users').valueChanges();
+    }
+
+    test(): any {
+        return this.af.database.ref('users').limitToFirst(5).once('value', data => console.log(data.val()));
     }
 
     getUserByKey(key: string): any {

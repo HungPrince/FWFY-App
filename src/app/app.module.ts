@@ -39,6 +39,7 @@ import { AboutPage } from '../pages/about/about';
 import { DetailApplicantPage } from '../pages/detail-applicant/detail-applicant';
 import { ModalAddJobPage } from '../pages/modal-add-job/modal-add-job';
 import { UserModalPage } from '../pages/user-modal/user-modal';
+import { ManagerPostPage } from '../pages/manager-post/manager-post';
 
 import { JobProvider } from '../providers/job/job';
 import { LoaderService } from '../services/loaderService';
@@ -61,7 +62,8 @@ import { DataProvider } from '../providers/data/data';
         AboutPage,
         DetailApplicantPage,
         ModalAddJobPage,
-        UserModalPage
+        UserModalPage,
+        ManagerPostPage
     ],
     imports: [
         BrowserModule,
@@ -92,7 +94,8 @@ import { DataProvider } from '../providers/data/data';
         AboutPage,
         DetailApplicantPage,
         ModalAddJobPage,
-        UserModalPage
+        UserModalPage,
+        ManagerPostPage
     ],
     providers: [
         StatusBar,

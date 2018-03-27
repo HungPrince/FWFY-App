@@ -13,7 +13,7 @@
 </ion-header>
 <ion-content>
     <div [ngSwitch]="typeSignUp">
-        <form (ngSubmit)="doRegisterApplicant()" [formGroup]="formRegisterApplicant" *ngSwitchCase="'applicant'">
+        <form (ngSubmit)="doRegisterApplicant()" [formGroup]="formRegisterApplicant" *ngSwitchCase="'applicant'" novalidate>
             <ion-list>
                 <ion-item>
                     <ion-label>
@@ -211,7 +211,7 @@
 
             </ion-list>
         </form>
-        <form (ngSubmit)="doRegisterRecuiter()" [formGroup]="formRegisterRecuiter" *ngSwitchCase="'recuiter'">
+        <form (ngSubmit)="doRegisterRecuiter()" [formGroup]="formRegisterRecuiter" *ngSwitchCase="'recuiter'" novalidate> 
             <ion-list>
 
                 <ion-item>

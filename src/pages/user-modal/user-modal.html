@@ -18,7 +18,7 @@
 </ion-header>
 
 <ion-content padding>
-    <form (ngSubmit)="save()" [formGroup]="formEditUser">
+    <form (ngSubmit)="save()" [formGroup]="formEditUser" novalidate>
         <ion-list>
             <ion-item>
                 <ion-label>
@@ -106,7 +106,7 @@
             </ion-item>
 
             <ion-item id="upload-boxes" class="input-text">
-                <button style="margin-bottom: 30px; margin-left:50px" type="button" ion-button (click)="chooseAvatar()">Upload Avatar</button>
+                <button style="margin-bottom: 30px; margin-left:50px" type="button" ion-button (click)="chooseAvatar()">Change Avatar</button>
                 <img class="avatar-upload" style="height: 100px; width: 100px;" src="{{avatar_url}}">
             </ion-item>
 
