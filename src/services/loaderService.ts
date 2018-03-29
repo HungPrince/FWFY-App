@@ -5,10 +5,12 @@ import { Injectable } from '@angular/core';
 export class LoaderService {
     loadService: any;
     constructor(public loadingCtr: LoadingController) {
-        this.loadService = null;
     }
 
     public loaderNoSetTime(content) {
+        if (this.loadService) {
+            this.loadService.dismiss();
+        }
         this.loadService = this.loadingCtr.create({
             content: content,
         });
@@ -16,6 +18,9 @@ export class LoaderService {
     }
 
     public loader(content, time) {
+        if (this.loadService) {
+            this.loadService.dismiss();
+        }
         this.loadService = this.loadingCtr.create({
             content: content,
             duration: time

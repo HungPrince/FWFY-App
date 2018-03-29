@@ -31,13 +31,6 @@ export class LoginPage {
         private afAuth: AngularFireAuth, private af: AngularFireDatabase, private storage: Storage, public formBuilder: FormBuilder,
         private untilHelpr: UntilHelper) {
 
-        this.storage.get('auth').then(data => {
-            if (data) {
-                console.log('navigation homepage');
-                this.navCtrl.setRoot(HomePage);
-            }
-        }).catch(e => console.log(e));
-
         this.storage.get('accountUser').then(user => {
             if (user) {
                 this.formLogin = this.formBuilder.group({

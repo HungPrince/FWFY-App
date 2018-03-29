@@ -21,7 +21,7 @@ import { ManagerPostPage } from '../pages/manager-post/manager-post';
 export class MyApp {
     @ViewChild(Nav) nav: Nav;
 
-    rootPage: any = TabsPage;
+    rootPage: any = LoginPage;
     public user: any;
 
     pages: Array<{ title: string, component: any }>;
@@ -32,9 +32,8 @@ export class MyApp {
         this.initializeApp();
 
         this.storage.get('auth').then(uid => {
-            if (!uid) {
-                this.rootPage = LoginPage;
-            } else {
+            if (uid) {
+                this.rootPage = TabsPage;
                 this.userProvider.getUserByKey(uid).then(user => { this.user = user.val(); this.user.id = uid; });
             }
         }).catch(e => console.log(e));

@@ -18,6 +18,7 @@ import { LoaderService } from '../../services/loaderService';
 })
 export class HomePage {
     public listJob: Array<any> = [];
+    public listSearch: any;
     public user: any;
     private userCurrent: any;
     constructor(public navCtrl: NavController, public storage: Storage, public menuCtrl: MenuController, public modalCtrl: ModalController,
@@ -29,21 +30,24 @@ export class HomePage {
 
         this.storage.get('auth').then(uid => {
             this.userProvider.getUserByKey(uid).then(data => {
-                this.userCurrent = data.val();
-                this.userCurrent.uid = uid;
-                this.jobProvider.getAll().subscribe((jobs) => {
-                    jobs.forEach(job => {
-                        this.userProvider.getUserByKey(job.userId).then(data => {
-                            this.listJob.push({
-                                job: job,
-                                user: data.val()
+                if (data.val()) {
+                    this.userCurrent = data.val();
+                    this.userCurrent.uid = uid;
+                    this.jobProvider.getAll().subscribe((jobs) => {
+                        jobs.forEach(job => {
+                            this.userProvider.getUserByKey(job.userId).then(data => {
+                                this.listJob.push({
+                                    job: job,
+                                    user: data.val()
+                                });
                             });
+                        }, (error) => {
+                            this.loaderService.dismisLoader();
                         });
-                    }, (error) => {
-                        this.loaderService.dismisLoader();
                     });
-                    this.loaderService.dismisLoader();
-                });
+                    this.listSearch = this.listJob;
+                }
+                this.loaderService.dismisLoader();
             });
         }).catch(error => { this.loaderService.dismisLoader(); console.log(error) });
     }
@@ -75,6 +79,15 @@ export class HomePage {
 
     closeModal() {
         return true;
+    }
+
+    getListJob(event) {
+        let search = event.target.value.toLowerCase();
+        if (search) {
+            this.listJob = this.listSearch.filter(job => job.job.title.toLowerCase().indexOf(search) > -1);
+        } else {
+            this.listJob = this.listSearch;
+        }
     }
 
     shareJob(job) {
