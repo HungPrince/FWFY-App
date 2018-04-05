@@ -10,9 +10,9 @@ import { UserProvider } from '../providers/user/user';
 
 import { TabsPage } from '../pages/tabs/tabs';
 import { LoginPage } from '../pages/login/login';
-import { ListApplicantPage } from '../pages/list-applicant/list-applicant';
-import { ListJobPage } from '../pages/list-job/list-job';
-import { UserModalPage } from '../pages/user-modal/user-modal';
+import { UserPage } from '../pages/user/user';
+import { PostPage } from '../pages/post/post';
+import { UserEditPage } from '../pages/user/user-edit/user-edit';
 import { ManagerPostPage } from '../pages/manager-post/manager-post';
 
 @Component({
@@ -40,8 +40,8 @@ export class MyApp {
 
         this.pages = [
             { title: 'Home', component: TabsPage },
-            { title: 'List Favorite Jobs', component: ListJobPage },
-            { title: 'List Applicant', component: ListApplicantPage },
+            { title: 'List Favorite Jobs', component: PostPage },
+            { title: 'List Applicant', component: UserPage },
             { title: 'Manager Your Post', component: ManagerPostPage }
         ];
 
@@ -64,7 +64,7 @@ export class MyApp {
             enableBackdropDismiss: false
         };
 
-        let userModal: Modal = this.modalCtrl.create(UserModalPage, { 'user': this.user }, myModalOptions);
+        let userModal: Modal = this.modalCtrl.create(UserEditPage, { 'user': this.user }, myModalOptions);
         userModal.present();
     }
 }

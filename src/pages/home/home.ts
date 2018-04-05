@@ -4,11 +4,12 @@ import { NavController, MenuController, ModalOptions, Modal, ModalController, Ac
 import { Storage } from '@ionic/storage';
 import { SocialSharing } from '@ionic-native/social-sharing';
 
-import { JobProvider } from '../../providers/job/job';
+import { PostProvider } from '../../providers/post/post';
 import { UserProvider } from '../../providers/user/user';
 import { LoginPage } from '../login/login';
-import { ModalAddJobPage } from '../modal-add-job/modal-add-job';
-import { DetailApplicantPage } from '../detail-applicant/detail-applicant';
+import { PostAddPage } from '../post/post-add/post-add';
+import { DetailUserPage } from '../user/detail-user/detail-user';
+import { DetailPostPage } from '../post/detail-post/detail-post';
 
 import { LoaderService } from '../../services/loaderService';
 
@@ -17,38 +18,43 @@ import { LoaderService } from '../../services/loaderService';
     templateUrl: 'home.html'
 })
 export class HomePage {
-    public listJob: Array<any> = [];
+    public listPost: Array<any> = [];
     public listSearch: any;
     public user: any;
     private userCurrent: any;
+    selectedFiles: FileList;
+    file: File;
+
     constructor(public navCtrl: NavController, public storage: Storage, public menuCtrl: MenuController, public modalCtrl: ModalController,
         private actionSheetCtrl: ActionSheetController,
-        public jobProvider: JobProvider, public loaderService: LoaderService, private userProvider: UserProvider,
+        public postProvider: PostProvider, public loaderService: LoaderService, private userProvider: UserProvider,
         private socialSharing: SocialSharing) {
 
         this.loaderService.loaderNoSetTime('loading ...');
-
         this.storage.get('auth').then(uid => {
             this.userProvider.getUserByKey(uid).then(data => {
                 if (data.val()) {
                     this.userCurrent = data.val();
                     this.userCurrent.uid = uid;
-                    this.jobProvider.getAll().subscribe((jobs) => {
-                        jobs.forEach(job => {
-                            this.userProvider.getUserByKey(job.userId).then(data => {
-                                this.listJob.push({
-                                    job: job,
-                                    user: data.val()
-                                });
-                            });
+                    this.postProvider.getAll().subscribe((posts) => {
+                        this.listPost = [];
+                        posts.forEach(post => {
+                            this.userProvider.getUserByKey(post.userId).then(data => {
+                                if (data.val()) {
+                                    this.listPost.push({
+                                        post: post,
+                                        user: data.val()
+                                    });
+                                }
+                            }).catch(error => { console.log(error); this.loaderService.dismisLoader(); });
                         }, (error) => {
                             this.loaderService.dismisLoader();
                         });
                     });
-                    this.listSearch = this.listJob;
+                    this.listSearch = this.listPost;
                 }
                 this.loaderService.dismisLoader();
-            });
+            }).catch(error => { this.loaderService.dismisLoader(); });
         }).catch(error => { this.loaderService.dismisLoader(); console.log(error) });
     }
 
@@ -57,11 +63,7 @@ export class HomePage {
     }
 
     doInfinite(infinititeScroll) {
-        setTimeout(() => {
-            for (let i = 0; i < 5; i++) {
-                this.listJob.concat()
-            }
-        }, 500);
+
     }
 
     public logout() {
@@ -73,7 +75,23 @@ export class HomePage {
         let myModalOptions: ModalOptions = {
             enableBackdropDismiss: false
         };
-        let myModal: Modal = this.modalCtrl.create(ModalAddJobPage, myModalOptions);
+        let myModal: Modal = this.modalCtrl.create(PostAddPage, myModalOptions);
+        myModal.present();
+    }
+
+    openModalEdit(post) {
+        let myModalOptions: ModalOptions = {
+            enableBackdropDismiss: false
+        };
+        let myModal: Modal = this.modalCtrl.create(PostAddPage, { 'post': post }, myModalOptions);
+        myModal.present();
+    }
+
+    openModalDetail(post) {
+        let myModalOptions: ModalOptions = {
+            enableBackdropDismiss: false
+        };
+        let myModal: Modal = this.modalCtrl.create(DetailPostPage, { 'post': post }, myModalOptions);
         myModal.present();
     }
 
@@ -81,27 +99,27 @@ export class HomePage {
         return true;
     }
 
-    getListJob(event) {
+    getListPost(event) {
         let search = event.target.value.toLowerCase();
         if (search) {
-            this.listJob = this.listSearch.filter(job => job.job.title.toLowerCase().indexOf(search) > -1);
+            this.listPost = this.listSearch.filter(post => post.post.title.toLowerCase().indexOf(search) > -1);
         } else {
-            this.listJob = this.listSearch;
+            this.listPost = this.listSearch;
         }
     }
 
-    shareJob(job) {
+    sharePost(post) {
         let sharePostActionSheet = this.actionSheetCtrl.create({
-            title: "Share this job",
+            title: "Share this post",
             buttons: [
                 {
                     text: "Share on Facebook",
                     icon: "logo-facebook",
                     handler: () => {
                         this.socialSharing.shareViaFacebook(
-                            job.description,
+                            post.description,
                             "https://scontent.xx.fbcdn.net/v/t1.0-1/p100x100/15823472_1903496763215059_2160427870381018848_n.jpg?_nc_cat=0&oh=d6c75182f5c8cafe4dab2b2573559957&oe=5B48053D",
-                            job.website
+                            post.website
                         )
                     }
                 },
@@ -110,9 +128,9 @@ export class HomePage {
                     icon: "logo-twitter",
                     handler: () => {
                         this.socialSharing.shareViaTwitter(
-                            job.description,
+                            post.description,
                             "https://scontent.xx.fbcdn.net/v/t1.0-1/p100x100/15823472_1903496763215059_2160427870381018848_n.jpg?_nc_cat=0&oh=d6c75182f5c8cafe4dab2b2573559957&oe=5B48053D",
-                            job.website
+                            post.website
                         )
                     }
                 },
@@ -138,33 +156,33 @@ export class HomePage {
         sharePostActionSheet.present();
     }
 
-    public saveJob(jobId: string) {
+    public savePost(postId: string) {
         if (!this.userCurrent.saves) {
             this.userCurrent.saves = {};
         }
-        this.userCurrent.saves[jobId] = (this.userCurrent.saves && this.userCurrent.saves[jobId]) ? false : true;
+        this.userCurrent.saves[postId] = (this.userCurrent.saves && this.userCurrent.saves[postId]) ? false : true;
         this.userProvider.update(this.userCurrent).then(error => console.log(error));
     }
 
-    countLikes(job) {
-        if (!job.job.likes) {
+    countLikes(post) {
+        if (!post.post.likes) {
             return "like";
         } else {
-            let likesNumber = Object.keys(job.job.likes).length;
+            let likesNumber = Object.keys(post.post.likes).length;
             return likesNumber == 1 ? likesNumber + " like" : likesNumber + " likes";
         }
     }
 
-    getNameIconLike(job) {
-        let jobInfo = job.job;
-        if (this.userCurrent.likes && this.userCurrent.likes[jobInfo.key]) {
+    getNameIconLike(post) {
+        let postInfo = post.post;
+        if (this.userCurrent.likes && this.userCurrent.likes[postInfo.key]) {
             return 'thumbs-up';
         }
         return 'thumbs-up-outline';
     }
 
-    public likeJob(job: any) {
-        let key = job.key;
+    public likePost(post: any) {
+        let key = post.key;
         if (!this.userCurrent.likes) {
             this.userCurrent.likes = {};
         }
@@ -172,17 +190,16 @@ export class HomePage {
         this.userProvider.update(this.userCurrent).then(error => {
             if (!error) {
                 let userId = this.userCurrent.uid;
-                if (!job.likes) {
-                    job.likes = {};
+                if (!post.likes) {
+                    post.likes = {};
                 }
-                job.likes[userId] = (job.likes && job.likes[userId]) ? null : userId;
-                this.jobProvider.update(job).then(job => console.log(job));
+                post.likes[userId] = (post.likes && post.likes[userId]) ? null : userId;
+                this.postProvider.update(post).then(post => console.log(post));
             }
         });
     }
 
     public viewDetailUserPost(user) {
-        this.navCtrl.push(DetailApplicantPage, { "user": user });
+        this.navCtrl.push(DetailUserPage, { "user": user });
     }
-
 }

@@ -1,0 +1,42 @@
+<ion-header>
+        <ion-navbar>
+            <ion-toolbar>
+                <ion-buttons left class="loginnavbtn">
+                    <button ion-button class="loginnavbtn" (click)="goBack()">
+                        <ion-icon name="md-arrow-back"></ion-icon>
+                    </button>
+                </ion-buttons>
+                <ion-title>Detail Post</ion-title>
+                <ion-buttons right>
+                    <button ion-button (click)="edit()">
+                        <ion-icon name="md-create"></ion-icon>
+                    </button>
+                </ion-buttons>
+            </ion-toolbar>
+        </ion-navbar>
+    
+    </ion-header>
+
+
+<ion-content padding>
+    <ion-list>
+        <ion-item>Company name: {{post.company}}</ion-item>
+        <ion-item>Title: {{post.title}}</ion-item>
+        <ion-item>Date from: {{ post.dateFrom | moment:['ll'] }} </ion-item>
+        <ion-item>Type: {{ post.type }} </ion-item>
+        <ion-item>Level: {{ post.level }} </ion-item>
+        <ion-item>Function:
+            <span *ngFor="let func of post.function">#{{ func.display }}</span>
+        </ion-item>
+        <ion-item>Description: {{ post.description }} </ion-item>
+        <ion-item>Website:
+            <a href="post.website"> {{ post.website }} </a></ion-item>
+        <ion-item>Address: {{ post.address.city }}, {{post.address.district}}, {{post.address.street}} </ion-item>
+        <ion-item>Date From: {{ post.dateFrom | moment:['ll'] }} </ion-item>
+        <ion-item>Date to: {{ post.dateTo | moment:['ll'] }} </ion-item>
+    </ion-list>
+    <div>
+        <button ion-button round color="primary" block (click)="fileInput.click()">Apply</button>
+        <input #fileInput type="file" (change)="chooseFiles($event)" style="display:none;" />
+    </div>
+</ion-content>

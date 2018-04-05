@@ -1,12 +1,15 @@
 page-home {
-    #add-job{
+    #add-post{
         position: fixed !important;
         bottom: 0;
         right: 0 !important;
         margin: 35px;
         margin-bottom:80px;
     }
-    .action-post{
+    .action-post {
         margin-left: -8px;
+    }
+    .more-action-post {
+        margin-top: 10%;
     }
 }

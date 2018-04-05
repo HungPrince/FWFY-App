@@ -2,15 +2,15 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 import { UserProvider } from '../../providers/user/user';
-import { DetailApplicantPage } from '../../pages/detail-applicant/detail-applicant';
+import { DetailUserPage } from '../../pages/user/detail-user/detail-user';
 import { LoaderService } from '../../services/loaderService';
 
 @IonicPage()
 @Component({
-    selector: 'page-list-applicant',
-    templateUrl: 'list-applicant.html',
+    selector: 'page-user',
+    templateUrl: 'user.html',
 })
-export class ListApplicantPage {
+export class UserPage {
 
     private listUsers: any;
 
@@ -28,7 +28,7 @@ export class ListApplicantPage {
     }
 
     viewDetail(user) {
-        this.navCtrl.push(DetailApplicantPage, { "user": user });
+        this.navCtrl.push(DetailUserPage, { "user": user });
     }
 
 }

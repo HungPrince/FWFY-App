@@ -5,14 +5,14 @@ import { EmailComposer } from '@ionic-native/email-composer';
 
 import { CallNumber } from '@ionic-native/call-number';
 
-import { User } from '../../models/user';
+import { User } from '../../../models/user';
 
 @IonicPage()
 @Component({
-    selector: 'page-detail-applicant',
-    templateUrl: 'detail-applicant.html',
+    selector: 'detail-user',
+    templateUrl: 'detail-user.html',
 })
-export class DetailApplicantPage {
+export class DetailUserPage {
     private formEmail;
     private emailRegex = "^[a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,15})$";
     private user: User;

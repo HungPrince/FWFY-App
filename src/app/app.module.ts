@@ -20,6 +20,7 @@ import { AngularFireModule } from 'angularfire2'
 import { AngularFireDatabaseModule } from 'angularfire2/database'
 import { AngularFireDatabase } from 'angularfire2/database';
 import { AngularFireAuth } from 'angularfire2/auth';
+import { AngularFireStorageModule } from 'angularfire2/storage';
 import { CallNumber } from '@ionic-native/call-number';
 import { EmailComposer } from '@ionic-native/email-composer';
 import { SocialSharing } from '@ionic-native/social-sharing';
@@ -30,18 +31,19 @@ import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { LoginPage } from '../pages/login/login';
 import { RegisterPage } from '../pages/register/register';
-import { ListJobPage } from '../pages/list-job/list-job';
-import { ListApplicantPage } from '../pages/list-applicant/list-applicant';
+import { PostPage } from '../pages/post/post';
+import { UserPage } from '../pages/user/user';
 import { TabsPage } from '../pages/tabs/tabs';
 import { ContactPage } from '../pages/contact/contact';
 import { SettingPage } from '../pages/setting/setting';
 import { AboutPage } from '../pages/about/about';
-import { DetailApplicantPage } from '../pages/detail-applicant/detail-applicant';
-import { ModalAddJobPage } from '../pages/modal-add-job/modal-add-job';
-import { UserModalPage } from '../pages/user-modal/user-modal';
+import { DetailUserPage } from '../pages/user/detail-user/detail-user';
+import { PostAddPage } from '../pages/post/post-add/post-add';
+import { UserEditPage } from '../pages/user/user-edit/user-edit';
 import { ManagerPostPage } from '../pages/manager-post/manager-post';
+import { DetailPostPage } from '../pages/post/detail-post/detail-post';
 
-import { JobProvider } from '../providers/job/job';
+import { PostProvider } from '../providers/post/post';
 import { LoaderService } from '../services/loaderService';
 import { ToastService } from '../services/toastService';
 import { UserProvider } from '../providers/user/user';
@@ -54,16 +56,17 @@ import { DataProvider } from '../providers/data/data';
         HomePage,
         LoginPage,
         RegisterPage,
-        ListJobPage,
-        ListApplicantPage,
+        PostPage,
+        UserPage,
         TabsPage,
         ContactPage,
         SettingPage,
         AboutPage,
-        DetailApplicantPage,
-        ModalAddJobPage,
-        UserModalPage,
-        ManagerPostPage
+        DetailUserPage,
+        PostAddPage,
+        UserEditPage,
+        ManagerPostPage,
+        DetailPostPage
     ],
     imports: [
         BrowserModule,
@@ -71,6 +74,7 @@ import { DataProvider } from '../providers/data/data';
         FormsModule,
         AngularFireModule.initializeApp(FIREBASE_CONFIG),
         AngularFireDatabaseModule,
+        AngularFireStorageModule,
         IonicStorageModule.forRoot(),
         HttpModule,
         HttpClientModule,
@@ -86,16 +90,17 @@ import { DataProvider } from '../providers/data/data';
         HomePage,
         LoginPage,
         RegisterPage,
-        ListJobPage,
-        ListApplicantPage,
+        PostPage,
+        UserPage,
         TabsPage,
         ContactPage,
         SettingPage,
         AboutPage,
-        DetailApplicantPage,
-        ModalAddJobPage,
-        UserModalPage,
-        ManagerPostPage
+        DetailUserPage,
+        PostAddPage,
+        UserEditPage,
+        ManagerPostPage,
+        DetailPostPage
     ],
     providers: [
         StatusBar,
@@ -110,7 +115,7 @@ import { DataProvider } from '../providers/data/data';
         AngularFireAuth,
         SocialSharing,
 
-        JobProvider,
+        PostProvider,
         LoaderService,
         ToastService,
         UntilHelper,

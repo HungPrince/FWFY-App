@@ -3,7 +3,7 @@
         <button ion-button menuToggle>
             <ion-icon name="menu"></ion-icon>
         </button>
-        <ion-title>List Jobs</ion-title>
+        <ion-title>List Post</ion-title>
         <ion-buttons end color="Secondary" (click)="logout()">
             <button ion-button>
                 <ion-icon name="md-log-out"></ion-icon>
@@ -12,41 +12,44 @@
     </ion-navbar>
 
     <ion-toolbar>
-        <ion-searchbar (ionInput)="getListJob($event)" autocorrect="off"></ion-searchbar>
+        <ion-searchbar (ionInput)="getListPost($event)" autocorrect="off"></ion-searchbar>
     </ion-toolbar>
 </ion-header>
 
-<ion-content padding *ngIf="listJob">
+<ion-content *ngIf="listPost">
 
-    <ion-card *ngFor="let job of listJob">
-
+    <ion-card *ngFor="let post of listPost">
         <ion-item>
             <ion-avatar item-start>
-                <img (click)="viewDetailUserPost(job.user)" src="{{job.user.avatar_url}}">
+                <img (click)="viewDetailUserPost(post.user)" src="{{ post.user.avatar_url }}">
             </ion-avatar>
-            <h2>{{job.user.name}}</h2>
-            <p>{{job.user.age}}, {{job.user.gender}}</p>
+            <h2>{{ post.user.name }}</h2>
+            <p>{{ post.user.age }}, {{ post.user.gender }}</p>
+            <ion-fab top right edge fab-fixed class="more-action-post" (click)="openModalEdit(post.post)">
+                <button ion-fab mini><ion-icon name="create"></ion-icon></button>
+            </ion-fab>
         </ion-item>
-
-        <img src="{{job.job.logoUrl}}">
-
-        <ion-card-content>
-            <h2><ion-icon color="primary" ios="ios-archive" md="md-archive"></ion-icon>  {{job.job.title}}</h2><br/>
-            <p><ion-icon color="primary" name="md-calendar"></ion-icon>  {{job.job.dateFrom | moment:['ll']}} - {{job.job.dateTo | moment:['ll']}}</p><br/>
-            <p><ion-icon color="primary" ios="ios-book" md="md-book"></ion-icon>  {{job.job.description}}</p>
+        
+        <img src="{{ post.post.logoUrl }}">
+        
+        <ion-card-content (click)="openModalDetail(post.post)">
+            <h2><ion-icon color="primary" ios="ios-archive" md="md-archive"></ion-icon>  {{ post.post.title }}</h2><br/>
+            <p><ion-icon color="primary" name="md-calendar"></ion-icon>  {{ post.post.dateFrom | moment:['ll'] }} - {{ post.post.dateTo | moment:['ll'] }}</p><br/>
+            <p><ion-icon color="primary" ios="ios-book" md="md-book"></ion-icon>  {{ post.post.description }}</p>
         </ion-card-content>
+
         <ion-grid>
             <ion-row>
-                <ion-col col-4 class="action-post" (click)="likeJob(job.job)">
+                <ion-col col-4 class="action-post" (click)="likePost(post.post)">
                     <button ion-button icon-left clear small>
-                        <ion-icon  name="{{getNameIconLike(job)}}"></ion-icon>
-                        <div>{{countLikes(job)}}</div>
+                        <ion-icon  name="{{ getNameIconLike(post) }}"></ion-icon>
+                        <div>{{ countLikes(post) }}</div>
                     </button>
                 </ion-col>
-                <ion-col col-4 class="action-post" (click)="saveJob(job.job.key)">
+                <ion-col col-4 class="action-post" (click)="savePost(post.post.key)">
                     <button ion-button icon-left clear small>
-                        <ion-icon *ngIf="userCurrent.saves && userCurrent.saves[job.job.key]" name="heart"></ion-icon>
-                        <ion-icon *ngIf="!(userCurrent.saves && userCurrent.saves[job.job.key])" name="heart-outline"></ion-icon>
+                        <ion-icon *ngIf="userCurrent.saves && userCurrent.saves[post.post.key]" name="heart"></ion-icon>
+                        <ion-icon *ngIf="!(userCurrent.saves && userCurrent.saves[post.post.key])" name="heart-outline"></ion-icon>
                         <div>Save</div>
                     </button>
                 </ion-col>
@@ -60,19 +63,19 @@
             <ion-row>
                 <ion-col center text-center>
                     <ion-note>
-                        {{job.job.createdAt | timeAgo}}
+                        {{ post.post.createdAt | timeAgo }}
                     </ion-note>
                 </ion-col>
             </ion-row>
             <ion-row>
                 <ion-col center text-center>
-                    <button ion-button block small color="primary" (click)="shareJob(job.job)">Share</button>
+                    <button (click)="sharePost(post.post)" small ion-button outline><ion-icon name="md-share"></ion-icon></button>
                 </ion-col>
             </ion-row>
         </ion-grid>
     </ion-card>
 
-    <button color="danger" ion-fab="" class="fab fab-ios fab-ios-danger" id="add-job" (click)="openModalAdd()">
+    <button color="danger" mini ion-fab="" class="fab fab-ios fab-ios-danger" id="add-post" (click)="openModalAdd()">
         <ion-icon class="fab-close-icon icon icon-ios ion-ios-close" name="close" role="img" aria-label="close"></ion-icon>
         <span class="button-inner">
             <ion-icon name="add" role="img" class="icon icon-ios ion-ios-add" aria-label="add"></ion-icon>

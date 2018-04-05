@@ -19,7 +19,11 @@ export class UserProvider {
     }
 
     test(): any {
-        return this.af.database.ref('users').limitToFirst(5).once('value', data => console.log(data.val()));
+        return this.af.database.ref('users').orderByKey().limitToFirst(3).once('value', data => { return data; });
+    }
+
+    testPagination(key: string): any {
+        return this.af.database.ref("users").orderByChild(key).limitToLast(3).once("value", (data) => { return data; });
     }
 
     getUserByKey(key: string): any {

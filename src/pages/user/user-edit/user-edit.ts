@@ -1,17 +1,17 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
 import { Validators, FormControl, FormBuilder } from '@angular/forms';
-import { LoaderService } from '../../services/loaderService';
-import { ToastService } from '../../services/toastService';
+import { LoaderService } from '../../../services/loaderService';
+import { ToastService } from '../../../services/toastService';
 
-import { UserProvider } from '../../providers/user/user';
+import { UserProvider } from '../../../providers/user/user';
 
 @IonicPage()
 @Component({
-    selector: 'page-user-modal',
-    templateUrl: 'user-modal.html',
+    selector: 'page-user-edit',
+    templateUrl: 'user-edit.html',
 })
-export class UserModalPage {
+export class UserEditPage {
 
     private emailRegex = "^[a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,15})$";
     private phoneRegex = "^(01[2689]|09)[0-9]{8}$";

@@ -3,8 +3,9 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 import { Storage } from '@ionic/storage';
 
-import { JobProvider } from '../../providers/job/job';
+import { PostProvider } from '../../providers/post/post';
 import { LoaderService } from '../../services/loaderService';
+import { UserProvider } from '../../providers/user/user';
 
 @IonicPage()
 @Component({
@@ -13,41 +14,45 @@ import { LoaderService } from '../../services/loaderService';
 })
 export class ManagerPostPage {
 
-    public listJob: Array<any> = [];
+    public listPost: Array<any> = [];
     items = [];
 
     constructor(public navCtrl: NavController, public navParams: NavParams,
-        private loaderService: LoaderService, private storage: Storage, private jobProvider: JobProvider) {
+        private loaderService: LoaderService, private storage: Storage,
+        private postProvider: PostProvider, private userProvider: UserProvider) {
         this.loaderService.loaderNoSetTime('loading ...');
-
-        for (let i = 0; i < 30; i++) {
-            this.items.push(this.items.length);
-        }
-
-        this.storage.get('auth').then(uid => {
-            this.jobProvider.getAll().subscribe((jobs) => {
-                jobs.forEach(job => {
-                    if (job.userId == uid.toString()) {
-                        this.listJob.push(job);
-                    }
-                }, (error) => {
-                    this.loaderService.dismisLoader();
-                });
-                this.loaderService.dismisLoader();
-            });
-        }).catch(error => { console.log(error); this.loaderService.dismisLoader() });
+        this.userProvider.test().then(data => {
+            this.items = data.val();
+            console.log(this.items);
+            this.loaderService.dismisLoader();
+        })
+        // this.storage.get('auth').then(uid => {
+        //     this.postProvider.getAll().subscribe((posts) => {
+        //         posts.forEach(post => {
+        //             if (post.userId == uid.toString()) {
+        //                 this.listPost.push(post);
+        //             }
+        //         }, (error) => {
+        //             this.loaderService.dismisLoader();
+        //         });
+        //         this.loaderService.dismisLoader();
+        //     }, error => { console.log(error); this.loaderService.dismisLoader(); });
+        // }).catch(error => { console.log(error); this.loaderService.dismisLoader() });
     }
 
     ionViewDidLoad() {
+
     }
 
     doInfinite(infiniteScroll) {
         setTimeout(() => {
-            for (let i = 0; i < 30; i++) {
-                console.log(this.items);
-                this.items.push(this.items.length);
-            }
+            let keyNext = Object.keys(this.items)[2];
+            this.userProvider.testPagination(keyNext).then(data => {
+                for (let i in data.val()) {
+                    this.items.push(data.val()[i]);
+                }
+            });
             infiniteScroll.complete();
-        }, 500);
-    }
+        }, 1000);
+    };
 }

@@ -1,5 +1,4 @@
 <ion-header>
-
     <ion-navbar>
         <ion-toolbar>
             <ion-buttons left class="loginnavbtn">
@@ -7,19 +6,18 @@
                     <ion-icon name="md-arrow-back"></ion-icon>
                 </button>
             </ion-buttons>
-            <ion-title>Add Job</ion-title>
+            <ion-title>{{ actionPost }}</ion-title>
             <ion-buttons right>
-                <button ion-button [disabled]="formAddJob.invalid" (click)="save()">
+                <button ion-button [disabled]="formPost.invalid" (click)="save()">
                     <ion-icon name="md-checkmark"></ion-icon>
                 </button>
             </ion-buttons>
         </ion-toolbar>
     </ion-navbar>
-
 </ion-header>
 
-<ion-content padding>
-    <form (ngSubmit)="save()" [formGroup]="formAddJob" action="">
+<ion-content padding class="post-add">
+    <form [formGroup]="formPost" action="">
         <ion-list>
             <ion-item>
                 <ion-label>
@@ -28,8 +26,8 @@
                 <ion-input type="text" formControlName="company" name="company" placeholder="Company name"></ion-input>
             </ion-item>
 
-            <div *ngIf="formAddJob.controls['company'].errors && (formAddJob.controls['company'].dirty || formAddJob.controls['company'].touched)">
-                <div [hidden]="!formAddJob.controls['company'].errors.required" class="error">
+            <div *ngIf="formPost.controls['company'].errors && (formPost.controls['company'].dirty || formPost.controls['company'].touched)">
+                <div [hidden]="!formPost.controls['company'].errors.required" class="error">
                     The company name is required field!
                 </div>
             </div>
@@ -46,8 +44,8 @@
                 <ion-input type="text" formControlName="title" name="title" placeholder="Title"></ion-input>
             </ion-item>
 
-            <div *ngIf="formAddJob.controls['title'].errors && (formAddJob.controls['title'].dirty || formAddJob.controls['title'].touched)">
-                <div [hidden]="!formAddJob.controls['title'].errors.required" class="error">
+            <div *ngIf="formPost.controls['title'].errors && (formPost.controls['title'].dirty || formPost.controls['title'].touched)">
+                <div [hidden]="!formPost.controls['title'].errors.required" class="error">
                     The title is required field!
                 </div>
             </div>
@@ -61,30 +59,17 @@
 
             <ion-item>
                 <ion-label>District</ion-label>
-                <ion-select formControlName="district" name="district" [disabled]="formAddJob.controls['city'].invalid">
+                <ion-select formControlName="district" name="district" [disabled]="formPost.controls['city'].invalid">
                     <ion-option *ngFor="let district of listDistrict" value="{{district.name}}" (ionSelect)="changeDistrict(district)">{{district.name}}</ion-option>
                 </ion-select>
             </ion-item>
 
             <ion-item>
                 <ion-label>Street</ion-label>
-                <ion-select formControlName="street" name="street" [disabled]="formAddJob.controls['district'].invalid">
+                <ion-select formControlName="street" name="street" [disabled]="formPost.controls['district'].invalid">
                     <ion-option *ngFor="let street of listStreet" value="{{street.name}}">{{street.name}}</ion-option>
                 </ion-select>
             </ion-item>
-
-            <ion-item>
-                <ion-label>
-                    <ion-icon name="md-pin"></ion-icon>
-                </ion-label>
-                <ion-input type="text" formControlName="location" name="location" placeholder="location"></ion-input>
-            </ion-item>
-
-            <div *ngIf="formAddJob.controls['location'].errors && (formAddJob.controls['location'].dirty || formAddJob.controls['location'].touched)">
-                <div [hidden]="!formAddJob.controls['location'].errors.required" class="error">
-                    Location is required field!
-                </div>
-            </div>
 
             <ion-item>
                 <ion-label>
@@ -139,14 +124,17 @@
             <ion-item>
                 <ion-textarea rows="6" type="text" formControlName="description" name="description" placeholder="Add 4 to 6 bullets describle the role"></ion-textarea>
             </ion-item>
-            <div *ngIf="formAddJob.controls['description'].errors && (formAddJob.controls['description'].dirty || formAddJob.controls['description'].touched)">
-                <div [hidden]="!formAddJob.controls['description'].errors.required" class="error">
+            <div *ngIf="formPost.controls['description'].errors && (formPost.controls['description'].dirty || formPost.controls['description'].touched)">
+                <div [hidden]="!formPost.controls['description'].errors.required" class="error">
                     Description is required field!
                 </div>
             </div>
 
-            <div padding>
-                <button ion-button color="primary" [disabled]="formAddJob.invalid" block>Save</button>
+            <div>
+                <button ion-button round color="primary" [disabled]="formPost.invalid" block (click)="save()">Save</button>
+            </div>
+            <div>
+                <button ion-button round color="danger" block (click)="delete()">Delete</button>
             </div>
         </ion-list>
     </form>

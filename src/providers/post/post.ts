@@ -6,7 +6,7 @@ import { AutoCompleteService } from 'ionic2-auto-complete';
 import { ADDRESS } from '../../configs/data';
 
 @Injectable()
-export class JobProvider implements AutoCompleteService {
+export class PostProvider implements AutoCompleteService {
 
     private address = ADDRESS;
     constructor(public af: AngularFireDatabase) {
@@ -17,19 +17,19 @@ export class JobProvider implements AutoCompleteService {
     }
 
     getAll(): Observable<any> {
-        return this.af.list('jobs').snapshotChanges().
-            map(jobs => { return jobs.map(job => ({ key: job.key, ...job.payload.val() })) });
+        return this.af.list('post').snapshotChanges().
+            map(posts => { return posts.map(post => ({ key: post.key, ...post.payload.val() })) });
     }
 
-    add(job: any) {
-        return this.af.database.ref('jobs').push(job);
+    add(post: any) {
+        return this.af.database.ref('post').push(post);
     }
 
-    update(job: any) {
-        return this.af.database.ref(`jobs/${job.key}`).set(job);
+    update(post: any) {
+        return this.af.database.ref(`post/${post.key}`).set(post);
     }
 
-    delete(job: any) {
-        return this.af.database.ref('jobs').remove(job.key);
+    delete(post: any) {
+        return this.af.database.ref('post').remove(post.key);
     }
 }

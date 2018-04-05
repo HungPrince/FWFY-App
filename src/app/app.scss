@@ -10,6 +10,17 @@
 	clear: both;
 }
 
+.message-not-found {
+    margin: auto;
+    background-color:#488aff !important;
+    text-align: center;
+    color: #ffffff;
+    min-height: 80px;   
+}
+.message-not-found span {
+    display: block;
+    padding-top: 10%;
+}
 
 ion-menu {
 	.menu-enabled{
