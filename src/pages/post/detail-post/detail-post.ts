@@ -4,6 +4,7 @@ import { AngularFireStorage } from 'angularfire2/storage';
 import { Storage } from '@ionic/storage';
 
 import { PostProvider } from '../../../providers/post/post';
+import { UserProvider } from '../../../providers/user/user';
 import { ToastService } from "../../../services/toastService";
 import { PostAddPage } from '../post-add/post-add';
 import { ViewController } from 'ionic-angular/navigation/view-controller';
@@ -24,12 +25,15 @@ export class DetailPostPage {
         private storageFB: AngularFireStorage,
         private storage: Storage,
         private postProvider: PostProvider,
+        private userProvider: UserProvider,
         private toastService: ToastService,
         private modalCtrl: ModalController,
         private viewCtrl: ViewController) {
         this.post = navParams.get('post');
         this.storage.get('auth').then(uid => {
-            this.user.uid = uid;
+            this.userProvider.getUserByKey(uid).then(data => {
+                this.user = data.val();
+            });
         });
     }
 
@@ -57,20 +61,31 @@ export class DetailPostPage {
     }
 
     uploadFile() {
+        if (!this.user.file) {
+            this.user.file = "";
+        }
         if (!this.post.files) {
             this.post.files = [];
         }
+
         let file = this.selectedFiles.item(0);
         let uniqkey = 'file' + Math.floor(Math.random() * 1000000);
         this.storageFB.upload('/files/' + uniqkey, file).then((uploadTask) => {
+            this.user.file = uploadTask.downloadURL;
             this.post.files[this.user.uid] = uploadTask.downloadURL;
-            this.postProvider.update(this.post).then(error => {
+            this.userProvider.update(this.user).then(error => {
                 if (!error) {
-                    this.toastService.toast("Apply successfully!", 1000, "bottom", false);
+                    this.postProvider.update(this.post).then(error => {
+                        if (!error) {
+                            this.toastService.toast("Apply successfully!", 1000, "bottom", false);
+                        } else {
+                            this.toastService.toast("Something went wrong!", 1000, "bottom", false);
+                        }
+                    }).catch(error => { this.toastService.toast("Something went wrong!", 1000, "bottom", false); });
                 } else {
                     this.toastService.toast("Something went wrong!", 1000, "bottom", false);
                 }
-            });
+            }).catch(error => { this.toastService.toast("Something went wrong!", 1000, "bottom", false); });
         });
     }
 }

@@ -15,15 +15,16 @@ export class UserProvider {
     }
 
     getAll(): Observable<any> {
-        return this.af.list('users').valueChanges();
+        return this.af.list('users').snapshotChanges().
+            map(users => { return users.map(user => ({ uid: user.key, ...user.payload.val() })) });
     }
 
-    test(): any {
-        return this.af.database.ref('users').orderByKey().limitToFirst(3).once('value', data => { return data; });
+    getUserPagination(index: number): any {
+        return this.af.database.ref('users').orderByKey().limitToFirst(index).once('value', data => { return data; });
     }
 
-    testPagination(key: string): any {
-        return this.af.database.ref("users").orderByChild(key).limitToLast(3).once("value", (data) => { return data; });
+    getUserPaginationNext(key: string, index: number): any {
+        return this.af.database.ref("users").orderByKey().startAt(key).limitToFirst(index).once("value", (data) => { return data; });
     }
 
     getUserByKey(key: string): any {

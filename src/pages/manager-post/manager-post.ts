@@ -12,47 +12,52 @@ import { UserProvider } from '../../providers/user/user';
     selector: 'page-manager-post',
     templateUrl: 'manager-post.html',
 })
-export class ManagerPostPage {
 
+export class ManagerPostPage {
+    private messageNotFound = "You have not post";
     public listPost: Array<any> = [];
-    items = [];
+    private listUser: Array<any> = [];
 
     constructor(public navCtrl: NavController, public navParams: NavParams,
         private loaderService: LoaderService, private storage: Storage,
         private postProvider: PostProvider, private userProvider: UserProvider) {
         this.loaderService.loaderNoSetTime('loading ...');
-        this.userProvider.test().then(data => {
-            this.items = data.val();
-            console.log(this.items);
-            this.loaderService.dismisLoader();
-        })
-        // this.storage.get('auth').then(uid => {
-        //     this.postProvider.getAll().subscribe((posts) => {
-        //         posts.forEach(post => {
-        //             if (post.userId == uid.toString()) {
-        //                 this.listPost.push(post);
-        //             }
-        //         }, (error) => {
-        //             this.loaderService.dismisLoader();
-        //         });
-        //         this.loaderService.dismisLoader();
-        //     }, error => { console.log(error); this.loaderService.dismisLoader(); });
-        // }).catch(error => { console.log(error); this.loaderService.dismisLoader() });
+
+        this.userProvider.getAll().subscribe(users => {
+            console.log(users);
+            this.listUser = users;
+        });
+
+        this.storage.get('auth').then(uid => {
+            this.postProvider.getAll().subscribe((posts) => {
+                posts.forEach(post => {
+                    let listCv: Array<any> = [];
+                    if (post.userId == uid.toString()) {
+                        if (post.files) {
+                            for (let key in post.files) {
+                                this.userProvider.getUserByKey(key).then(user => {
+                                    listCv.push({
+                                        user: user.val(),
+                                        linkCv: post.files[key]
+                                    });
+                                });
+                            }
+                        }
+                        this.listPost.push({
+                            post: post,
+                            listCv: listCv
+                        });
+                    }
+                }, (error) => {
+                    this.loaderService.dismisLoader();
+                });
+                console.log(this.listPost);
+                this.loaderService.dismisLoader();
+            }, error => { console.log(error); this.loaderService.dismisLoader(); });
+        }).catch(error => { console.log(error); this.loaderService.dismisLoader() });
     }
 
     ionViewDidLoad() {
 
     }
-
-    doInfinite(infiniteScroll) {
-        setTimeout(() => {
-            let keyNext = Object.keys(this.items)[2];
-            this.userProvider.testPagination(keyNext).then(data => {
-                for (let i in data.val()) {
-                    this.items.push(data.val()[i]);
-                }
-            });
-            infiniteScroll.complete();
-        }, 1000);
-    };
 }
