@@ -30,8 +30,8 @@ export class DetailPostPage {
         private modalCtrl: ModalController,
         private viewCtrl: ViewController) {
         this.post = navParams.get('post');
-        this.storage.get('auth').then(uid => {
-            this.userProvider.getUserByKey(uid).then(data => {
+        this.storage.get('auth').then(user => {
+            this.userProvider.getUserByKey(user.uid).then(data => {
                 this.user = data.val();
             });
         });
@@ -77,8 +77,12 @@ export class DetailPostPage {
                 if (!error) {
                     this.postProvider.update(this.post).then(error => {
                         if (!error) {
+                            this.goBack();
                             this.toastService.toast("Apply successfully!", 1000, "bottom", false);
                         } else {
+                            this.user.file = "";
+                            this.userProvider.update(this.user).then(data => {
+                            })
                             this.toastService.toast("Something went wrong!", 1000, "bottom", false);
                         }
                     }).catch(error => { this.toastService.toast("Something went wrong!", 1000, "bottom", false); });

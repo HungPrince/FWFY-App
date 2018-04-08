@@ -26,9 +26,47 @@
                 <ion-input type="text" formControlName="company" name="company" placeholder="Company name"></ion-input>
             </ion-item>
 
-            <div *ngIf="formPost.controls['company'].errors && (formPost.controls['company'].dirty || formPost.controls['company'].touched)">
-                <div [hidden]="!formPost.controls['company'].errors.required" class="error">
-                    The company name is required field!
+            <div *ngIf="isError('company')">
+                <div [hidden]="!isErrorRequired('company')" class="error">
+                    Company's Name is required field!
+                </div>
+                <div [hidden]="!isErrorMinLength('company')" class="error">
+                    Company's Name is least at 8 characters long!
+                </div>
+                <div [hidden]="!isErrorMaxLength('company')" class="error">
+                    Company's Name can not more than 100 characters!
+                </div>
+            </div>
+
+            <ion-item class="input-text">
+                <ion-label>
+                    <ion-icon name="md-mail"></ion-icon>
+                </ion-label>
+                <ion-input type="email" formControlName="email" name="email" placeholder="Email"></ion-input>
+            </ion-item>
+
+            <div *ngIf="isError('email')">
+                <div [hidden]="!isErrorRequired('email')" class="error">
+                    Email is required field!
+                </div>
+                <div [hidden]="!isErrorPattern('email')" class="error">
+                    Email incorrect format!
+                </div>
+            </div>
+
+            <ion-item class="input-text">
+                <ion-label>
+                    <ion-icon name="md-call"></ion-icon>
+                </ion-label>
+                <ion-input type="tel" formControlName="phone" name="phone" placeholder="Phone"></ion-input>
+            </ion-item>
+
+            <div *ngIf="isError('phone')">
+                <div [hidden]="!isErrorRequired('phone')" class="error">
+                    Phone is required field!
+                </div>
+                <div [hidden]="!isErrorPattern('phone')" class="error">
+                    Phone incorect format!
                 </div>
             </div>
 
@@ -44,9 +82,15 @@
                 <ion-input type="text" formControlName="title" name="title" placeholder="Title"></ion-input>
             </ion-item>
 
-            <div *ngIf="formPost.controls['title'].errors && (formPost.controls['title'].dirty || formPost.controls['title'].touched)">
-                <div [hidden]="!formPost.controls['title'].errors.required" class="error">
-                    The title is required field!
+            <div *ngIf="isError('title')">
+                <div [hidden]="!isErrorRequired('title')" class="error">
+                    Title is required field!
+                </div>
+                <div [hidden]="!isErrorMinLength('title')" class="error">
+                    Title is least at 8 characters long!
+                </div>
+                <div [hidden]="!isErrorMaxLength('title')" class="error">
+                    Title can not more than 100 characters!
                 </div>
             </div>
 
@@ -78,6 +122,15 @@
                 <ion-input type="text" formControlName="website" name="website" placeholder="website"></ion-input>
             </ion-item>
 
+            <div *ngIf="isError('website')">
+                <div [hidden]="!isErrorRequired('website')" class="error">
+                    Website is required field!
+                </div>
+                <div [hidden]="!isErrorPattern('website')" class="error">
+                    Website is incorrect format!
+                </div>
+            </div>
+
             <tag-input formControlName="function" name="function" [separatorKeyCodes]="[32]" placeholder="chose 3 function" [maxItems]='3'>
                 <tag-input-dropdown [autocompleteItems]="listFunctionJob">
                 </tag-input-dropdown>
@@ -86,24 +139,14 @@
             <ion-item>
                 <ion-label>Employment Type</ion-label>
                 <ion-select formControlName="type" name="type">
-                    <ion-option value="Full-time">Full-time</ion-option>
-                    <ion-option value="Part-time">Past-time</ion-option>
-                    <ion-option value="Contract">Contract</ion-option>
-                    <ion-option value="Temporary">Temporary</ion-option>
-                    <ion-option value="Volunteer">Volunteer</ion-option>
-                    <ion-option value="Internship">Internship</ion-option>
+                    <ion-option  *ngFor="let type of types" value="{{ type }}">{{ type }}</ion-option>
                 </ion-select>
             </ion-item>
 
             <ion-item>
-                <ion-label> Seniority level</ion-label>
+                <ion-label>Seniority level</ion-label>
                 <ion-select formControlName="level" name="level">
-                    <ion-option value="Full-time">Choose one</ion-option>
-                    <ion-option value="Executive">Executive</ion-option>
-                    <ion-option value="Entry level">Entry level</ion-option>
-                    <ion-option value="Assosiate">Assosiate</ion-option>
-                    <ion-option value="Director">Director</ion-option>
-                    <ion-option value="Internship">Internship</ion-option>
+                    <ion-option *ngFor="let level of levels" value="{{ level }}">{{ level }}</ion-option>
                 </ion-select>
             </ion-item>
 
@@ -111,14 +154,14 @@
                 <ion-label>
                     <ion-icon name="md-calendar"></ion-icon>
                 </ion-label>
-                <ion-datetime displayFormat="MM/DD/YYYY" formControlName="dateFrom" name="dateFrom" placeholder="Date From"></ion-datetime>
+                <ion-datetime displayFormat="MM/DD/YYYY" min="2018" formControlName="dateFrom" name="dateFrom" placeholder="Date From"></ion-datetime>
             </ion-item>
 
             <ion-item>
                 <ion-label>
                     <ion-icon name="md-calendar"></ion-icon>
                 </ion-label>
-                <ion-datetime displayFormat="MM/DD/YYYY" formControlName="dateTo" name="dateTo" placeholder="Date To"></ion-datetime>
+                <ion-datetime displayFormat="MM/DD/YYYY" min="2018" formControlName="dateTo" name="dateTo" placeholder="Date To"></ion-datetime>
             </ion-item>
 
             <ion-item>
@@ -134,7 +177,7 @@
                 <button ion-button round color="primary" [disabled]="formPost.invalid" block (click)="save()">Save</button>
             </div>
             <div>
-                <button ion-button round color="danger" block (click)="delete()">Delete</button>
+                <button ion-button round color="danger" [hidden]="!this.post.key" block (click)="delete()">Delete</button>
             </div>
         </ion-list>
     </form>

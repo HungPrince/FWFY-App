@@ -35,15 +35,11 @@ export class UserProvider {
         return this.af.database.ref(`users/${user.uid}`).update(user);
     }
 
-    register(password: string, user: User): any {
-        return this.afAuth.auth.createUserWithEmailAndPassword(user.email, password).then((auth) => {
-            return this.af.database.ref('users').child(auth.uid).set(user, (error) => {
-                if (!error) {
-                    return true;
-                } else {
-                    console.log(error);
-                }
-            }).catch((e) => console.log(e));
-        }).catch((e) => console.log(e));
+    register(email: string, password: string): any {
+        return this.afAuth.auth.createUserWithEmailAndPassword(email, password);
+    }
+
+    create(user: any): any {
+        return this.af.database.ref('users').child(user.uid).set(user);
     }
 }

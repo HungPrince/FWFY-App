@@ -1,23 +1,25 @@
 export class User {
+    uid ?: string;
     userName: string;
     name: string;
     email: string;
     phone: object;
     age: number;
     school: string;
-    speciality: string;
+    specialized: string;
     address: object;
+    city: string;
     gender: boolean;
     role: string;
     description: string;
     experience: string;
     avatar_url: string;
-    file_url: string;
     favs: object;
     password: string;
     passwordConfirm: string;
 
-    public constructor(Name: string, UserName, Phone: object, Email: string, Age: number, School: string, Speciality: string, Address: object, Gender: boolean,  Description: string, Experience: string, File_url: string, Avatar_url: string) {
+    public constructor(Role: string, Name: string, UserName, Phone: object, Email: string, Age: number, School: string, Speciality: string, Address: object, Gender: boolean,  Description: string, Experience: string, Avatar_url: string) {
+        this.role = Role;
         this.name = Name;
         this.userName = UserName;
         this.email = Email;
@@ -29,7 +31,6 @@ export class User {
         this.description = Description;
         this.experience = Experience;
         this.avatar_url = Avatar_url;
-        this.file_url = File_url;
-        this.speciality = Speciality;
+        this.specialized = Speciality;
     }
 }

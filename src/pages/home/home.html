@@ -12,12 +12,31 @@
     </ion-navbar>
 
     <ion-toolbar>
-        <ion-searchbar (ionInput)="getListPost($event)" autocorrect="off"></ion-searchbar>
+        <ion-searchbar  (ionInput)="getListPost($event)" autocorrect="off"></ion-searchbar>
+        <button class="btn-search-advanced" positionV ="bottom" duration = '500' ion-button small tooltip="{{textShowHideAdvanced}} search advanced" (click)="showSearchAdvanced()">{{ textShowHideAdvanced }}</button>
     </ion-toolbar>
 </ion-header>
-
 <ion-content *ngIf="listPost">
-
+    <ion-list *ngIf="searchAdvandced">
+        <ion-item>
+            <ion-label>City</ion-label>
+            <ion-select [(ngModel)]="city" name="city">
+                <ion-option *ngFor="let city of listCity" (ionSelect)="searchByCity(city.name_with_type)" value="{{city.name_with_type}}">{{city.name_with_type}}</ion-option>
+            </ion-select>
+        </ion-item>
+        <ion-item>
+            <ion-label>Employment Type</ion-label>
+            <ion-select [(ngModel)]="type" name="type">
+                <ion-option  *ngFor="let type of types" value="{{ type }}" (ionSelect)="searchByType(type)">{{ type }}</ion-option>
+            </ion-select>
+        </ion-item>
+        <ion-item>
+            <ion-label>Seniority level</ion-label>
+            <ion-select [(ngModel)]="level" name="level">
+                <ion-option *ngFor="let level of levels" value="{{ level }}" (ionSelect)="searchByLevel(level)">{{ level }}</ion-option>
+            </ion-select>
+        </ion-item>
+    </ion-list>
     <ion-card *ngFor="let post of listPost">
         <ion-item>
             <ion-avatar item-start>
@@ -25,13 +44,13 @@
             </ion-avatar>
             <h2>{{ post.user.name }}</h2>
             <p>{{ post.user.age }}, {{ post.user.gender }}</p>
-            <ion-fab top right edge fab-fixed class="more-action-post" (click)="openModalEdit(post.post)">
+            <ion-fab *ngIf="post.ownPost" top right edge fab-fixed class="more-action-post" (click)="openModalEdit(post.post)">
                 <button ion-fab mini><ion-icon name="create"></ion-icon></button>
             </ion-fab>
         </ion-item>
-        
+
         <img src="{{ post.post.logoUrl }}">
-        
+
         <ion-card-content (click)="openModalDetail(post.post)">
             <h2><ion-icon color="primary" ios="ios-archive" md="md-archive"></ion-icon>  {{ post.post.title }}</h2><br/>
             <p><ion-icon color="primary" name="md-calendar"></ion-icon>  {{ post.post.dateFrom | moment:['ll'] }} - {{ post.post.dateTo | moment:['ll'] }}</p><br/>
@@ -63,7 +82,7 @@
             <ion-row>
                 <ion-col center text-center>
                     <ion-note>
-                        {{ post.post.createdAt | timeAgo }}
+                        {{  post.post.updatedAt ? (post.post.updatedAt | timeAgo) : post.post.createdAt  | timeAgo }}
                     </ion-note>
                 </ion-col>
             </ion-row>
@@ -75,7 +94,7 @@
         </ion-grid>
     </ion-card>
 
-    <button color="danger" mini ion-fab="" class="fab fab-ios fab-ios-danger" id="add-post" (click)="openModalAdd()">
+    <button *ngIf="userCurrent &&  (userCurrent.role == 'recuiter' || userCurrent.role == 'admin')" color="danger" mini ion-fab="" class="fab fab-ios fab-ios-danger" id="add-post" (click)="openModalAdd()">
         <ion-icon class="fab-close-icon icon icon-ios ion-ios-close" name="close" role="img" aria-label="close"></ion-icon>
         <span class="button-inner">
             <ion-icon name="add" role="img" class="icon icon-ios ion-ios-add" aria-label="add"></ion-icon>

@@ -30,6 +30,6 @@ export class PostProvider implements AutoCompleteService {
     }
 
     delete(post: any) {
-        return this.af.database.ref('post').remove(post.key);
+        return this.af.database.ref('post').child(post.key).remove();
     }
 }

@@ -14,7 +14,7 @@
                 </ion-buttons>
             </ion-toolbar>
         </ion-navbar>
-    
+
     </ion-header>
 
 
@@ -22,16 +22,28 @@
     <ion-list>
         <ion-item>Company name: {{post.company}}</ion-item>
         <ion-item>Title: {{post.title}}</ion-item>
-        <ion-item>Date from: {{ post.dateFrom | moment:['ll'] }} </ion-item>
+        <ion-item>Email: {{ post.email }} </ion-item>
+        <ion-item>Phone: {{ post.phone }} </ion-item>
         <ion-item>Type: {{ post.type }} </ion-item>
         <ion-item>Level: {{ post.level }} </ion-item>
         <ion-item>Function:
             <span *ngFor="let func of post.function">#{{ func.display }}</span>
         </ion-item>
-        <ion-item>Description: {{ post.description }} </ion-item>
+        <ion-item>
+            <ion-label>Description</ion-label>
+            <ion-textarea name="" id="" cols="30" rows="5" readonly value="{{ post.description }}">
+             </ion-textarea>
+        </ion-item>
+
         <ion-item>Website:
-            <a href="post.website"> {{ post.website }} </a></ion-item>
-        <ion-item>Address: {{ post.address.city }}, {{post.address.district}}, {{post.address.street}} </ion-item>
+            <a href="post.website"> {{ post.website }} </a>
+        </ion-item>
+        <ion-item>
+            <ion-label>Address:</ion-label>
+            <ion-textarea name="" id="" cols="30" rows="3" readonly
+             value="{{ post.address.city }}, {{post.address.district}}, {{post.address.street}}">
+            </ion-textarea>
+        </ion-item>
         <ion-item>Date From: {{ post.dateFrom | moment:['ll'] }} </ion-item>
         <ion-item>Date to: {{ post.dateTo | moment:['ll'] }} </ion-item>
     </ion-list>

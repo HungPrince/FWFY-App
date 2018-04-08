@@ -59,16 +59,19 @@ page-register {
 			margin-bottom: 0;
 		}
     }
-    .error{
+    .error {
         color:red;
         margin: 5%;
     }
-    .age{
+    .age {
         width: 70px !important;
         float: right;
     }
-    ion-select{
+    ion-select {
         margin-right: 10px;
         max-width: 70%;
+    }
+    .pass-checkmark {
+        color: #488aff;
     }
 }

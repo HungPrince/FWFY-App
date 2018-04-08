@@ -19,17 +19,17 @@ export class PostPage {
     public listPost: Array<any> = [];
     public user: any;
     private userCurrent: any;
-    private messageNotFound = "You have not Job favorite";
+    messageNotFound = "You have not Job favorite";
     constructor(public navCtrl: NavController, public storage: Storage, public menuCtrl: MenuController, public modalCtrl: ModalController,
         public postProvider: PostProvider, public loaderService: LoaderService, private userProvider: UserProvider,
         private socialSharing: SocialSharing) {
 
         this.loaderService.loaderNoSetTime('loading ...');
 
-        this.storage.get('auth').then(uid => {
-            this.userProvider.getUserByKey(uid).then(data => {
+        this.storage.get('auth').then(user => {
+            this.userProvider.getUserByKey(user.uid).then(data => {
                 this.userCurrent = data.val();
-                this.userCurrent.uid = uid;
+                this.userCurrent.uid = user.uid;
                 this.postProvider.getAll().subscribe(posts => {
                     if (posts) {
                         posts = posts.filter(post => this.userCurrent.saves && this.userCurrent.saves[post.key]);

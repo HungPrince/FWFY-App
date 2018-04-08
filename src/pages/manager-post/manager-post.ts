@@ -14,7 +14,7 @@ import { UserProvider } from '../../providers/user/user';
 })
 
 export class ManagerPostPage {
-    private messageNotFound = "You have not post";
+    messageNotFound = "You have not post";
     public listPost: Array<any> = [];
     private listUser: Array<any> = [];
 
@@ -24,15 +24,14 @@ export class ManagerPostPage {
         this.loaderService.loaderNoSetTime('loading ...');
 
         this.userProvider.getAll().subscribe(users => {
-            console.log(users);
             this.listUser = users;
         });
 
-        this.storage.get('auth').then(uid => {
+        this.storage.get('auth').then(user => {
             this.postProvider.getAll().subscribe((posts) => {
                 posts.forEach(post => {
                     let listCv: Array<any> = [];
-                    if (post.userId == uid.toString()) {
+                    if (post.userId == user.uid.toString()) {
                         if (post.files) {
                             for (let key in post.files) {
                                 this.userProvider.getUserByKey(key).then(user => {
@@ -51,7 +50,6 @@ export class ManagerPostPage {
                 }, (error) => {
                     this.loaderService.dismisLoader();
                 });
-                console.log(this.listPost);
                 this.loaderService.dismisLoader();
             }, error => { console.log(error); this.loaderService.dismisLoader(); });
         }).catch(error => { console.log(error); this.loaderService.dismisLoader() });

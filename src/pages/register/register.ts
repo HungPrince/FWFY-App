@@ -6,14 +6,18 @@ import { CameraOptions, Camera } from '@ionic-native/camera';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { Storage } from '@ionic/storage';
-
-import { User } from './../../models/user';
-import { UntilHelper } from '../../helpers/until.helper';
-
 import firebase from 'firebase';
-import { HomePage } from '../home/home';
+
+import { CITIES, DISTRICTS, STREETS, SCHOOLS, SPECIALIZEDS, EXPERIENCES } from '../../configs/data';
+import { UntilHelper } from '../../helpers/until.helper';
+import { FormHelper } from '../../helpers/form.helper';
 import { LoaderService } from '../../services/loaderService';
-import { CITIES, DISTRICTS, STREETS } from '../../configs/data';
+import { HomePage } from '../home/home';
+import { LoginPage } from '../login/login';
+import { MyApp } from '../../app/app.component';
+import { User } from './../../models/user';
+import { UserProvider } from './../../providers/user/user';
+import { ToastService } from '../../services/toastService';
 
 @IonicPage()
 @Component({
@@ -27,60 +31,49 @@ export class RegisterPage {
     listCity = [];
     listDistrict = [];
     listStreet = [];
+    schools = SCHOOLS;
+    specializeds = SPECIALIZEDS;
+    experiences = EXPERIENCES;
     private emailRegex = "^[a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,15})$";
     private phoneRegex = "^(01[2689]|09)[0-9]{8}$"
-    private formRegisterApplicant;
-    private formRegisterRecuiter;
+    private formRegister;
     private storageFB = firebase.storage().ref();
-    constructor(public navCtrl: NavController, public actionSheetCtrl: ActionSheetController,
-        public af: AngularFireDatabase, public camera: Camera, public formBuilder: FormBuilder,
-        private untilHelper: UntilHelper, private loaderService: LoaderService, private afAuth: AngularFireAuth, private storage: Storage) {
-        this.user = new User('', '', null, '', 18, '', '', null, true, '', '', '', '');
+    constructor(public navCtrl: NavController,
+        public actionSheetCtrl: ActionSheetController,
+        public af: AngularFireDatabase,
+        public camera: Camera,
+        public formBuilder: FormBuilder,
+        private untilHelper: UntilHelper,
+        private formHelper: FormHelper,
+        private loaderService: LoaderService,
+        private afAuth: AngularFireAuth,
+        private userProvider: UserProvider,
+        private toastService: ToastService,
+        private storage: Storage) {
+        this.user = new User('applicant', '', '', null, '', 18, '', '', null, true, '', '', '');
 
         this.base64Image = "https://placehold.it/150x150";
 
-        this.formRegisterApplicant = this.formBuilder.group({
+        this.formRegister = this.formBuilder.group({
+            'role': new FormControl(this.user.role, [Validators.required]),
             'name': new FormControl(this.user.name, [Validators.required, Validators.minLength(8), Validators.maxLength(100)]),
             'userName': new FormControl(this.user.userName, [Validators.required, Validators.minLength(4), Validators.maxLength(24)]),
-            'password': new FormControl('', Validators.compose([Validators.required, Validators.minLength(6), Validators.maxLength(25),
-            ])),
-            'passwordConfirm': new FormControl('', Validators.compose([Validators.required, Validators.minLength(6), Validators.maxLength(25),
-            ])),
-            'email': new FormControl(this.user.email, Validators.compose([Validators.required, Validators.pattern(this.emailRegex)])),
-            'age': new FormControl(this.user.age),
-            'gender': new FormControl(this.user.gender),
-            'description': new FormControl(this.user.description),
-            'experience': new FormControl(this.user.experience),
-            'school': new FormControl(this.user.school),
-            'speciality': new FormControl(this.user.speciality),
-            'avatar_url': new FormControl(this.base64Image),
-            'file_url': new FormControl(this.user.avatar_url),
-            'city': new FormControl('', [Validators.required]),
-            'street': new FormControl('', [Validators.required]),
-            'district': new FormControl('', [Validators.required]),
-            'landAlleyBuilding': new FormControl('', [Validators.required]),
-            'phone1': new FormControl(this.user.phone, [Validators.required, Validators.pattern(this.phoneRegex)]),
-            'phone2': new FormControl(this.user.phone, [Validators.pattern(this.phoneRegex)]),
-            'checked': new FormControl({ value: true, disabled: true }),
-        });
-
-        this.formRegisterRecuiter = this.formBuilder.group({
-            'name': new FormControl(this.user.name, [Validators.required, Validators.minLength(8), Validators.maxLength(100)]),
-            'userName': new FormControl(this.user.name, [Validators.required, Validators.minLength(4), Validators.maxLength(24)]),
-            'email': new FormControl(this.user.email, Validators.compose([Validators.required, Validators.pattern(this.emailRegex)])),
-            'password': new FormControl('', Validators.compose([Validators.required, Validators.minLength(6), Validators.maxLength(25),
-            ])),
-            'passwordConfirm': new FormControl('', Validators.compose([Validators.required, Validators.minLength(6), Validators.maxLength(25),
-            ])),
             'companyName': new FormControl('', [Validators.required, Validators.minLength(4), Validators.maxLength(24)]),
-            'phone1': new FormControl(this.user.phone, [Validators.required, Validators.pattern(this.phoneRegex)]),
-            'phone2': new FormControl(this.user.phone, [Validators.pattern(this.phoneRegex)]),
+            'email': new FormControl(this.user.email, Validators.compose([Validators.required, Validators.pattern(this.emailRegex)])),
+            'password': new FormControl('', Validators.compose([Validators.required, Validators.minLength(6), Validators.maxLength(50),
+            ])),
+            'passwordConfirm': new FormControl('', Validators.compose([Validators.required, Validators.minLength(6), Validators.maxLength(50),
+            ])),
+            'phone': new FormControl(this.user.phone, [Validators.required, Validators.pattern(this.phoneRegex)]),
             'city': new FormControl('', [Validators.required]),
             'street': new FormControl('', [Validators.required]),
             'district': new FormControl('', [Validators.required]),
-            'landAlleyBuilding': new FormControl('', [Validators.required]),
+            'location': new FormControl('', [Validators.required]),
             'description': new FormControl(''),
-            'avatar_url': new FormControl(this.base64Image)
+            'avatar_url': new FormControl(this.base64Image),
+            'school': new FormControl(),
+            'specialized': new FormControl(),
+            'experience': new FormControl(),
         })
     }
 
@@ -90,50 +83,6 @@ export class RegisterPage {
                 this.listCity.push(element[key]);
             }
         });
-    }
-
-    doRegisterApplicant() {
-        this.loaderService.loaderNoSetTime('loading');
-        this.user.userName = this.untilHelper.niceString(this.formRegisterApplicant.value.username);
-        this.user.email = this.untilHelper.niceString(this.formRegisterApplicant.value.email);
-        this.user.name = this.untilHelper.niceString(this.formRegisterApplicant.value.name);
-        this.user.school = this.untilHelper.niceString(this.formRegisterApplicant.value.school);
-        this.user.age = this.formRegisterApplicant.value.age;
-        this.user.phone = {
-            "phone1": this.formRegisterApplicant.value.phone1,
-            "phone2": this.formRegisterApplicant.value.phone2,
-        };
-        this.user.gender = this.formRegisterApplicant.value.gender;
-        this.user.address = {
-            'city': this.formRegisterApplicant.value.city,
-            'street': this.formRegisterApplicant.value.street,
-            'district': this.formRegisterApplicant.value.district,
-            'landAlleyBuilding': this.untilHelper.niceString(this.formRegisterApplicant.value.landAlleyBuilding)
-        }
-        this.user.speciality = this.formRegisterApplicant.value.speciality;
-        this.user.role = 'applicant';
-        this.user.description = this.untilHelper.niceString(this.formRegisterApplicant.value.description.trim());
-        this.register(this.user, this.formRegisterApplicant.value.password);
-    }
-
-    doRegisterRecuiter() {
-        this.loaderService.loaderNoSetTime('loading');
-        this.user.userName = this.untilHelper.niceString(this.formRegisterRecuiter.value.username);
-        this.user.email = this.untilHelper.niceString(this.formRegisterRecuiter.value.email);
-        this.user.name = this.untilHelper.niceString(this.formRegisterRecuiter.value.name);
-        this.user.phone = {
-            "phone1": this.formRegisterRecuiter.value.phone1,
-            "phone2": this.formRegisterRecuiter.value.phone2,
-        };
-        this.user.address = {
-            'city': this.formRegisterRecuiter.value.city,
-            'street': this.formRegisterRecuiter.value.street,
-            'district': this.formRegisterRecuiter.value.district,
-            'landAlleyBuilding': this.untilHelper.niceString(this.formRegisterRecuiter.value.landAlleyBuilding)
-        }
-        this.user.role = 'applicant';
-        this.user.description = this.untilHelper.niceString(this.formRegisterRecuiter.value.description.trim());
-        this.register(this.user, this.formRegisterRecuiter.value.password);
     }
 
     changeCity(city) {
@@ -164,19 +113,67 @@ export class RegisterPage {
         });
     }
 
-    register(user: User, password: string) {
-        this.afAuth.auth.createUserWithEmailAndPassword(user.email, password).then((auth) => {
-            return this.af.database.ref('users').child(auth.uid).set(this.user, (error) => {
-                if (!error) {
-                    this.storage.set('auth', auth.uid);
-                    this.navCtrl.setRoot(HomePage);
-                    this.loaderService.dismisLoader();
-                } else {
+    isError(inputName) {
+        return this.formHelper.isError(this.formRegister, inputName);
+    }
+
+    isErrorRequired(inputName) {
+        return this.formHelper.isErrorRequired(this.formRegister, inputName);
+    }
+
+    isErrorMinLength(inputName) {
+        return this.formHelper.isErrorMinLength(this.formRegister, inputName);
+    }
+
+    isErrorMaxLength(inputName) {
+        return this.formHelper.isErrorMaxLength(this.formRegister, inputName);
+    }
+
+    isErrorPattern(inputName) {
+        return this.formHelper.isErrorPattern(this.formRegister, inputName);
+    }
+
+    checkConfirmPassword() {
+        return this.formRegister.controls['passwordConfirm'].value && (this.formRegister.controls['passwordConfirm'].value === this.formRegister.controls['password'].value) && !this.isError('passwordConfirm') && !this.isError('password');
+    }
+
+    goBack() {
+        this.navCtrl.push(LoginPage);
+    }
+
+    doRegister() {
+        this.loaderService.loaderNoSetTime('loading');
+        this.user.address = {};
+
+        let user = this.formRegister.value;
+        for (let key in user) {
+            if (key == 'city' || key == 'district' || key == 'street' || key == 'location') {
+                this.user.address[key] = user[key];
+                if (key == 'city') {
+                    this.user.city = user[key];
+                }
+            } else {
+                this.user[key] = this.untilHelper.niceString(user[key]);
+            }
+        }
+
+        this.userProvider.register(this.user.email, this.formRegister.value.password).then(auth => {
+            if (auth.uid) {
+                this.user.uid = auth.uid;
+                this.userProvider.create(this.user).then(data => {
+                    this.storage.set('auth', this.user);
+                    this.loaderService.dismisLoader().then(data => {
+                        this.toastService.toast('Create account successfully!', 500, 'bottom', false);
+                        this.navCtrl.setRoot(MyApp);
+                    });
+                }).catch(error => {
                     this.loaderService.dismisLoader();
                     console.log(error);
-                }
-            }).catch((e) => console.log(e));
-        }).catch((e) => console.log(e));
+                });
+            } else {
+                this.loaderService.dismisLoader();
+            }
+        }).catch(error => { console.log(error); this.loaderService.dismisLoader(); })
     }
 
     chooseAvatar() {

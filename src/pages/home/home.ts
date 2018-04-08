@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
+import { Content } from 'ionic-angular';
 import { NavController, MenuController, ModalOptions, Modal, ModalController, ActionSheetController } from 'ionic-angular';
 
 import { Storage } from '@ionic/storage';
@@ -10,32 +11,42 @@ import { LoginPage } from '../login/login';
 import { PostAddPage } from '../post/post-add/post-add';
 import { DetailUserPage } from '../user/detail-user/detail-user';
 import { DetailPostPage } from '../post/detail-post/detail-post';
+import { CITIES, TYPES, LEVELS } from '../../configs/data';
 
 import { LoaderService } from '../../services/loaderService';
+
 
 @Component({
     selector: 'page-home',
     templateUrl: 'home.html'
 })
 export class HomePage {
-    public listPost: Array<any> = [];
-    public listSearch: any;
-    public user: any;
+    private listPost: Array<any> = [];
+    private listSearch: any;
+    private user: any;
     private userCurrent: any;
-    selectedFiles: FileList;
-    file: File;
-
+    private listCity: any = [];
+    types = TYPES;
+    levels = LEVELS;
+    private textShowHideAdvanced = "Show";
+    private searchAdvandced = false;
+    @ViewChild(Content) content: Content;
     constructor(public navCtrl: NavController, public storage: Storage, public menuCtrl: MenuController, public modalCtrl: ModalController,
         private actionSheetCtrl: ActionSheetController,
         public postProvider: PostProvider, public loaderService: LoaderService, private userProvider: UserProvider,
         private socialSharing: SocialSharing) {
+        CITIES.forEach(element => {
+            for (let key in element) {
+                this.listCity.push(element[key]);
+            }
+        });
 
         this.loaderService.loaderNoSetTime('loading ...');
-        this.storage.get('auth').then(uid => {
-            this.userProvider.getUserByKey(uid).then(data => {
+        this.storage.get('auth').then(user => {
+            this.userProvider.getUserByKey(user.uid).then(data => {
                 if (data.val()) {
                     this.userCurrent = data.val();
-                    this.userCurrent.uid = uid;
+                    this.userCurrent.uid = user.uid;
                     this.postProvider.getAll().subscribe((posts) => {
                         this.listPost = [];
                         posts.forEach(post => {
@@ -43,17 +54,20 @@ export class HomePage {
                                 if (data.val()) {
                                     this.listPost.push({
                                         post: post,
-                                        user: data.val()
+                                        user: data.val(),
+                                        ownPost: user.uid == post.userId ? true : false
                                     });
                                 }
                             }).catch(error => { console.log(error); this.loaderService.dismisLoader(); });
                         }, (error) => {
                             this.loaderService.dismisLoader();
                         });
+                        this.listSearch = this.listPost;
+                        this.loaderService.dismisLoader();
+                    }, (error) => {
+                        this.loaderService.dismisLoader();
                     });
-                    this.listSearch = this.listPost;
                 }
-                this.loaderService.dismisLoader();
             }).catch(error => { this.loaderService.dismisLoader(); });
         }).catch(error => { this.loaderService.dismisLoader(); console.log(error) });
     }
@@ -62,13 +76,45 @@ export class HomePage {
         this.menuCtrl.enable(true);
     }
 
-    doInfinite(infinititeScroll) {
-
+    showSearchAdvanced() {
+        this.content.scrollToTop();
+        if (this.searchAdvandced) {
+            this.textShowHideAdvanced = "Show";
+        } else {
+            this.textShowHideAdvanced = "Hide";
+        }
+        this.searchAdvandced = !this.searchAdvandced;
     }
 
-    public logout() {
+    logout() {
         this.storage.set('auth', null);
         this.navCtrl.push(LoginPage);
+    }
+
+    searchByCity(city) {
+        this.searchPost(city);
+    }
+
+    searchByLevel(level) {
+        this.searchPost(level);
+    }
+
+    searchByType(type) {
+        this.searchPost(type);
+    }
+
+    getListPost(event) {
+        let search = event.target.value ? event.target.value.toLowerCase() : "";
+        this.searchPost(search);
+    }
+
+    searchPost(search: string) {
+        let lstPost = [];
+        if (search) {
+            lstPost = this.listSearch.filter(post => (post.post.title.toLowerCase().indexOf(search) > -1)
+                || post.post.city == search || post.type == search || post.level == search);
+        }
+        this.listPost = (lstPost.length > 0) ? lstPost : this.listSearch;
     }
 
     openModalAdd() {
@@ -97,15 +143,6 @@ export class HomePage {
 
     closeModal() {
         return true;
-    }
-
-    getListPost(event) {
-        let search = event.target.value.toLowerCase();
-        if (search) {
-            this.listPost = this.listSearch.filter(post => post.post.title.toLowerCase().indexOf(search) > -1);
-        } else {
-            this.listPost = this.listSearch;
-        }
     }
 
     sharePost(post) {

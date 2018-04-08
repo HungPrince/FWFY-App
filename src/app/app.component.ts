@@ -3,7 +3,6 @@ import { Nav, Platform, ModalOptions, Modal, ModalController } from 'ionic-angul
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { AngularFireDatabase } from 'angularfire2/database';
-
 import { Storage } from '@ionic/storage';
 
 import { UserProvider } from '../providers/user/user';
@@ -22,28 +21,39 @@ export class MyApp {
     @ViewChild(Nav) nav: Nav;
 
     rootPage: any = LoginPage;
-    public user: any;
+    private user: any;
 
     pages: Array<{ title: string, component: any }>;
 
-    constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen,
-        public af: AngularFireDatabase, private storage: Storage, private userProvider: UserProvider,
+    constructor(public platform: Platform,
+        public statusBar: StatusBar,
+        public splashScreen: SplashScreen,
+        public af: AngularFireDatabase,
+        private userProvider: UserProvider,
+        private storage: Storage,
         public modalCtrl: ModalController) {
         this.initializeApp();
 
-        this.storage.get('auth').then(uid => {
-            if (uid) {
+        this.storage.get('auth').then(user => {
+            if (user) {
+                this.user = user;
                 this.rootPage = TabsPage;
-                this.userProvider.getUserByKey(uid).then(user => { this.user = user.val(); this.user.id = uid; });
-            }
-        }).catch(e => console.log(e));
-
-        this.pages = [
-            { title: 'Home', component: TabsPage },
-            { title: 'List Favorite Jobs', component: PostPage },
-            { title: 'List Applicant', component: UserPage },
-            { title: 'Manager Your Post', component: ManagerPostPage }
-        ];
+                if (user.role == 'admin' || user.role == 'recuiter') {
+                    this.pages = [
+                        { title: 'Home', component: TabsPage },
+                        { title: 'List Favorite Jobs', component: PostPage },
+                        { title: 'List Applicant', component: UserPage },
+                        { title: 'Manager Your Post', component: ManagerPostPage }
+                    ];
+                } else {
+                    this.pages = [
+                        { title: 'Home', component: TabsPage },
+                        { title: 'List Favorite Jobs', component: PostPage },
+                        { title: 'List Applicant', component: UserPage },
+                    ];
+                }
+            };
+        });
 
     }
 

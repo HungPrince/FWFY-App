@@ -10,18 +10,18 @@
                 </button>
             </ion-buttons>
         </ion-navbar>
-    
+
         <ion-toolbar>
             <ion-searchbar (ionInput)="getListPost($event)" autocorrect="off"></ion-searchbar>
         </ion-toolbar>
     </ion-header>
-    
+
     <ion-content padding>
-        <p *ngIf="!listPost" class="message-not-found" color="primary"><span>{{ messageNotFound }}</span></p>
-    
+        <p *ngIf="!listPost.length || listPost.length == 0" class="message-not-found" color="primary"><span>{{ messageNotFound }}</span></p>
+
         <ion-card *ngFor="let post of listPost">
             <img src="{{ post.post.logoUrl }}">
-    
+
             <ion-card-content>
                 <h2><ion-icon color="primary" ios="ios-archive" md="md-archive"></ion-icon>  {{ post.post.title }}</h2><br/>
                 <p><ion-icon color="primary" name="md-calendar"></ion-icon>  {{ post.post.dateFrom | moment:['ll'] }} - {{ post.post.dateTo | moment:['ll'] }}</p><br/>
@@ -33,13 +33,13 @@
                         {{ cv.user.name }}
                     </ion-col>
                     <ion-col col-6>
-                      <a href=" {{ cv.linkCv }">Open cv</a>
+                      <a href="{{ cv.linkCv }}">Open cv</a>
                     </ion-col>
                 </ion-row>
                 <ion-row>
                     <ion-col center text-center>
                         <ion-note>
-                            {{ post.post.createdAt | timeAgo }}
+                            {{ post.post.updatedAt ? (post.post.updatedAt  | timeAgo ) : post.post.createdAt  | timeAgo }}
                         </ion-note>
                     </ion-col>
                 </ion-row>
@@ -50,7 +50,7 @@
                 </ion-row>
             </ion-grid>
         </ion-card>
-    
+
         <button color="danger" mini ion-fab="" class="fab fab-ios fab-ios-danger" id="add-post" (click)="openModalAdd()">
             <ion-icon class="fab-close-icon icon icon-ios ion-ios-close" name="close" role="img" aria-label="close"></ion-icon>
             <span class="button-inner" >
@@ -59,6 +59,6 @@
             <div class="button-effect">
             </div>
         </button>
-    
+
     </ion-content>
     >

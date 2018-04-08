@@ -17,7 +17,7 @@
 </ion-header>
 
 <ion-content padding>
-    <p *ngIf="!listpost" class="message-not-found" color="primary"><span>{{ messageNotFound }}</span></p>
+    <p *ngIf="!listPost || listPost.length == 0" class="message-not-found" color="primary"><span>{{ messageNotFound }}</span></p>
 
     <ion-card *ngFor="let post of listPost">
 
@@ -61,7 +61,7 @@
             <ion-row>
                 <ion-col center text-center>
                     <ion-note>
-                        {{post.post.createdAt | timeAgo}}
+                        {{ post.post.updatedAt ? (post.post.updatedAt  | timeAgo ) : post.post.createdAt  | timeAgo }}
                     </ion-note>
                 </ion-col>
             </ion-row>

@@ -12,8 +12,10 @@ import { ToastService } from '../../services/toastService';
 
 import { UntilHelper } from '../../helpers/until.helper';
 import { HomePage } from '../home/home';
+import { MyApp } from '../../app/app.component'
 
 import { RegisterPage } from './../register/register';
+import { UserProvider } from '../../providers/user/user';
 @IonicPage()
 @Component({
     selector: 'page-login',
@@ -26,9 +28,16 @@ export class LoginPage {
     private googleProvider = new firebase.auth.GoogleAuthProvider();
     private facebookProvider = new firebase.auth.FacebookAuthProvider();
 
-    constructor(public navCtrl: NavController, public menuCtrl: MenuController, public alerCtrl: AlertController,
-        public loaderService: LoaderService, public toastService: ToastService,
-        private afAuth: AngularFireAuth, private af: AngularFireDatabase, private storage: Storage, public formBuilder: FormBuilder,
+    constructor(public navCtrl: NavController,
+        public menuCtrl: MenuController,
+        public alerCtrl: AlertController,
+        public loaderService: LoaderService,
+        public toastService: ToastService,
+        private afAuth: AngularFireAuth,
+        private af: AngularFireDatabase,
+        private storage: Storage,
+        public formBuilder: FormBuilder,
+        private userProvider: UserProvider,
         private untilHelpr: UntilHelper) {
 
         this.storage.get('accountUser').then(user => {
@@ -74,8 +83,13 @@ export class LoginPage {
             } else {
                 this.storage.set('accountUser', null);
             }
-            this.storage.set('auth', result.uid);
-            this.navCtrl.setRoot(HomePage);
+            this.userProvider.getUserByKey(result.uid).then(user => {
+                let userI = user.val();
+                userI.uid = result.uid;
+                this.storage.set('auth', userI).then(data => {
+                    this.navCtrl.setRoot(MyApp);
+                });
+            });
         }).catch(e => { this.toastService.toast(e.message, 1000, 'middle', false) });
     }
 

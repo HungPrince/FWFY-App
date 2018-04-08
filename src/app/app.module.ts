@@ -12,6 +12,7 @@ import { AutoCompleteModule } from 'ionic2-auto-complete';
 import { IonTagsInputModule } from "ionic-tags-input";
 import { TagInputModule } from 'ngx-chips';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { TooltipsModule } from 'ionic-tooltips';
 
 import { PipesModule } from '../pipes/pipes.module';
 
@@ -43,11 +44,13 @@ import { UserEditPage } from '../pages/user/user-edit/user-edit';
 import { ManagerPostPage } from '../pages/manager-post/manager-post';
 import { DetailPostPage } from '../pages/post/detail-post/detail-post';
 
+import { UntilHelper } from '../helpers/until.helper';
+import { FormHelper } from '../helpers/form.helper';
+
 import { PostProvider } from '../providers/post/post';
 import { LoaderService } from '../services/loaderService';
 import { ToastService } from '../services/toastService';
 import { UserProvider } from '../providers/user/user';
-import { UntilHelper } from '../helpers/until.helper';
 import { DataProvider } from '../providers/data/data';
 
 @NgModule({
@@ -72,6 +75,7 @@ import { DataProvider } from '../providers/data/data';
         BrowserModule,
         IonicModule.forRoot(MyApp),
         FormsModule,
+        TooltipsModule,
         AngularFireModule.initializeApp(FIREBASE_CONFIG),
         AngularFireDatabaseModule,
         AngularFireStorageModule,
@@ -115,10 +119,11 @@ import { DataProvider } from '../providers/data/data';
         AngularFireAuth,
         SocialSharing,
 
+        UntilHelper,
+        FormHelper,
         PostProvider,
         LoaderService,
         ToastService,
-        UntilHelper,
         UserProvider,
         DataProvider
     ]
