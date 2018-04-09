@@ -4,6 +4,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { Storage } from '@ionic/storage';
+import { UniqueDeviceID } from '@ionic-native/unique-device-id';
 
 import { UserProvider } from '../providers/user/user';
 
@@ -31,6 +32,7 @@ export class MyApp {
         public af: AngularFireDatabase,
         private userProvider: UserProvider,
         private storage: Storage,
+        private uniqueDeviceID: UniqueDeviceID,
         public modalCtrl: ModalController) {
         this.initializeApp();
 
@@ -59,7 +61,15 @@ export class MyApp {
 
     initializeApp() {
         this.platform.ready().then(() => {
-
+            this.uniqueDeviceID.get()
+                .then((uuid: any) => {
+                    console.log(uuid);
+                    this.user.pushToken = uuid;
+                    this.userProvider.update(this.user).then(data => {
+                        console.log(data);
+                    })
+                })
+                .catch((error: any) => console.log(error));
             this.statusBar.styleDefault();
             this.splashScreen.hide();
         });

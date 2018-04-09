@@ -13,6 +13,7 @@ import { IonTagsInputModule } from "ionic-tags-input";
 import { TagInputModule } from 'ngx-chips';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TooltipsModule } from 'ionic-tooltips';
+import { UniqueDeviceID } from '@ionic-native/unique-device-id';
 
 import { PipesModule } from '../pipes/pipes.module';
 
@@ -86,7 +87,7 @@ import { DataProvider } from '../providers/data/data';
         IonTagsInputModule,
         TagInputModule,
         BrowserAnimationsModule,
-        PipesModule
+        PipesModule,
     ],
     bootstrap: [IonicApp],
     entryComponents: [
@@ -125,7 +126,8 @@ import { DataProvider } from '../providers/data/data';
         LoaderService,
         ToastService,
         UserProvider,
-        DataProvider
+        DataProvider,
+        UniqueDeviceID
     ]
 })
 export class AppModule { }
