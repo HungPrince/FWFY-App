@@ -42,37 +42,41 @@ export class HomePage {
 
         this.loaderService.loaderNoSetTime('loading ...');
         this.storage.get('auth').then(user => {
-            if (user.uid) {
-                this.userProvider.getUserByKey(user.uid).then(data => {
-                    if (data.val()) {
-                        this.userCurrent = data.val();
-                        this.userCurrent.uid = user.uid;
-                        this.postProvider.getAll().subscribe((posts) => {
-                            this.listPost = [];
-                            posts.forEach(post => {
-                                this.userProvider.getUserByKey(post.userId).then(data => {
-                                    if (data.val()) {
-                                        this.listPost.push({
-                                            post: post,
-                                            user: data.val(),
-                                            ownPost: user.uid == post.userId ? true : false
-                                        });
-                                    }
-                                }).catch(error => { console.log(error); this.loaderService.dismisLoader(); });
-                            }, (error) => {
-                                this.loaderService.dismisLoader();
-                            });
-                            this.listSearch = this.listPost;
-                            this.loaderService.dismisLoader();
-                        }, (error) => {
-                            this.loaderService.dismisLoader();
+            if (user) {
+                this.userCurrent = user;
+                this.postProvider.getAll().subscribe((posts) => {
+                    this.listPost = [];
+                    posts.forEach(post => {
+                        this.userProvider.getUserByKey(post.userId).then(data => {
+                            if (data.val()) {
+                                this.listPost.push({
+                                    post: post,
+                                    user: data.val(),
+                                    ownPost: user.uid == post.userId ? true : false
+                                });
+                            }
+                        }).catch(error => {
+                            this.showError(error);
                         });
-                    }
-                }).catch(error => { this.loaderService.dismisLoader(); });
-            } else {
-                this.loaderService.dismisLoader();
+                    }, (error) => {
+                        this.showError(error);
+                    });
+                    this.listSearch = this.listPost;
+                    this.loaderService.dismisLoader().then(data => {
+                    }).catch(error => console.log(error));
+                }, (error) => {
+                    this.showError(error);
+                });
             }
-        }).catch(error => { this.loaderService.dismisLoader(); console.log(error) });
+        }).catch(error => {
+            this.showError(error);
+        });
+    }
+
+    showError(error) {
+        console.log(error);
+        this.loaderService.dismisLoader().then(data => {
+        }).catch(error => console.log(error));
     }
 
     ionViewWillEnter() {
