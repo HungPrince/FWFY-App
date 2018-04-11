@@ -44,6 +44,7 @@ import { PostAddPage } from '../pages/post/post-add/post-add';
 import { UserEditPage } from '../pages/user/user-edit/user-edit';
 import { ManagerPostPage } from '../pages/manager-post/manager-post';
 import { DetailPostPage } from '../pages/post/detail-post/detail-post';
+import { UpgradePage } from '../pages/upgrade/upgrade';
 
 import { UntilHelper } from '../helpers/until.helper';
 import { FormHelper } from '../helpers/form.helper';
@@ -70,7 +71,8 @@ import { DataProvider } from '../providers/data/data';
         PostAddPage,
         UserEditPage,
         ManagerPostPage,
-        DetailPostPage
+        DetailPostPage,
+        UpgradePage
     ],
     imports: [
         BrowserModule,
@@ -105,7 +107,8 @@ import { DataProvider } from '../providers/data/data';
         PostAddPage,
         UserEditPage,
         ManagerPostPage,
-        DetailPostPage
+        DetailPostPage,
+        UpgradePage
     ],
     providers: [
         StatusBar,

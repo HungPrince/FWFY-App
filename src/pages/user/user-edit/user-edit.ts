@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController, ActionSheetController } from 'ionic-angular';
 import { Validators, FormControl, FormBuilder } from '@angular/forms';
 import { CameraOptions, Camera } from '@ionic-native/camera';
+import { Storage } from '@ionic/storage';
 
 import { LoaderService } from '../../../services/loaderService';
 import { ToastService } from '../../../services/toastService';
@@ -43,7 +44,8 @@ export class UserEditPage {
         private loaderService: LoaderService,
         private actionSheetCtrl: ActionSheetController,
         private untilHelper: UntilHelper,
-        private formHelper: FormHelper) {
+        private formHelper: FormHelper,
+        private storage: Storage) {
         this.user = this.navParams.get('user');
 
         CITIES.forEach(element => {
@@ -166,6 +168,7 @@ export class UserEditPage {
             if (!error) {
                 this.loaderService.dismisLoader().then(data => {
                     this.goBack();
+                    this.storage.set('auth', this.user);
                     this.toastService.toast('Save profile successfully !', 1000, 'bottom', false);
                 }).catch(error => console.log(error));
             }

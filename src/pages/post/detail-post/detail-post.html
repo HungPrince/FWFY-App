@@ -7,7 +7,7 @@
                     </button>
                 </ion-buttons>
                 <ion-title>Detail Post</ion-title>
-                <ion-buttons right>
+                <ion-buttons right *ngIf="userCurrent &&  (userCurrent.role == 'recuiter' || userCurrent.role == 'admin')">
                     <button ion-button (click)="edit()">
                         <ion-icon name="md-create"></ion-icon>
                     </button>

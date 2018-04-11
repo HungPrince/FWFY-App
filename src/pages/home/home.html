@@ -43,7 +43,7 @@
                 <img (click)="viewDetailUserPost(post.user)" src="{{ post.user.avatar_url }}">
             </ion-avatar>
             <h2>{{ post.user.name }}</h2>
-            <p>{{ post.user.age }}, {{ post.user.gender }}</p>
+            <p>{{ post.user.age }}, {{ post.user.gender ? "Male": "Female" }}</p>
             <ion-fab *ngIf="post.ownPost" top right edge fab-fixed class="more-action-post" (click)="openModalEdit(post.post)">
                 <button ion-fab mini><ion-icon name="create"></ion-icon></button>
             </ion-fab>

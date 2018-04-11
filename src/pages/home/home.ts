@@ -45,15 +45,29 @@ export class HomePage {
             if (user) {
                 this.userCurrent = user;
                 this.postProvider.getAll().subscribe((posts) => {
+                    let listPostFree = [];
                     this.listPost = [];
+                    let count = 0;
                     posts.forEach(post => {
                         this.userProvider.getUserByKey(post.userId).then(data => {
-                            if (data.val()) {
-                                this.listPost.push({
-                                    post: post,
-                                    user: data.val(),
-                                    ownPost: user.uid == post.userId ? true : false
-                                });
+                            data = data.val();
+                            let postI = {
+                                post: post,
+                                user: data,
+                                ownPost: user.uid == post.userId ? true : false
+                            }
+                            if (data['typeAccount'] == 'enterprise') {
+                                this.listPost.unshift(postI);
+                            } else if (data['typeAccount'] == 'standard') {
+                                this.listPost.push(postI);
+                            } else {
+                                listPostFree.push(postI);
+                            }
+                            count++;
+                            if (count == posts.length) {
+                                this.listPost = this.listPost.concat(listPostFree);
+                                console.log(this.listPost);
+                                this.listSearch = this.listPost;
                             }
                         }).catch(error => {
                             this.showError(error);
@@ -61,8 +75,8 @@ export class HomePage {
                     }, (error) => {
                         this.showError(error);
                     });
-                    this.listSearch = this.listPost;
                     this.loaderService.dismisLoader().then(data => {
+                        console.log(data);
                     }).catch(error => console.log(error));
                 }, (error) => {
                     this.showError(error);
@@ -110,7 +124,7 @@ export class HomePage {
             lstPost = this.listSearch.filter(post => (post.post.title.toLowerCase().indexOf(search) > -1)
                 || post.post.city == search || post.post.type == search || post.post.level == search);
         }
-        this.listPost = (lstPost.length > 0) ? lstPost : this.listSearch;
+        this.listPost = lstPost.length > 0 ? lstPost : this.listSearch;
     }
 
     openModalAdd() {

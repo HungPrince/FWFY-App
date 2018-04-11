@@ -14,6 +14,7 @@ import { UserPage } from '../pages/user/user';
 import { PostPage } from '../pages/post/post';
 import { UserEditPage } from '../pages/user/user-edit/user-edit';
 import { ManagerPostPage } from '../pages/manager-post/manager-post';
+import { UpgradePage } from '../pages/upgrade/upgrade';
 
 @Component({
     templateUrl: 'app.html'
@@ -83,13 +84,13 @@ export class MyApp {
                 { title: 'Home', component: TabsPage },
                 { title: 'List Favorite Jobs', component: PostPage },
                 { title: 'List Applicant', component: UserPage },
-                { title: 'Manager Your Post', component: ManagerPostPage }
+                { title: 'Manager Your Post', component: ManagerPostPage },
+                { title: 'Upgrade', component: UpgradePage },
             ];
         } else {
             this.pages = [
                 { title: 'Home', component: TabsPage },
                 { title: 'List Favorite Jobs', component: PostPage },
-                { title: 'List Applicant', component: UserPage },
             ];
         }
     }
