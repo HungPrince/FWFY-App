@@ -69,6 +69,7 @@ export class RegisterPage {
             'specialized': new FormControl(),
             'experience': new FormControl(),
             'age': new FormControl(),
+            'gender': new FormControl(),
         });
     }
 

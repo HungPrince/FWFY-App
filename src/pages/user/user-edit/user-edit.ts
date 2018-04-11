@@ -9,6 +9,8 @@ import { ToastService } from '../../../services/toastService';
 import { UserProvider } from '../../../providers/user/user';
 import { FormHelper } from '../../../helpers/form.helper';
 import { CITIES, DISTRICTS, STREETS, SCHOOLS, SPECIALIZEDS, EXPERIENCES } from '../../../configs/data';
+import { UntilHelper } from './../../../helpers/until.helper';
+
 
 import firebase from 'firebase';
 
@@ -40,6 +42,7 @@ export class UserEditPage {
         private toastService: ToastService,
         private loaderService: LoaderService,
         private actionSheetCtrl: ActionSheetController,
+        private untilHelper: UntilHelper,
         private formHelper: FormHelper) {
         this.user = this.navParams.get('user');
 
@@ -61,7 +64,8 @@ export class UserEditPage {
         });
 
         this.formEditUser = this.formBuilder.group({
-            'role': new FormControl({ value: this.user.role, 'disabled': true }, [Validators.required]),
+            'uid': new FormControl(this.user.uid),
+            'role': new FormControl({ value: this.user.role, 'disabled': true }),
             'name': new FormControl(this.user.name, [Validators.required, Validators.minLength(8), Validators.maxLength(100)]),
             'userName': new FormControl(this.user.userName, [Validators.required, Validators.minLength(4), Validators.maxLength(24)]),
             'companyName': new FormControl(this.user.companyName, [Validators.required, Validators.minLength(4), Validators.maxLength(24)]),
@@ -147,9 +151,18 @@ export class UserEditPage {
 
     save() {
         this.loaderService.loaderNoSetTime("saving profile ...");
-        let usr = this.formEditUser.value();
-        usr.id = this.user.id;
-        this.userProvider.update(usr).then(error => {
+        let user = this.formEditUser.value;
+        for (let key in user) {
+            if (key == 'city' || key == 'district' || key == 'street' || key == 'location') {
+                this.user.address[key] = user[key];
+                if (key == 'city') {
+                    this.user.city = user[key];
+                }
+            } else {
+                this.user[key] = this.untilHelper.niceString(user[key]);
+            }
+        }
+        this.userProvider.update(user).then(error => {
             if (!error) {
                 this.loaderService.dismisLoader().then(data => {
                     this.goBack();

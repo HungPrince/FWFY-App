@@ -21,7 +21,7 @@
     <form (ngSubmit)="save()" [formGroup]="formEditUser" novalidate>
         <ion-list>
             <ion-item>
-                <ion-label>Role:</ion-label>
+                <ion-label>Choose Role</ion-label>
                 <ion-select formControlName="role" name="role">
                     <ion-option value="applicant">Applicant</ion-option>
                     <ion-option value="recuiter">Recuiter</ion-option>
@@ -101,6 +101,18 @@
                 </div>
             </div>
 
+            <ion-item>
+                <ion-label>Male</ion-label>
+                <ion-toggle formControlName="gender" name="gender"></ion-toggle>
+            </ion-item>
+
+            <ion-item class="input-text">
+                <ion-label>
+                   Age
+                </ion-label>
+                <ion-input formControlName="age" name="age" type="number" ></ion-input>
+            </ion-item>
+
             <div *ngIf="formEditUser.controls['role'].value == 'applicant'">
                 <ion-item>
                     <ion-label>School</ion-label>
@@ -178,7 +190,7 @@
             </ion-item>
 
             <div padding>
-                <button [disabled]="formEditUser.invalid" ion-button color="primary" block>Register</button>
+                <button [disabled]="formEditUser.invalid" ion-button color="primary" block>Update</button>
             </div>
 
         </ion-list>
