@@ -7,7 +7,7 @@
     </ion-navbar>
     <ion-toolbar>
         <ion-searchbar  (ionInput)="getListUser($event)" autocorrect="off"></ion-searchbar>
-        <button class="btn-search-advanced" positionV ="bottom" duration = '500' ion-button small tooltip="{{textShowHideAdvanced}} search advanced" (click)="showSearchAdvanced()">{{ textShowHideAdvanced }}</button>
+        <button class="btn-search-advanced" positionV ="bottom" duration = '500' ion-button tooltip="{{textShowHideAdvanced}} search advanced" (click)="showSearchAdvanced()">{{ textShowHideAdvanced }}</button>
     </ion-toolbar>
 </ion-header>
 
@@ -16,37 +16,37 @@
             <ion-item>
                 <ion-label>City</ion-label>
                 <ion-select [(ngModel)]="city" name="city">
-                    <ion-option *ngFor="let city of listCity" (ionSelect)="searchByCity(city.name_with_type)" value="{{city.name_with_type}}">{{city.name_with_type}}</ion-option>
+                    <ion-option *ngFor="let city of listCity" (ionSelect)="searchUser(city.name_with_type)" value="{{city.name_with_type}}">{{city.name_with_type}}</ion-option>
                 </ion-select>
             </ion-item>
             <ion-item>
                 <ion-label>Employment Type</ion-label>
                 <ion-select [(ngModel)]="type" name="type">
-                    <ion-option  *ngFor="let type of types" value="{{ type }}" (ionSelect)="searchByType(type)">{{ type }}</ion-option>
+                    <ion-option  *ngFor="let type of types" value="{{ type }}" (ionSelect)="searchUser(type)">{{ type }}</ion-option>
                 </ion-select>
             </ion-item>
             <ion-item>
                 <ion-label>Seniority level</ion-label>
                 <ion-select [(ngModel)]="level" name="level">
-                    <ion-option *ngFor="let level of levels" value="{{ level }}" (ionSelect)="searchByLevel(level)">{{ level }}</ion-option>
+                    <ion-option *ngFor="let level of levels" value="{{ level }}" (ionSelect)="searchUser(level)">{{ level }}</ion-option>
                 </ion-select>
             </ion-item>
             <ion-item>
                 <ion-label>School</ion-label>
                 <ion-select [(ngModel)]="school" name="school">
-                    <ion-option  *ngFor="let school of schools" value="{{ school }}" (ionSelect)="searchBySchool(school)">{{ school }}</ion-option>
+                    <ion-option  *ngFor="let school of schools" value="{{ school }}" (ionSelect)="searchUser(school)">{{ school }}</ion-option>
                 </ion-select>
             </ion-item>
             <ion-item>
                 <ion-label>Experience</ion-label>
                 <ion-select [(ngModel)]="experience" name="experience">
-                    <ion-option *ngFor="let experience of experiences" value="{{ experience }}" (ionSelect)="searchByExperience(experience)">{{ experience }}</ion-option>
+                    <ion-option *ngFor="let experience of experiences" value="{{ experience }}" (ionSelect)="searchUser(experience)">{{ experience }}</ion-option>
                 </ion-select>
             </ion-item>
             <ion-item>
                 <ion-label>Specialized</ion-label>
                 <ion-select [(ngModel)]="specialized" name="specialized">
-                    <ion-option *ngFor="let specialized of specializeds" value="{{ specialized }}" (ionSelect)="searchBySpecialized(specialized)">{{ specialized }}</ion-option>
+                    <ion-option *ngFor="let specialized of specializeds" value="{{ specialized }}" (ionSelect)="searchUser(specialized)">{{ specialized }}</ion-option>
                 </ion-select>
             </ion-item>
         </ion-list>
@@ -58,7 +58,7 @@
             </ion-card-title>
             <ion-grid>
                 <ion-row>
-                    <ion-col *ngIf="user.school" col-5>
+                    <ion-col *ngIf="user.school" col-6>
                         School
                     </ion-col>
                     <ion-col>
@@ -66,19 +66,19 @@
                     </ion-col>
                 </ion-row>
                 <ion-row>
-                    <ion-col *ngIf="user.speciality" col-5>
+                    <ion-col *ngIf="user.speciality" col-6>
                         Speciality
                     </ion-col>
                     <ion-col>
                         {{ user.speciality }}
                     </ion-col>
                 </ion-row>
+                <ion-row *ngIf="user.description">
+                    {{user.description}}
+                </ion-row>
+
             </ion-grid>
             <button ion-button clear block (click)="viewDetail(user)">View more</button>
         </ion-card-content>
     </ion-card>
-
-    <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
-        <ion-infinite-scroll-content></ion-infinite-scroll-content>
-    </ion-infinite-scroll>
 </ion-content>

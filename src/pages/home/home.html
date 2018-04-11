@@ -13,7 +13,7 @@
 
     <ion-toolbar>
         <ion-searchbar  (ionInput)="getListPost($event)" autocorrect="off"></ion-searchbar>
-        <button class="btn-search-advanced" positionV ="bottom" duration = '500' ion-button small tooltip="{{textShowHideAdvanced}} search advanced" (click)="showSearchAdvanced()">{{ textShowHideAdvanced }}</button>
+        <button class="btn-search-advanced" positionV ="bottom" duration = '500' ion-button tooltip="{{textShowHideAdvanced}} search advanced" (click)="showSearchAdvanced()">{{ textShowHideAdvanced }}</button>
     </ion-toolbar>
 </ion-header>
 <ion-content *ngIf="listPost">
@@ -21,19 +21,19 @@
         <ion-item>
             <ion-label>City</ion-label>
             <ion-select [(ngModel)]="city" name="city">
-                <ion-option *ngFor="let city of listCity" (ionSelect)="searchByCity(city.name_with_type)" value="{{city.name_with_type}}">{{city.name_with_type}}</ion-option>
+                <ion-option *ngFor="let city of listCity" (ionSelect)="searchPost(city.name_with_type)" value="{{city.name_with_type}}">{{city.name_with_type}}</ion-option>
             </ion-select>
         </ion-item>
         <ion-item>
             <ion-label>Employment Type</ion-label>
             <ion-select [(ngModel)]="type" name="type">
-                <ion-option  *ngFor="let type of types" value="{{ type }}" (ionSelect)="searchByType(type)">{{ type }}</ion-option>
+                <ion-option  *ngFor="let type of types" value="{{ type }}" (ionSelect)="searchPost(type)">{{ type }}</ion-option>
             </ion-select>
         </ion-item>
         <ion-item>
             <ion-label>Seniority level</ion-label>
             <ion-select [(ngModel)]="level" name="level">
-                <ion-option *ngFor="let level of levels" value="{{ level }}" (ionSelect)="searchByLevel(level)">{{ level }}</ion-option>
+                <ion-option *ngFor="let level of levels" value="{{ level }}" (ionSelect)="searchPost(level)">{{ level }}</ion-option>
             </ion-select>
         </ion-item>
     </ion-list>
@@ -49,7 +49,7 @@
             </ion-fab>
         </ion-item>
 
-        <img src="{{ post.post.logoUrl }}">
+        <img *ngIf="post.post.image_url" class="img-post" src="{{ post.post.image_url }}">
 
         <ion-card-content (click)="openModalDetail(post.post)">
             <h2><ion-icon color="primary" ios="ios-archive" md="md-archive"></ion-icon>  {{ post.post.title }}</h2><br/>

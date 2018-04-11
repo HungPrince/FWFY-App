@@ -21,21 +21,48 @@
     <form (ngSubmit)="save()" [formGroup]="formEditUser" novalidate>
         <ion-list>
             <ion-item>
+                <ion-label>Role:</ion-label>
+                <ion-select formControlName="role" name="role">
+                    <ion-option value="applicant">Applicant</ion-option>
+                    <ion-option value="recuiter">Recuiter</ion-option>
+                </ion-select>
+            </ion-item>
+
+            <ion-item>
                 <ion-label>
                     <ion-icon name="md-contact"></ion-icon>
                 </ion-label>
                 <ion-input type="text" formControlName="name" name="name" placeholder="Full name"></ion-input>
             </ion-item>
 
-            <div *ngIf="formEditUser.controls['name'].errors && (formEditUser.controls['name'].dirty || formEditUser.controls['name'].touched)">
-                <div [hidden]="!formEditUser.controls['name'].errors.required" class="error">
+            <div *ngIf="isError('name')">
+                <div [hidden]="!isErrorRequired('name')" class="error">
                     Name is required field!
                 </div>
-                <div [hidden]="!formEditUser.controls['name'].errors.minlength" class="error">
+                <div [hidden]="!isErrorMinLength('name')" class="error">
                     Name is least at 8 characters long!
                 </div>
-                <div [hidden]="!formEditUser.controls['name'].errors.maxlength" class="error">
+                <div [hidden]="!isErrorMaxLength('name')" class="error">
                     Name can not more than 100 characters!
+                </div>
+            </div>
+
+            <ion-item>
+                <ion-label>
+                    <ion-icon name="logo-googleplus"></ion-icon>
+                </ion-label>
+                <ion-input type="text" formControlName="companyName" name="companyName" placeholder="Company's name"></ion-input>
+            </ion-item>
+
+            <div *ngIf="isError('companyName')">
+                <div [hidden]="!isErrorRequired('companyName')" class="error">
+                    Company's Name is required field!
+                </div>
+                <div [hidden]="!isErrorMinLength('companyName')" class="error">
+                    Company's Name is least at 8 characters long!
+                </div>
+                <div [hidden]="!isErrorMaxLength('companyName')" class="error">
+                    Company's Name can not more than 100 characters!
                 </div>
             </div>
 
@@ -46,15 +73,15 @@
                 <ion-input type="text" formControlName="userName" name="userName" placeholder="User name"></ion-input>
             </ion-item>
 
-            <div *ngIf="formEditUser.controls['userName'].errors && (formEditUser.controls['userName'].dirty || formEditUser.controls['userName'].touched)">
-                <div [hidden]="!formEditUser.controls['userName'].errors.required" class="error">
+            <div *ngIf="isError('userName')">
+                <div [hidden]="!isErrorRequired('userName')" class="error">
                     Username is required field!
                 </div>
-                <div [hidden]="!formEditUser.controls['userName'].errors.minlength" class="error">
-                    Username is least at 4 characters long!
+                <div [hidden]="!isErrorMinLength('userName')" class="error">
+                    Username is least at 8 characters long!
                 </div>
-                <div [hidden]="!formEditUser.controls['userName'].errors.maxlength" class="error">
-                    Username can not more than 24 characters!
+                <div [hidden]="!isErrorMaxLength('userName')" class="error">
+                    Username can not more than 100 characters!
                 </div>
             </div>
 
@@ -65,104 +92,77 @@
                 <ion-input type="email" formControlName="email" name="email" placeholder="Email"></ion-input>
             </ion-item>
 
-            <div *ngIf="formEditUser.controls['email'].errors && (formEditUser.controls['email'].dirty || formEditUser.controls['email'].touched)">
-                <div [hidden]="!formEditUser.controls['email'].errors.required" class="error">
+            <div *ngIf="isError('email')">
+                <div [hidden]="!isErrorRequired('email')" class="error">
                     Email is required field!
                 </div>
-                <div [hidden]="!formEditUser.controls['email'].errors.pattern" class="error">
+                <div [hidden]="!isErrorPattern('email')" class="error">
                     Email incorrect format!
                 </div>
             </div>
 
-            <div class="item item-custom">
-                <ion-row>
-                    <ion-col>
-                        <ion-label>Gender</ion-label>
-                        <ion-toggle formControlName="gender" name="gender"></ion-toggle>
-                    </ion-col>
-                    <ion-col>
-                        <ion-label>Age</ion-label>
-                        <ion-input class="age" type="number" min="18" max="55" formControlName="age" name="age" placeholder="18"></ion-input>
-                    </ion-col>
-                </ion-row>
+            <div *ngIf="formEditUser.controls['role'].value == 'applicant'">
+                <ion-item>
+                    <ion-label>School</ion-label>
+                    <ion-select formControlName="school" name="school">
+                        <ion-option *ngFor="let school of schools" value="{{ school }}">{{ school }}</ion-option>
+                    </ion-select>
+                </ion-item>
+
+                <ion-item>
+                    <ion-label>Specialized</ion-label>
+                    <ion-select formControlName="specialized" name="specialized">
+                        <ion-option *ngFor="let specialized of specializeds" value="{{ specialized }}">{{ specialized }}</ion-option>
+                    </ion-select>
+                </ion-item>
+
+                <ion-item>
+                    <ion-label>Experience</ion-label>
+                    <ion-select formControlName="experience" name="experience">
+                        <ion-option *ngFor="let experience of experiences" value="{{ experience }}">{{ experience }}</ion-option>
+                    </ion-select>
+                </ion-item>
             </div>
-
-            <ion-item>
-                <ion-label>School</ion-label>
-                <ion-select formControlName="school" name="school">
-                    <ion-option value="Học Viện Kĩ Thuật Quân Sự">Học Viện Kĩ Thuật Quân Sự</ion-option>
-                    <ion-option value="Đại Học Bách Khoa Hà Nội">Đại Học Bách Khoa Hà Nội</ion-option>
-                    <ion-option value="Học Viện Ngân Hàng">Học Viện Ngân Hàng</ion-option>
-                </ion-select>
-            </ion-item>
-
-            <ion-item>
-                <ion-label>Speciality</ion-label>
-                <ion-select formControlName="speciality" name="speciality">
-                    <ion-option value="Công Nghệ Thông Tin">Công Nghệ Thông Tin</ion-option>
-                    <ion-option value="Cơ Khí">Cơ Khí</ion-option>
-                    <ion-option value="Cầu Đường">Cầu Đường</ion-option>
-                </ion-select>
-            </ion-item>
-
-            <ion-item id="upload-boxes" class="input-text">
-                <button style="margin-bottom: 30px; margin-left:50px" type="button" ion-button (click)="chooseAvatar()">Change Avatar</button>
-                <img class="avatar-upload" style="height: 100px; width: 100px;" src="{{avatar_url}}">
-            </ion-item>
 
             <ion-item class="input-text">
                 <ion-label>
                     <ion-icon name="md-call"></ion-icon>
                 </ion-label>
-                <ion-input type="tel" formControlName="phone1" name="phone1" placeholder="Phone 1"></ion-input>
+                <ion-input type="tel" formControlName="phone" name="phone" placeholder="Phone"></ion-input>
             </ion-item>
 
-            <div *ngIf="formEditUser.controls['phone1'].errors && (formEditUser.controls['phone1'].dirty || formEditUser.controls['phone1'].touched)">
-                <div [hidden]="!formEditUser.controls['phone1'].errors.required" class="error">
+            <div *ngIf="isError('phone')">
+                <div [hidden]="!isErrorRequired('phone')" class="error">
                     Phone is required field!
                 </div>
-                <div [hidden]="!formEditUser.controls['phone1'].errors.pattern" class="error">
+                <div [hidden]="!isErrorPattern('phone')" class="error">
                     Phone incorect format!
                 </div>
             </div>
 
-            <ion-item class="input-text">
-                <ion-label>
-                    <ion-icon name="md-call"></ion-icon>
-                </ion-label>
-                <ion-input type="tel" formControlName="phone2" name="phone2" placeholder="Phone 2"></ion-input>
+            <ion-item id="upload-boxes" class="input-text">
+                <button style="margin-bottom: 30px;" type="button" ion-button (click)="chooseAvatar()">Upload Avatar</button>
+                <img class="avatar-upload" style="height: 100px; width: 100px;" src="{{user.avatar_url}}">
             </ion-item>
-
-            <div *ngIf="formEditUser.controls['phone2'].errors && (formEditUser.controls['phone2'].dirty || formEditUser.controls['phone2'].touched)">
-                <div [hidden]="!formEditUser.controls['phone2'].errors.pattern" class="error">
-                    Phone incorect format!
-                </div>
-            </div>
 
             <ion-item>
                 <ion-label>City</ion-label>
                 <ion-select formControlName="city" name="city">
-                    <ion-option value="Hà Nộ">Hà Nội</ion-option>
-                    <ion-option value="TP. Hồ Chí Minh">TP. Hồ Chí Minh</ion-option>
-                    <ion-option value="Đà Nẵng">Đà Nẵng</ion-option>
+                    <ion-option *ngFor="let city of listCity" (ionSelect)="changeCity(city)" value="{{city.name_with_type}}">{{city.name_with_type}}</ion-option>
                 </ion-select>
             </ion-item>
 
             <ion-item>
                 <ion-label>District</ion-label>
                 <ion-select formControlName="district" name="district">
-                    <ion-option value="Cầu Giấy">Cầu Giấy</ion-option>
-                    <ion-option value="Bắc Từ Liêm">Bắc Từ Liêm</ion-option>
-                    <ion-option value="Nam Từ Liêm">Nam Từ Liêm</ion-option>
+                    <ion-option *ngFor="let district of listDistrict" value="{{district.name}}" (ionSelect)="changeDistrict(district)">{{district.name}}</ion-option>
                 </ion-select>
             </ion-item>
 
             <ion-item>
                 <ion-label>Street</ion-label>
                 <ion-select formControlName="street" name="street">
-                    <ion-option value="Phường Cổ Nhuế 1">Phường Cổ Nhuế 1</ion-option>
-                    <ion-option value="Phường Cổ Nhuế 2">Phường Cổ Nhuế 2</ion-option>
-                    <ion-option value="Xuân Thủy">Xuân Thủy</ion-option>
+                    <ion-option *ngFor="let street of listStreet" value="{{street.name}}">{{street.name}}</ion-option>
                 </ion-select>
             </ion-item>
 
@@ -170,7 +170,7 @@
                 <ion-label>
                     <ion-icon name="md-navigate"></ion-icon>
                 </ion-label>
-                <ion-input type="text" formControlName="landAlleyBuilding" name="landAlleyBuilding" placeholder="Land, alley, building"></ion-input>
+                <ion-input type="text" formControlName="location" name="location" placeholder="location"></ion-input>
             </ion-item>
 
             <ion-item class="input-text">
@@ -178,7 +178,7 @@
             </ion-item>
 
             <div padding>
-                <button ion-button color="primary" [disabled]="formEditUser.invalid" block>Save</button>
+                <button [disabled]="formEditUser.invalid" ion-button color="primary" block>Register</button>
             </div>
 
         </ion-list>

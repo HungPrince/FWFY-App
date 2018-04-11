@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "857296346364",
+    "firebase_url": "https://findworkforyou-99999.firebaseio.com",
+    "project_id": "findworkforyou-99999",
+    "storage_bucket": "findworkforyou-99999.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:857296346364:android:3fefe3420dca72a3",
+        "android_client_info": {
+          "package_name": "io.ionic.fwfyapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "857296346364-o1u254g951hsm4g5snulc01526tiv25s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAF9QxYwTGwDO4c4Pqsa4l4MrOVxLdt_GM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

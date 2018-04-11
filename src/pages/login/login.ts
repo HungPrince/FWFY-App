@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, MenuController, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, MenuController, AlertController, Events } from 'ionic-angular';
 import { Validators, FormControl, FormBuilder } from '@angular/forms';
 
 import { AngularFireAuth } from 'angularfire2/auth';
@@ -11,7 +11,6 @@ import { LoaderService } from '../../services/loaderService';
 import { ToastService } from '../../services/toastService';
 
 import { UntilHelper } from '../../helpers/until.helper';
-import { HomePage } from '../home/home';
 import { MyApp } from '../../app/app.component'
 
 import { RegisterPage } from './../register/register';
@@ -38,8 +37,9 @@ export class LoginPage {
         private storage: Storage,
         public formBuilder: FormBuilder,
         private userProvider: UserProvider,
-        private untilHelpr: UntilHelper) {
-
+        private untilHelpr: UntilHelper,
+        private events: Events
+    ) {
         this.storage.get('accountUser').then(user => {
             if (user) {
                 this.formLogin = this.formBuilder.group({
@@ -80,6 +80,7 @@ export class LoginPage {
         this.afAuth.auth.signInWithEmailAndPassword(email, password).then(result => {
             if (this.formLogin.value.rememberCbx) {
                 this.storage.set('accountUser', { email: email, password: password });
+
             } else {
                 this.storage.set('accountUser', null);
             }
@@ -88,46 +89,40 @@ export class LoginPage {
                 userI.uid = result.uid;
                 this.storage.set('auth', userI).then(data => {
                     this.navCtrl.setRoot(MyApp);
+                    this.events.publish('userLoggedIn', userI);
                 });
             });
         }).catch(e => { this.toastService.toast(e.message, 1000, 'middle', false) });
     }
 
     doGoogleLogin() {
-        firebase.auth().signInWithPopup(this.googleProvider).then((result) => {
-            var user = {
-                name: result.user.displayName,
-                email: result.user.email,
-                phone: {
-                    phone1: result.user.phoneNumber
-                },
-                avatar_url: result.user.photoURL,
-                type: 'goolge',
-            };
-            this.af.database.ref('users').child(result.user.uid).set(user).then((error) => {
-                if (!error) {
-                    this.storage.set('auth', result.user.uid);
-                    this.navCtrl.setRoot(HomePage);
-                }
-            }).catch((error) => console.log(error));
-        }).catch((error) => console.log(error));
+        this.loginSocial('google', this.googleProvider);
     }
 
     doFacebookLogin() {
-        firebase.auth().signInWithPopup(this.facebookProvider).then((result) => {
-            var user = {
+        this.loginSocial('facebook', this.facebookProvider);
+    }
+
+    loginSocial(typeName, typeLogin) {
+        firebase.auth().signInWithPopup(typeLogin).then((result) => {
+            let user = {
                 name: result.user.displayName,
                 email: result.user.email,
                 phone: {
                     phone1: result.user.phoneNumber
                 },
                 avatar_url: result.user.photoURL,
-                type: 'goolge',
+                type: typeName,
+                uid: result.user.uid
             };
             this.af.database.ref('users').child(result.user.uid).set(user).then((error) => {
                 if (!error) {
-                    this.storage.set('auth', result.user.uid);
-                    this.navCtrl.setRoot(HomePage);
+                    this.userProvider.getUserByKey(result.uid).then(user => {
+                        this.storage.set('auth', user).then(data => {
+                            this.events.publish('userLoggedIn', user);
+                            this.navCtrl.setRoot(MyApp);
+                        });
+                    });
                 }
             }).catch((error) => console.log(error));
         }).catch((error) => console.log(error));

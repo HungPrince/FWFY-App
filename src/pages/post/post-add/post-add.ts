@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ViewController, ActionSheetController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { Validators, FormControl, FormBuilder } from '@angular/forms';
+import { CameraOptions, Camera } from '@ionic-native/camera';
+
+import firebase from 'firebase';
 
 import { FormHelper } from '../../../helpers/form.helper';
 import { PostProvider } from '../../../providers/post/post';
@@ -17,10 +20,9 @@ import { AlertController } from 'ionic-angular/components/alert/alert-controller
     templateUrl: 'post-add.html'
 })
 export class PostAddPage implements OnInit {
-
+    private storageFB = firebase.storage().ref();
     private formPost: any;
     private actionPost: string = "Create Post";
-    public logoUrl;
     listCity = [];
     listDistrict = [];
     listStreet = [];
@@ -40,6 +42,8 @@ export class PostAddPage implements OnInit {
         public loaderService: LoaderService,
         private alertCtrl: AlertController,
         private formHelper: FormHelper,
+        private camera: Camera,
+        private actionSheetCtrl: ActionSheetController,
         public toastService: ToastService) {
         let post = navParams.get('post');
         if (post) {
@@ -102,13 +106,9 @@ export class PostAddPage implements OnInit {
             this.post.userId = user.uid;
         });
 
-        if (!this.post.logoUrl) {
-            this.logoUrl = "https://placehold.it/150x150";
+        if (!this.post.image_url) {
+            this.post.image_url = "https://placehold.it/150x150";
         }
-
-    }
-
-    ionViewDidLoad() {
     }
 
     ngOnInit() {
@@ -243,5 +243,65 @@ export class PostAddPage implements OnInit {
         });
         alertDeleteCtrl.present();
 
+    }
+
+
+    chooseImage() {
+        let actionSheet = this.actionSheetCtrl.create({
+            title: 'Choose image',
+            buttons: [
+                {
+                    text: 'Choose from library',
+                    role: 'destructive',
+                    handler: () => {
+                        this.takePicture(0);
+                    }
+                },
+                {
+                    text: 'Take capture',
+                    handler: () => {
+                        this.takePicture(1);
+                    }
+                },
+                {
+                    text: 'Cancel',
+                    role: 'cancel',
+                    handler: () => {
+                        console.log('Cancel clicked');
+                    }
+                }
+            ]
+        });
+
+        actionSheet.present();
+    }
+
+    takePicture(sourceType) {
+        let options: CameraOptions = {
+            quality: 100,
+            sourceType: sourceType,
+            destinationType: this.camera.DestinationType.DATA_URL,
+            saveToPhotoAlbum: true,
+            correctOrientation: true
+        }
+
+        this.camera.getPicture(options).then((imageData) => {
+            this.loaderService.loaderNoSetTime('uploading ...');
+            let base64Image = 'data:image/jpeg;base64,' + imageData;
+            this.post.image_url = base64Image;
+            let filename = Math.floor(Date.now() / 1000);
+            let imageRef = this.storageFB.child(`images/${filename}.jpg`);
+            imageRef.putString(base64Image, firebase.storage.StringFormat.DATA_URL).then((imageSnapshot) => {
+                this.loaderService.dismisLoader().then((data) => {
+                    this.post.image_url = imageSnapshot.downloadURL;
+                }).catch(error => {
+                    console.log(error);
+                    this.loaderService.dismisLoader();
+                });
+            });
+        }, (err) => {
+            console.log(err);
+            this.loaderService.dismisLoader();
+        });
     }
 }

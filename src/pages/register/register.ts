@@ -1,10 +1,8 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, ActionSheetController } from 'ionic-angular';
+import { IonicPage, NavController, ActionSheetController, Events } from 'ionic-angular';
 import { Validators, FormControl, FormBuilder } from '@angular/forms';
 
 import { CameraOptions, Camera } from '@ionic-native/camera';
-import { AngularFireDatabase } from 'angularfire2/database';
-import { AngularFireAuth } from 'angularfire2/auth';
 import { Storage } from '@ionic/storage';
 import firebase from 'firebase';
 
@@ -12,7 +10,6 @@ import { CITIES, DISTRICTS, STREETS, SCHOOLS, SPECIALIZEDS, EXPERIENCES } from '
 import { UntilHelper } from '../../helpers/until.helper';
 import { FormHelper } from '../../helpers/form.helper';
 import { LoaderService } from '../../services/loaderService';
-import { HomePage } from '../home/home';
 import { LoginPage } from '../login/login';
 import { MyApp } from '../../app/app.component';
 import { User } from './../../models/user';
@@ -27,7 +24,6 @@ import { ToastService } from '../../services/toastService';
 export class RegisterPage {
     typeSignUp: string = "applicant";
     user: User;
-    base64Image: string;
     listCity = [];
     listDistrict = [];
     listStreet = [];
@@ -40,19 +36,18 @@ export class RegisterPage {
     private storageFB = firebase.storage().ref();
     constructor(public navCtrl: NavController,
         public actionSheetCtrl: ActionSheetController,
-        public af: AngularFireDatabase,
         public camera: Camera,
         public formBuilder: FormBuilder,
         private untilHelper: UntilHelper,
         private formHelper: FormHelper,
         private loaderService: LoaderService,
-        private afAuth: AngularFireAuth,
         private userProvider: UserProvider,
         private toastService: ToastService,
+        private events: Events,
         private storage: Storage) {
         this.user = new User('applicant', '', '', null, '', 18, '', '', null, true, '', '', '');
 
-        this.base64Image = "https://placehold.it/150x150";
+        this.user.avatar_url = "https://placehold.it/150x150";
 
         this.formRegister = this.formBuilder.group({
             'role': new FormControl(this.user.role, [Validators.required]),
@@ -70,11 +65,11 @@ export class RegisterPage {
             'district': new FormControl('', [Validators.required]),
             'location': new FormControl('', [Validators.required]),
             'description': new FormControl(''),
-            'avatar_url': new FormControl(this.base64Image),
             'school': new FormControl(),
             'specialized': new FormControl(),
             'experience': new FormControl(),
-        })
+            'age': new FormControl(),
+        });
     }
 
     ionViewDidLoad() {
@@ -165,6 +160,7 @@ export class RegisterPage {
                     this.loaderService.dismisLoader().then(data => {
                         this.toastService.toast('Create account successfully!', 500, 'bottom', false);
                         this.navCtrl.setRoot(MyApp);
+                        this.events.publish('userLoggedIn', this.user);
                     });
                 }).catch(error => {
                     this.loaderService.dismisLoader();
@@ -217,11 +213,10 @@ export class RegisterPage {
 
         this.camera.getPicture(options).then((imageData) => {
             this.loaderService.loaderNoSetTime('uploading ...');
-            let base64Image = 'data:image/jpeg;base64,' + imageData;
-            this.base64Image = base64Image;
+            this.user.avatar_url = 'data:image/jpeg;base64,' + imageData;;
             let filename = Math.floor(Date.now() / 1000);
             let imageRef = this.storageFB.child(`images/${filename}.jpg`);
-            imageRef.putString(base64Image, firebase.storage.StringFormat.DATA_URL).then((imageSnapshot) => {
+            imageRef.putString(this.user.avatar_url, firebase.storage.StringFormat.DATA_URL).then((imageSnapshot) => {
                 this.loaderService.dismisLoader().then((data) => {
                     this.user.avatar_url = imageSnapshot.downloadURL;
                 }).catch(error => {

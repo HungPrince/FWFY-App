@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { Nav, Platform, ModalOptions, Modal, ModalController } from 'ionic-angular';
+import { Nav, Platform, ModalOptions, Modal, ModalController, Events } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { AngularFireDatabase } from 'angularfire2/database';
@@ -23,6 +23,7 @@ export class MyApp {
 
     rootPage: any = LoginPage;
     private user: any;
+    private activePage: any;
 
     pages: Array<{ title: string, component: any }>;
 
@@ -33,43 +34,38 @@ export class MyApp {
         private userProvider: UserProvider,
         private storage: Storage,
         private uniqueDeviceID: UniqueDeviceID,
-        public modalCtrl: ModalController) {
+        public modalCtrl: ModalController,
+        private events: Events
+    ) {
         this.initializeApp();
-
-        this.storage.get('auth').then(user => {
+        this.storage.get('auth').then((user) => {
             if (user) {
                 this.user = user;
-                this.rootPage = TabsPage;
-                if (user.role == 'admin' || user.role == 'recuiter') {
-                    this.pages = [
-                        { title: 'Home', component: TabsPage },
-                        { title: 'List Favorite Jobs', component: PostPage },
-                        { title: 'List Applicant', component: UserPage },
-                        { title: 'Manager Your Post', component: ManagerPostPage }
-                    ];
-                } else {
-                    this.pages = [
-                        { title: 'Home', component: TabsPage },
-                        { title: 'List Favorite Jobs', component: PostPage },
-                        { title: 'List Applicant', component: UserPage },
-                    ];
-                }
-            };
+                this.authorized(this.user);
+            }
         });
-
+        if (!this.user) {
+            this.events.subscribe('userLoggedIn', (user) => {
+                if (user) {
+                    this.user = user;
+                    this.authorized(this.user);
+                };
+            });
+        }
     }
 
     initializeApp() {
         this.platform.ready().then(() => {
-            this.uniqueDeviceID.get()
-                .then((uuid: any) => {
-                    console.log(uuid);
-                    this.user.pushToken = uuid;
-                    this.userProvider.update(this.user).then(data => {
-                        console.log(data);
+            if (this.user) {
+                this.uniqueDeviceID.get()
+                    .then((uuid: any) => {
+                        this.user.pushToken = uuid;
+                        this.userProvider.update(this.user).then(data => {
+                            console.log(data);
+                        })
                     })
-                })
-                .catch((error: any) => console.log(error));
+                    .catch((error: any) => console.log(error));
+            }
             this.statusBar.styleDefault();
             this.splashScreen.hide();
         });
@@ -77,6 +73,29 @@ export class MyApp {
 
     openPage(page) {
         this.nav.setRoot(page.component);
+        this.activePage = page;
+    }
+
+    authorized(user) {
+        this.rootPage = TabsPage;
+        if (user.role == 'admin' || user.role == 'recuiter') {
+            this.pages = [
+                { title: 'Home', component: TabsPage },
+                { title: 'List Favorite Jobs', component: PostPage },
+                { title: 'List Applicant', component: UserPage },
+                { title: 'Manager Your Post', component: ManagerPostPage }
+            ];
+        } else {
+            this.pages = [
+                { title: 'Home', component: TabsPage },
+                { title: 'List Favorite Jobs', component: PostPage },
+                { title: 'List Applicant', component: UserPage },
+            ];
+        }
+    }
+
+    checkActive(p) {
+        return p == this.activePage;
     }
 
     editProfile() {

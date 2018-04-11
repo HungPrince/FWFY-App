@@ -67,27 +67,12 @@
 
         <ion-list *ngSwitchCase="'phone'">
             <div *ngIf="user.phone">
-                <ion-item-sliding #item *ngIf="user.phone.phone1">
+                <ion-item-sliding #item *ngIf="user.phone.phone">
                     <ion-item>
-                        {{user.phone.phone1}}
+                        {{user.phone.phone}}
                     </ion-item>
                     <ion-item-options side="left">
-                        <button ion-button (click)="call(bus)">
-                            <ion-icon color="balanced" name="call"></ion-icon>
-                        </button>
-                        <button ion-button color="danger" (click)="share(user)">Share</button>
-                    </ion-item-options>
-
-                    <ion-item-options side="right">
-                        <button ion-button (click)="unread(item)">Unread</button>
-                    </ion-item-options>
-                </ion-item-sliding>
-                <ion-item-sliding #item *ngIf="user.phone.phone2">
-                    <ion-item>
-                        {{user.phone.phone2}}
-                    </ion-item>
-                    <ion-item-options side="left">
-                        <button ion-button (click)="call(bus)">
+                        <button ion-button (click)="call(user.phone.phone)">
                             <ion-icon color="balanced" name="call"></ion-icon>
                         </button>
                         <button ion-button color="danger" (click)="share(user)">Share</button>

@@ -23,7 +23,6 @@ import { LoaderService } from '../../services/loaderService';
 export class HomePage {
     private listPost: Array<any> = [];
     private listSearch: any;
-    private user: any;
     private userCurrent: any;
     private listCity: any = [];
     types = TYPES;
@@ -43,32 +42,36 @@ export class HomePage {
 
         this.loaderService.loaderNoSetTime('loading ...');
         this.storage.get('auth').then(user => {
-            this.userProvider.getUserByKey(user.uid).then(data => {
-                if (data.val()) {
-                    this.userCurrent = data.val();
-                    this.userCurrent.uid = user.uid;
-                    this.postProvider.getAll().subscribe((posts) => {
-                        this.listPost = [];
-                        posts.forEach(post => {
-                            this.userProvider.getUserByKey(post.userId).then(data => {
-                                if (data.val()) {
-                                    this.listPost.push({
-                                        post: post,
-                                        user: data.val(),
-                                        ownPost: user.uid == post.userId ? true : false
-                                    });
-                                }
-                            }).catch(error => { console.log(error); this.loaderService.dismisLoader(); });
+            if (user.uid) {
+                this.userProvider.getUserByKey(user.uid).then(data => {
+                    if (data.val()) {
+                        this.userCurrent = data.val();
+                        this.userCurrent.uid = user.uid;
+                        this.postProvider.getAll().subscribe((posts) => {
+                            this.listPost = [];
+                            posts.forEach(post => {
+                                this.userProvider.getUserByKey(post.userId).then(data => {
+                                    if (data.val()) {
+                                        this.listPost.push({
+                                            post: post,
+                                            user: data.val(),
+                                            ownPost: user.uid == post.userId ? true : false
+                                        });
+                                    }
+                                }).catch(error => { console.log(error); this.loaderService.dismisLoader(); });
+                            }, (error) => {
+                                this.loaderService.dismisLoader();
+                            });
+                            this.listSearch = this.listPost;
+                            this.loaderService.dismisLoader();
                         }, (error) => {
                             this.loaderService.dismisLoader();
                         });
-                        this.listSearch = this.listPost;
-                        this.loaderService.dismisLoader();
-                    }, (error) => {
-                        this.loaderService.dismisLoader();
-                    });
-                }
-            }).catch(error => { this.loaderService.dismisLoader(); });
+                    }
+                }).catch(error => { this.loaderService.dismisLoader(); });
+            } else {
+                this.loaderService.dismisLoader();
+            }
         }).catch(error => { this.loaderService.dismisLoader(); console.log(error) });
     }
 
@@ -87,20 +90,9 @@ export class HomePage {
     }
 
     logout() {
-        this.storage.set('auth', null);
-        this.navCtrl.push(LoginPage);
-    }
-
-    searchByCity(city) {
-        this.searchPost(city);
-    }
-
-    searchByLevel(level) {
-        this.searchPost(level);
-    }
-
-    searchByType(type) {
-        this.searchPost(type);
+        this.storage.set('auth', null).then(data => {
+            this.navCtrl.push(LoginPage);
+        });
     }
 
     getListPost(event) {
@@ -112,7 +104,7 @@ export class HomePage {
         let lstPost = [];
         if (search) {
             lstPost = this.listSearch.filter(post => (post.post.title.toLowerCase().indexOf(search) > -1)
-                || post.post.city == search || post.type == search || post.level == search);
+                || post.post.city == search || post.post.type == search || post.post.level == search);
         }
         this.listPost = (lstPost.length > 0) ? lstPost : this.listSearch;
     }

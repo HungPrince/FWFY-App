@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 
-import { AngularFireDatabase, snapshotChanges } from 'angularfire2/database';
+import { AngularFireDatabase } from 'angularfire2/database';
 import { AngularFireAuth } from 'angularfire2/auth';
 import 'rxjs/add/operator/map';
 
-import { User } from '../../models/user';
 import { Observable } from "rxjs/Observable";
 
 @Injectable()
@@ -19,12 +18,17 @@ export class UserProvider {
             map(users => { return users.map(user => ({ uid: user.key, ...user.payload.val() })) });
     }
 
+    getApplicant(): Observable<any> {
+        return this.af.list('users').snapshotChanges().
+            map(users => { return users.map(user => ({ uid: user.key, ...user.payload.val() })) });
+    }
+
     getUserPagination(index: number): any {
-        return this.af.database.ref('users').orderByKey().limitToFirst(index).once('value', data => { return data; });
+        return this.af.database.ref('users').orderByKey().limitToFirst(index).once('value', data => { return data.val(); });
     }
 
     getUserPaginationNext(key: string, index: number): any {
-        return this.af.database.ref("users").orderByKey().startAt(key).limitToFirst(index).once("value", (data) => { return data; });
+        return this.af.database.ref("users").orderByKey().startAt(key).limitToFirst(index).once("value", (data) => { return data.val(); });
     }
 
     getUserByKey(key: string): any {

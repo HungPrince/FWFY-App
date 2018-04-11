@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalOptions, Modal, ModalController } from 'ionic-angular';
 
 import { Storage } from '@ionic/storage';
 
+import { PostAddPage } from '../post/post-add/post-add';
 import { PostProvider } from '../../providers/post/post';
 import { LoaderService } from '../../services/loaderService';
 import { UserProvider } from '../../providers/user/user';
@@ -18,9 +19,13 @@ export class ManagerPostPage {
     public listPost: Array<any> = [];
     private listUser: Array<any> = [];
 
-    constructor(public navCtrl: NavController, public navParams: NavParams,
-        private loaderService: LoaderService, private storage: Storage,
-        private postProvider: PostProvider, private userProvider: UserProvider) {
+    constructor(public navCtrl: NavController,
+        public navParams: NavParams,
+        private loaderService: LoaderService,
+        private storage: Storage,
+        private postProvider: PostProvider,
+        private modalCtrl: ModalController,
+        private userProvider: UserProvider) {
         this.loaderService.loaderNoSetTime('loading ...');
 
         this.userProvider.getAll().subscribe(users => {
@@ -54,8 +59,12 @@ export class ManagerPostPage {
             }, error => { console.log(error); this.loaderService.dismisLoader(); });
         }).catch(error => { console.log(error); this.loaderService.dismisLoader() });
     }
-
-    ionViewDidLoad() {
-
+    
+    openModalAdd() {
+        let myModalOptions: ModalOptions = {
+            enableBackdropDismiss: false
+        };
+        let myModal: Modal = this.modalCtrl.create(PostAddPage, myModalOptions);
+        myModal.present();
     }
 }
