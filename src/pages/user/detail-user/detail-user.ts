@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
 import { Validators, FormControl, FormBuilder } from '@angular/forms';
 import { EmailComposer } from '@ionic-native/email-composer';
 
@@ -17,8 +17,13 @@ export class DetailUserPage {
     private emailRegex = "^[a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,15})$";
     private user: User;
     viewMore: string = 'info';
-    constructor(public navCtrl: NavController, public navParams: NavParams, public formBuilder: FormBuilder,
-        public callNumber: CallNumber, private emailComposer: EmailComposer) {
+    constructor(
+        public navCtrl: NavController,
+        public navParams: NavParams,
+        public formBuilder: FormBuilder,
+        public callNumber: CallNumber,
+        private viewCtrl: ViewController,
+        private emailComposer: EmailComposer) {
         this.user = this.navParams.get('user');
 
         this.formEmail = this.formBuilder.group({
@@ -32,7 +37,8 @@ export class DetailUserPage {
 
     }
 
-    ionViewDidLoad() {
+    goBack() {
+        this.viewCtrl.dismiss();
     }
 
     call(phoneNumber) {

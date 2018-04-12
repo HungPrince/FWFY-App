@@ -1,21 +1,20 @@
 <ion-header>
-        <ion-navbar>
-            <ion-toolbar>
-                <ion-buttons left class="loginnavbtn">
-                    <button ion-button class="loginnavbtn" (click)="goBack()">
-                        <ion-icon name="md-arrow-back"></ion-icon>
-                    </button>
-                </ion-buttons>
-                <ion-title>Detail Post</ion-title>
-                <ion-buttons right *ngIf="userCurrent &&  (userCurrent.role == 'recuiter' || userCurrent.role == 'admin')">
-                    <button ion-button (click)="edit()">
-                        <ion-icon name="md-create"></ion-icon>
-                    </button>
-                </ion-buttons>
-            </ion-toolbar>
-        </ion-navbar>
-
-    </ion-header>
+    <ion-navbar>
+        <ion-toolbar>
+            <ion-buttons left class="loginnavbtn">
+                <button ion-button class="loginnavbtn" (click)="goBack()">
+                    <ion-icon name="md-arrow-back"></ion-icon>
+                </button>
+            </ion-buttons>
+            <ion-title>Detail Post</ion-title>
+            <ion-buttons right *ngIf="userCurrent &&  (userCurrent.role == 'recuiter' || userCurrent.role == 'admin')">
+                <button ion-button (click)="edit()">
+                    <ion-icon name="md-create"></ion-icon>
+                </button>
+            </ion-buttons>
+        </ion-toolbar>
+    </ion-navbar>
+</ion-header>
 
 
 <ion-content padding>
@@ -32,7 +31,7 @@
         <ion-item>
             <ion-label>Description</ion-label>
             <ion-textarea name="" id="" cols="30" rows="5" readonly value="{{ post.description }}">
-             </ion-textarea>
+            </ion-textarea>
         </ion-item>
 
         <ion-item>Website:
@@ -40,8 +39,7 @@
         </ion-item>
         <ion-item>
             <ion-label>Address:</ion-label>
-            <ion-textarea name="" id="" cols="30" rows="3" readonly
-             value="{{ post.address.city }}, {{post.address.district}}, {{post.address.street}}">
+            <ion-textarea name="" id="" cols="30" rows="3" readonly value="{{ post.address.city }}, {{post.address.district}}, {{post.address.street}}">
             </ion-textarea>
         </ion-item>
         <ion-item>Date From: {{ post.dateFrom | moment:['ll'] }} </ion-item>

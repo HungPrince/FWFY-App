@@ -1,4 +1,4 @@
-<ion-card *ngFor="let post of listPost">
+<ion-card *ngIf="post && userCurrent">
     <ion-item>
         <ion-avatar item-start>
             <img (click)="viewDetailUserPost(post.user)" src="{{ post.user.avatar_url }}">

@@ -51,7 +51,6 @@ export class UpgradePage {
     };
 
     upgradeAccount() {
-        console.log('test');
         this.loadingService.loaderNoSetTime('Upgrade account ...');
         this.user.typeAccount = this.typeAccount;
         this.userProvider.update(this.user).then(error => {

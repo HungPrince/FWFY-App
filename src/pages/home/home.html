@@ -37,7 +37,8 @@
             </ion-select>
         </ion-item>
     </ion-list>
-    <ion-card *ngFor="let post of listPost">
+    <post *ngFor="let post of listPost" [postI] ="post"></post>
+    <!-- <ion-card *ngFor="let post of listPost">
         <ion-item>
             <ion-avatar item-start>
                 <img (click)="viewDetailUserPost(post.user)" src="{{ post.user.avatar_url }}">
@@ -92,7 +93,7 @@
                 </ion-col>
             </ion-row>
         </ion-grid>
-    </ion-card>
+    </ion-card> -->
 
     <button *ngIf="userCurrent &&  (userCurrent.role == 'recuiter' || userCurrent.role == 'admin')" color="danger" mini ion-fab="" class="fab fab-ios fab-ios-danger" id="add-post" (click)="openModalAdd()">
         <ion-icon class="fab-close-icon icon icon-ios ion-ios-close" name="close" role="img" aria-label="close"></ion-icon>
