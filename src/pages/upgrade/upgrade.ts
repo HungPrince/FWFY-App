@@ -51,14 +51,15 @@ export class UpgradePage {
     };
 
     upgradeAccount() {
-        // this.loadingService.loaderNoSetTime('Upgrade account ...');
+        console.log('test');
+        this.loadingService.loaderNoSetTime('Upgrade account ...');
         this.user.typeAccount = this.typeAccount;
         this.userProvider.update(this.user).then(error => {
             if (!error) {
-                // this.loadingService.dismisLoader().then(data => {
+                this.loadingService.dismisLoader().then(data => {
                     this.toastService.toast('You were upgraded successfully!', 1000, 'middle', false);
                     this.storage.set('auth', this.user);
-                // }).catch(error => console.log(error));
+                }).catch(error => console.log(error));
             }
         });
     }

@@ -49,7 +49,7 @@
             </ion-fab>
         </ion-item>
 
-        <img *ngIf="post.post.image_url" class="img-post" src="{{ post.post.image_url }}">
+        <img *ngIf="post.post.image_url" (click)="openModalDetail(post.post)" class="img-post" src="{{ post.post.image_url }}">
 
         <ion-card-content (click)="openModalDetail(post.post)">
             <h2><ion-icon color="primary" ios="ios-archive" md="md-archive"></ion-icon>  {{ post.post.title }}</h2><br/>

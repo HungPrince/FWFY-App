@@ -1,0 +1,56 @@
+<ion-card *ngFor="let post of listPost">
+    <ion-item>
+        <ion-avatar item-start>
+            <img (click)="viewDetailUserPost(post.user)" src="{{ post.user.avatar_url }}">
+        </ion-avatar>
+        <h2>{{ post.user.name }}</h2>
+        <p>{{ post.user.age }}, {{ post.user.gender ? "Male": "Female" }}</p>
+        <ion-fab *ngIf="post.ownPost" top right edge fab-fixed class="more-action-post" (click)="openModalEdit(post.post)">
+            <button ion-fab mini><ion-icon name="create"></ion-icon></button>
+        </ion-fab>
+    </ion-item>
+
+    <img *ngIf="post.post.image_url" (click)="openModalDetail(post.post)" class="img-post" src="{{ post.post.image_url }}">
+
+    <ion-card-content (click)="openModalDetail(post.post)">
+        <h2><ion-icon color="primary" ios="ios-archive" md="md-archive"></ion-icon>  {{ post.post.title }}</h2><br/>
+        <p><ion-icon color="primary" name="md-calendar"></ion-icon>  {{ post.post.dateFrom | moment:['ll'] }} - {{ post.post.dateTo | moment:['ll'] }}</p><br/>
+        <p><ion-icon color="primary" ios="ios-book" md="md-book"></ion-icon>  {{ post.post.description }}</p>
+    </ion-card-content>
+
+    <ion-grid>
+        <ion-row>
+            <ion-col col-4 class="action-post" (click)="likePost(post.post)">
+                <button ion-button icon-left clear small>
+                    <ion-icon  name="{{ getNameIconLike(post) }}"></ion-icon>
+                    <div>{{ countLikes(post) }}</div>
+                </button>
+            </ion-col>
+            <ion-col col-4 class="action-post" (click)="savePost(post.post.key)">
+                <button ion-button icon-left clear small>
+                    <ion-icon *ngIf="userCurrent.saves && userCurrent.saves[post.post.key]" name="heart"></ion-icon>
+                    <ion-icon *ngIf="!(userCurrent.saves && userCurrent.saves[post.post.key])" name="heart-outline"></ion-icon>
+                    <div>Save</div>
+                </button>
+            </ion-col>
+            <ion-col col-4 class="action-post">
+                <button ion-button icon-left clear small>
+                    <ion-icon name="text"></ion-icon>
+                    <div>4 Comments</div>
+                </button>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col center text-center>
+                <ion-note>
+                    {{  post.post.updatedAt ? (post.post.updatedAt | timeAgo) : post.post.createdAt  | timeAgo }}
+                </ion-note>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col center text-center>
+                <button (click)="sharePost(post.post)" small ion-button outline><ion-icon name="md-share"></ion-icon></button>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+</ion-card>

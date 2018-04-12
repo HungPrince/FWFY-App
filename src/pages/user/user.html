@@ -4,10 +4,14 @@
             <ion-icon name="menu"></ion-icon>
         </button>
         <ion-title>List Applicant</ion-title>
+        <ion-buttons right>
+            <button ion-button class="btn-search-advanced" positionV ="bottom" duration = '500' ion-button tooltip="{{textShowHideAdvanced}} search advanced" (click)="showSearchAdvanced()">
+                <ion-icon name="md-checkmark"></ion-icon>
+            </button>
+        </ion-buttons>
     </ion-navbar>
     <ion-toolbar>
         <ion-searchbar  (ionInput)="getListUser($event)" autocorrect="off"></ion-searchbar>
-        <button class="btn-search-advanced" positionV ="bottom" duration = '500' ion-button tooltip="{{textShowHideAdvanced}} search advanced" (click)="showSearchAdvanced()">{{ textShowHideAdvanced }}</button>
     </ion-toolbar>
 </ion-header>
 

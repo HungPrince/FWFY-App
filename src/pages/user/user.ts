@@ -27,8 +27,10 @@ export class UserPage {
     private listUserSearch = [];
     @ViewChild(Content) content: Content;
 
-    constructor(public navCtrl: NavController, public navParams: NavParams,
-        public loaderService: LoaderService, public userProvider: UserProvider) {
+    constructor(public navCtrl: NavController,
+        public navParams: NavParams,
+        public loaderService: LoaderService,
+        public userProvider: UserProvider) {
         this.loaderService.loaderNoSetTime('loading user ..');
 
         CITIES.forEach(element => {

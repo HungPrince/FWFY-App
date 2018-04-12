@@ -25,6 +25,7 @@ export class MyApp {
     rootPage: any = LoginPage;
     private user: any;
     private activePage: any;
+    private isSetRooted = false;
 
     pages: Array<{ title: string, component: any }>;
 
@@ -36,18 +37,23 @@ export class MyApp {
         private storage: Storage,
         private uniqueDeviceID: UniqueDeviceID,
         public modalCtrl: ModalController,
-        private events: Events
+        private events: Events,
     ) {
         this.initializeApp();
         this.storage.get('auth').then((user) => {
             if (user) {
+                if (!this.isSetRooted) {
+                    this.rootPage = TabsPage;
+                }
                 this.user = user;
                 this.authorized(this.user);
             }
         });
+
         if (!this.user) {
             this.events.subscribe('userLoggedIn', (user) => {
                 if (user) {
+                    this.isSetRooted = true;
                     this.user = user;
                     this.authorized(this.user);
                 };
@@ -63,7 +69,7 @@ export class MyApp {
                         this.user.pushToken = uuid;
                         this.userProvider.update(this.user).then(data => {
                             console.log(data);
-                        })
+                        });
                     })
                     .catch((error: any) => console.log(error));
             }
@@ -78,7 +84,6 @@ export class MyApp {
     }
 
     authorized(user) {
-        this.rootPage = TabsPage;
         if (user.role == 'admin' || user.role == 'recuiter') {
             this.pages = [
                 { title: 'Home', component: TabsPage },
@@ -106,5 +111,11 @@ export class MyApp {
 
         let userModal: Modal = this.modalCtrl.create(UserEditPage, { 'user': this.user }, myModalOptions);
         userModal.present();
+    }
+
+    logout() {
+        this.storage.set('auth', null).then(data => {
+            this.rootPage = LoginPage;
+        });
     }
 }

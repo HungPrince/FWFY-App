@@ -11,10 +11,10 @@ import { UntilHelper } from '../../helpers/until.helper';
 import { FormHelper } from '../../helpers/form.helper';
 import { LoaderService } from '../../services/loaderService';
 import { LoginPage } from '../login/login';
-import { MyApp } from '../../app/app.component';
 import { User } from './../../models/user';
 import { UserProvider } from './../../providers/user/user';
 import { ToastService } from '../../services/toastService';
+import { TabsPage } from '../tabs/tabs';
 
 @IonicPage()
 @Component({
@@ -160,7 +160,7 @@ export class RegisterPage {
                     this.storage.set('auth', this.user);
                     this.loaderService.dismisLoader().then(data => {
                         this.toastService.toast('Create account successfully!', 500, 'bottom', false);
-                        this.navCtrl.setRoot(MyApp);
+                        this.navCtrl.setRoot(TabsPage);
                         this.events.publish('userLoggedIn', this.user);
                     });
                 }).catch(error => {

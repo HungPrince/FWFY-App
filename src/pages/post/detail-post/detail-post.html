@@ -49,6 +49,6 @@
     </ion-list>
     <div>
         <button ion-button round color="primary" block (click)="fileInput.click()">Apply</button>
-        <input #fileInput type="file" (change)="chooseFiles($event)" style="display:none;" />
+        <input #fileInput type="file" accept=".doc, .pdf" (change)="chooseFiles($event)" style="display:none;" />
     </div>
 </ion-content>

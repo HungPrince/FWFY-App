@@ -39,52 +39,50 @@ export class HomePage {
                 this.listCity.push(element[key]);
             }
         });
-
         this.loaderService.loaderNoSetTime('loading ...');
-        this.storage.get('auth').then(user => {
-            if (user) {
-                this.userCurrent = user;
-                this.postProvider.getAll().subscribe((posts) => {
-                    let listPostFree = [];
-                    this.listPost = [];
-                    let count = 0;
-                    posts.forEach(post => {
-                        this.userProvider.getUserByKey(post.userId).then(data => {
-                            data = data.val();
-                            let postI = {
-                                post: post,
-                                user: data,
-                                ownPost: user.uid == post.userId ? true : false
-                            }
-                            if (data['typeAccount'] == 'enterprise') {
-                                this.listPost.unshift(postI);
-                            } else if (data['typeAccount'] == 'standard') {
-                                this.listPost.push(postI);
-                            } else {
-                                listPostFree.push(postI);
-                            }
-                            count++;
-                            if (count == posts.length) {
-                                this.listPost = this.listPost.concat(listPostFree);
-                                console.log(this.listPost);
-                                this.listSearch = this.listPost;
-                            }
-                        }).catch(error => {
+            this.storage.get('auth').then(user => {
+                if (user) {
+                    this.userCurrent = user;
+                    this.postProvider.getAll().subscribe((posts) => {
+                        let listPostFree = [];
+                        this.listPost = [];
+                        let count = 0;
+                        posts.forEach(post => {
+                            this.userProvider.getUserByKey(post.userId).then(data => {
+                                data = data.val();
+                                let postI = {
+                                    post: post,
+                                    user: data,
+                                    ownPost: user.uid == post.userId ? true : false
+                                }
+                                if (data['typeAccount'] == 'enterprise') {
+                                    this.listPost.unshift(postI);
+                                } else if (data['typeAccount'] == 'standard') {
+                                    this.listPost.push(postI);
+                                } else {
+                                    listPostFree.push(postI);
+                                }
+                                count++;
+                                if (count == posts.length) {
+                                    this.listPost = this.listPost.concat(listPostFree);
+                                    this.listSearch = this.listPost;
+                                }
+                            }).catch(error => {
+                                this.showError(error);
+                            });
+                        }, (error) => {
                             this.showError(error);
                         });
+    
+                        this.loaderService.dismisLoader().then(data => {
+                        }).catch(error => console.log(error));
                     }, (error) => {
                         this.showError(error);
                     });
-                    this.loaderService.dismisLoader().then(data => {
-                        console.log(data);
-                    }).catch(error => console.log(error));
-                }, (error) => {
-                    this.showError(error);
-                });
-            }
-        }).catch(error => {
-            this.showError(error);
-        });
+                }
+            }).catch(error => {
+                this.showError(error);
+            });
     }
 
     showError(error) {
@@ -149,10 +147,6 @@ export class HomePage {
         };
         let myModal: Modal = this.modalCtrl.create(DetailPostPage, { 'post': post }, myModalOptions);
         myModal.present();
-    }
-
-    closeModal() {
-        return true;
     }
 
     sharePost(post) {

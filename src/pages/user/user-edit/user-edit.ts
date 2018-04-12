@@ -47,23 +47,26 @@ export class UserEditPage {
         private formHelper: FormHelper,
         private storage: Storage) {
         this.user = this.navParams.get('user');
-
-        CITIES.forEach(element => {
-            for (let key in element) {
-                if (element[key].name_with_type == this.user.city) {
-                    this.changeCity(element[key]);
-                    break;
+        if (this.user) {
+            CITIES.forEach(element => {
+                for (let key in element) {
+                    if (element[key].name_with_type == this.user.city) {
+                        this.changeCity(element[key]);
+                        break;
+                    }
                 }
+            });
+            if (this.user.address) {
+                DISTRICTS.forEach(element => {
+                    for (let key in element) {
+                        if (element[key].name == this.user.address.district) {
+                            this.changeDistrict(element[key]);
+                            break;
+                        }
+                    }
+                });
             }
-        });
-        DISTRICTS.forEach(element => {
-            for (let key in element) {
-                if (element[key].name == this.user.address.district) {
-                    this.changeDistrict(element[key]);
-                    break;
-                }
-            }
-        });
+        }
 
         this.formEditUser = this.formBuilder.group({
             'uid': new FormControl(this.user.uid),
@@ -122,7 +125,6 @@ export class UserEditPage {
         return this.formHelper.isErrorPattern(this.formEditUser, inputName);
     }
 
-
     changeCity(city) {
         this.listDistrict = [];
         DISTRICTS.forEach(district => {
@@ -153,6 +155,7 @@ export class UserEditPage {
 
     save() {
         this.loaderService.loaderNoSetTime("saving profile ...");
+        this.user.address = {};
         let user = this.formEditUser.value;
         for (let key in user) {
             if (key == 'city' || key == 'district' || key == 'street' || key == 'location') {
@@ -164,7 +167,7 @@ export class UserEditPage {
                 this.user[key] = this.untilHelper.niceString(user[key]);
             }
         }
-        this.userProvider.update(user).then(error => {
+        this.userProvider.update(this.user).then(error => {
             if (!error) {
                 this.loaderService.dismisLoader().then(data => {
                     this.goBack();

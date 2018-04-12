@@ -17,5 +17,6 @@ export class TabsPage {
     aboutRoot = AboutPage
     contactRoot = ContactPage
 
-    constructor(public navCtrl: NavController) { }
+    constructor(public navCtrl: NavController) { 
+    }
 }
