@@ -42,14 +42,22 @@ export class PostComponent {
                     text: "Share on Facebook",
                     icon: "logo-facebook",
                     handler: () => {
-                        this.getInfoShare(this.socialSharing.shareViaFacebook, post);
+                        this.socialSharing.shareViaFacebook(
+                            post.description,
+                            post.image_url,
+                            post.website
+                        )
                     }
                 },
                 {
                     text: "Twitter",
                     icon: "logo-twitter",
                     handler: () => {
-                        this.getInfoShare(this.socialSharing.shareViaTwitter, post);
+                        this.socialSharing.shareViaTwitter(
+                            post.description,
+                            post.image_url,
+                            post.website
+                        );
                     }
                 },
                 {
@@ -72,14 +80,6 @@ export class PostComponent {
             ]
         })
         sharePostActionSheet.present();
-    }
-
-    getInfoShare(typeShare, post) {
-        typeShare(
-            post.description,
-            post.image_url,
-            post.website
-        )
     }
 
     public savePost(postId: string) {
@@ -119,7 +119,7 @@ export class PostComponent {
         if (this.userCurrent.likes && this.userCurrent.likes[key]) {
             this.userCurrent.likes[key] = null;
         } else {
-            this.userCurrent.push({ key: true });
+            this.userCurrent.likes.push({ key: true });
         }
         this.userProvider.update(this.userCurrent).then(error => {
             if (!error) {
