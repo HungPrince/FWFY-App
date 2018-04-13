@@ -1,7 +1,7 @@
 <ion-card *ngIf="post && userCurrent">
     <ion-item>
         <ion-avatar item-start>
-            <img (click)="viewDetailUserPost(post.user)" src="{{ post.user.avatar_url }}">
+            <img (click)="openDetailUserPost(post.user)" src="{{ post.user.avatar_url }}">
         </ion-avatar>
         <h2>{{ post.user.name }}</h2>
         <p>{{ post.user.age }}, {{ post.user.gender ? "Male": "Female" }}</p>
@@ -20,16 +20,15 @@
 
     <ion-grid>
         <ion-row>
-            <ion-col col-4 class="action-post" (click)="likePost(post.post)">
-                <button ion-button icon-left clear small>
-                    <ion-icon  name="{{ getNameIconLike(post) }}"></ion-icon>
-                    <div>{{ countLikes(post) }}</div>
+            <ion-col col-4 class="action-post">
+                <button ion-button icon-left clear small (click)="likePost(post.post)">
+                    <ion-icon  name="{{ getNameIconLike(post.post.key) }}"></ion-icon>
+                    <div>{{ countLikes(post.post.likes) }}</div>
                 </button>
             </ion-col>
-            <ion-col col-4 class="action-post" (click)="savePost(post.post.key)">
-                <button ion-button icon-left clear small>
-                    <ion-icon *ngIf="userCurrent.saves && userCurrent.saves[post.post.key]" name="heart"></ion-icon>
-                    <ion-icon *ngIf="!(userCurrent.saves && userCurrent.saves[post.post.key])" name="heart-outline"></ion-icon>
+            <ion-col col-4 class="action-post" >
+                <button ion-button icon-left clear small (click)="savePost(post.post.key)">
+                    <ion-icon name="{{ getNameIconHeart(post.post.key) }}"></ion-icon>
                     <div>Save</div>
                 </button>
             </ion-col>

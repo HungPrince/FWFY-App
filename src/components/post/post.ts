@@ -42,22 +42,14 @@ export class PostComponent {
                     text: "Share on Facebook",
                     icon: "logo-facebook",
                     handler: () => {
-                        this.socialSharing.shareViaFacebook(
-                            post.description,
-                            "https://scontent.xx.fbcdn.net/v/t1.0-1/p100x100/15823472_1903496763215059_2160427870381018848_n.jpg?_nc_cat=0&oh=d6c75182f5c8cafe4dab2b2573559957&oe=5B48053D",
-                            post.website
-                        )
+                        this.getInfoShare(this.socialSharing.shareViaFacebook, post);
                     }
                 },
                 {
                     text: "Twitter",
                     icon: "logo-twitter",
                     handler: () => {
-                        this.socialSharing.shareViaTwitter(
-                            post.description,
-                            "https://scontent.xx.fbcdn.net/v/t1.0-1/p100x100/15823472_1903496763215059_2160427870381018848_n.jpg?_nc_cat=0&oh=d6c75182f5c8cafe4dab2b2573559957&oe=5B48053D",
-                            post.website
-                        )
+                        this.getInfoShare(this.socialSharing.shareViaTwitter, post);
                     }
                 },
                 {
@@ -82,78 +74,91 @@ export class PostComponent {
         sharePostActionSheet.present();
     }
 
+    getInfoShare(typeShare, post) {
+        typeShare(
+            post.description,
+            post.image_url,
+            post.website
+        )
+    }
+
     public savePost(postId: string) {
         if (!this.userCurrent.saves) {
             this.userCurrent.saves = {};
         }
         this.userCurrent.saves[postId] = (this.userCurrent.saves && this.userCurrent.saves[postId]) ? false : true;
-        this.userProvider.update(this.userCurrent).then(error => console.log(error));
+        this.userProvider.update(this.userCurrent).then(error => {
+            if (!error) {
+                this.storage.set('auth', this.userCurrent);
+            }
+        });
     }
 
-    countLikes(post) {
-        if (!post.post.likes) {
+    countLikes(likes) {
+        if (!likes) {
             return "like";
         } else {
-            let likesNumber = Object.keys(post.post.likes).length;
-            return likesNumber == 1 ? likesNumber + " like" : likesNumber + " likes";
+            let likesNumber = likes.length;
+            return likesNumber == 0 ? "like" : (likesNumber == 1 ? likesNumber + " like" : likesNumber + " likes");
         }
     }
 
-    getNameIconLike(post) {
-        let postInfo = post.post;
-        if (this.userCurrent.likes && this.userCurrent.likes[postInfo.key]) {
-            return 'thumbs-up';
-        }
-        return 'thumbs-up-outline';
+    getNameIconLike(key) {
+        return (this.userCurrent.likes && this.userCurrent.likes[key]) ? 'thumbs-up' : 'thumbs-up-outline';
+    }
+
+    getNameIconHeart(key) {
+        return (this.userCurrent.saves && this.userCurrent.saves[key]) ? 'heart' : 'heart-outline';
     }
 
     likePost(post: any) {
         let key = post.key;
         if (!this.userCurrent.likes) {
-            this.userCurrent.likes = {};
+            this.userCurrent.likes = [];
         }
-        this.userCurrent.likes[key] = (this.userCurrent.likes && this.userCurrent.likes[key]) ? false : true;
+        if (this.userCurrent.likes && this.userCurrent.likes[key]) {
+            this.userCurrent.likes[key] = null;
+        } else {
+            this.userCurrent.push({ key: true });
+        }
         this.userProvider.update(this.userCurrent).then(error => {
             if (!error) {
+                this.storage.set('auth', this.userCurrent);
                 let userId = this.userCurrent.uid;
                 if (!post.likes) {
-                    post.likes = {};
+                    post.likes = [];
                 }
-                post.likes[userId] = (post.likes && post.likes[userId]) ? null : userId;
-                this.postProvider.update(post).then(post => console.log(post));
+                if (post.likes && post.likes[userId]) {
+                    post.likes[userId] = null;
+                } else {
+                    post.likes.push({ userId: true });
+                }
+                this.postProvider.update(post).then(error => {
+                    if (!error) {
+                        console.log(post.likes);
+                    }
+                });
             }
         });
     };
 
-    openModalAdd() {
-        let myModalOptions: ModalOptions = {
-            enableBackdropDismiss: false
-        };
-        let myModal: Modal = this.modalCtrl.create(PostAddPage, myModalOptions);
-        myModal.present();
-    }
-
     openModalEdit(post) {
-        let myModalOptions: ModalOptions = {
-            enableBackdropDismiss: false
-        };
-        let myModal: Modal = this.modalCtrl.create(PostAddPage, { 'post': post }, myModalOptions);
-        myModal.present();
+        this.openModal(PostAddPage, { 'post': post });
     }
 
     openModalDetail(post) {
-        let myModalOptions: ModalOptions = {
-            enableBackdropDismiss: false
-        };
-        let myModal: Modal = this.modalCtrl.create(DetailPostPage, { 'post': post }, myModalOptions);
-        myModal.present();
+        this.openModal(DetailPostPage, { 'post': post });
     }
 
-    public viewDetailUserPost(user) {
+    openDetailUserPost(user) {
+        this.openModal(DetailUserPage, { 'user': user });
+    }
+
+    openModal(pageName, data) {
         let myModalOptions: ModalOptions = {
             enableBackdropDismiss: false
         };
-        let myModal: Modal = this.modalCtrl.create(DetailUserPage, { 'user': user }, myModalOptions);
+        let myModal: Modal = this.modalCtrl.create(pageName, data, myModalOptions);
         myModal.present();
     }
 }

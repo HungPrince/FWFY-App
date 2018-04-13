@@ -1,6 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { Content } from 'ionic-angular';
-import { NavController, MenuController } from 'ionic-angular';
+import { NavController, MenuController, ModalOptions, Modal, ModalController, Content } from 'ionic-angular';
 
 import { Storage } from '@ionic/storage';
 
@@ -10,13 +9,14 @@ import { LoginPage } from '../login/login';
 import { CITIES, TYPES, LEVELS } from '../../configs/data';
 
 import { LoaderService } from '../../services/loaderService';
-
+import { PostAddPage } from '../post/post-add/post-add';
 
 @Component({
     selector: 'page-home',
     templateUrl: 'home.html'
 })
 export class HomePage {
+    private 
     private listPost: Array<any> = [];
     private listSearch: any;
     private userCurrent: any;
@@ -32,7 +32,8 @@ export class HomePage {
         public menuCtrl: MenuController,
         public postProvider: PostProvider,
         public loaderService: LoaderService,
-        private userProvider: UserProvider
+        private userProvider: UserProvider,
+        private modalCtrl: ModalController
     ) {
         CITIES.forEach(element => {
             for (let key in element) {
@@ -65,6 +66,7 @@ export class HomePage {
                             count++;
                             if (count == posts.length) {
                                 this.listPost = this.listPost.concat(listPostFree);
+                                this.storage.set('posts', this.listPost);
                                 this.listSearch = this.listPost;
                             }
                         }).catch(error => {
@@ -73,7 +75,6 @@ export class HomePage {
                     }, (error) => {
                         this.showError(error);
                     });
-
                     this.loaderService.dismisLoader().then(data => {
                     }).catch(error => console.log(error));
                 }, (error) => {
@@ -123,5 +124,20 @@ export class HomePage {
                 || post.post.city == search || post.post.type == search || post.post.level == search);
         }
         this.listPost = lstPost.length > 0 ? lstPost : this.listSearch;
+    }
+
+    openModalAdd() {
+        let myModalOptions: ModalOptions = {
+            enableBackdropDismiss: false
+        };
+        let myModal: Modal = this.modalCtrl.create(PostAddPage, myModalOptions);
+        myModal.present();
+    }
+
+    isAllowed() {
+        if(!this.userCurrent) {
+            return false;
+        }
+        return this.userCurrent.role == 'recuiter' || this.userCurrent.role == 'admin';
     }
 }

@@ -26,7 +26,7 @@ export class PostProvider implements AutoCompleteService {
     }
 
     update(post: any) {
-        return this.af.database.ref(`post/${post.key}`).set(post);
+        return this.af.database.ref(`post`).child(post.key).update(post);
     }
 
     delete(post: any) {

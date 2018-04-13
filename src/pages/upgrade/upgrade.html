@@ -13,9 +13,9 @@
 </ion-header>
 
 
-<ion-content padding>
-    <ion-slides (ionSlideDidChange)="slideChanged()" autoplay = 2500>
-        <ion-slide *ngFor = "let upgrade of upgrades">
+<ion-content padding *ngIf="upgrades && user">
+    <ion-slides (ionSlideDidChange)="slideChanged()" autoplay=1000>
+        <ion-slide *ngFor="let upgrade of upgrades">
             <div class="slide-upgrade">
                 <h1 class="type">{{ upgrade.type }}</h1>
                 <h3 class="price">{{ upgrade.price }}</h3>
@@ -23,5 +23,5 @@
             </div>
         </ion-slide>
     </ion-slides>
-    <button ion-button [disabled]="user && user.typeAccount == typeAccount" (click)="upgradeAccount()" block class="btn-upgrade">UPGRADE</button>
+    <button ion-button [disabled]="user.typeAccount == typeAccount" (click)="upgradeAccount()" block class="btn-upgrade">UPGRADE</button>
 </ion-content>
