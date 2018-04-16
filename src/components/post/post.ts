@@ -78,7 +78,7 @@ export class PostComponent {
                     role: "destructive"
                 }
             ]
-        })
+        });
         sharePostActionSheet.present();
     }
 
@@ -86,7 +86,7 @@ export class PostComponent {
         if (!this.userCurrent.saves) {
             this.userCurrent.saves = {};
         }
-        this.userCurrent.saves[postId] = (this.userCurrent.saves && this.userCurrent.saves[postId]) ? false : true;
+        this.userCurrent.saves[postId] = this.userCurrent.saves[postId] ? null : true;
         this.userProvider.update(this.userCurrent).then(error => {
             if (!error) {
                 this.storage.set('auth', this.userCurrent);
@@ -98,7 +98,7 @@ export class PostComponent {
         if (!likes) {
             return "like";
         } else {
-            let likesNumber = likes.length;
+            let likesNumber = Object.keys(likes).length;
             return likesNumber == 0 ? "like" : (likesNumber == 1 ? likesNumber + " like" : likesNumber + " likes");
         }
     }
@@ -114,25 +114,17 @@ export class PostComponent {
     likePost(post: any) {
         let key = post.key;
         if (!this.userCurrent.likes) {
-            this.userCurrent.likes = [];
+            this.userCurrent.likes = {};
         }
-        if (this.userCurrent.likes && this.userCurrent.likes[key]) {
-            this.userCurrent.likes[key] = null;
-        } else {
-            this.userCurrent.likes.push({ key: true });
-        }
+        this.userCurrent.likes[key] = this.userCurrent.likes[key] ? null : true;
         this.userProvider.update(this.userCurrent).then(error => {
             if (!error) {
                 this.storage.set('auth', this.userCurrent);
                 let userId = this.userCurrent.uid;
                 if (!post.likes) {
-                    post.likes = [];
+                    post.likes = {};
                 }
-                if (post.likes && post.likes[userId]) {
-                    post.likes[userId] = null;
-                } else {
-                    post.likes.push({ userId: true });
-                }
+                post.likes[userId] = post.likes[userId] ? null : true;
                 this.postProvider.update(post).then(error => {
                     if (!error) {
                         console.log(post.likes);

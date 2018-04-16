@@ -40,6 +40,7 @@ export class HomePage {
                 this.listCity.push(element[key]);
             }
         });
+        
         this.loaderService.loaderNoSetTime('loading ...');
         this.storage.get('auth').then(user => {
             if (user) {

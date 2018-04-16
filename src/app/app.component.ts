@@ -7,6 +7,7 @@ import { Storage } from '@ionic/storage';
 import { UniqueDeviceID } from '@ionic-native/unique-device-id';
 
 import { UserProvider } from '../providers/user/user';
+import { NetService } from '../services/netService';
 
 import { TabsPage } from '../pages/tabs/tabs';
 import { LoginPage } from '../pages/login/login';
@@ -15,6 +16,8 @@ import { PostPage } from '../pages/post/post';
 import { UserEditPage } from '../pages/user/user-edit/user-edit';
 import { ManagerPostPage } from '../pages/manager-post/manager-post';
 import { UpgradePage } from '../pages/upgrade/upgrade';
+import { StatisticsPage } from '../pages/statistics/statistics';
+
 
 @Component({
     templateUrl: 'app.html'
@@ -38,7 +41,9 @@ export class MyApp {
         private uniqueDeviceID: UniqueDeviceID,
         public modalCtrl: ModalController,
         private events: Events,
+        private netService: NetService
     ) {
+        // this.netService.checkNetwork();
         this.initializeApp();
         this.storage.get('auth').then((user) => {
             if (user) {
@@ -91,6 +96,7 @@ export class MyApp {
                 { title: 'List Applicant', component: UserPage },
                 { title: 'Manager Your Post', component: ManagerPostPage },
                 { title: 'Upgrade', component: UpgradePage },
+                { title: 'Statistics', component: StatisticsPage }
             ];
         } else {
             this.pages = [

@@ -21,7 +21,7 @@ export class PostPage {
         private modalCtrl: ModalController
     ) {
         this.loaderService.loaderNoSetTime('loading ...');
-        
+
         this.storage.get('posts').then(posts => {
             if (posts) {
                 this.storage.get('auth').then(user => {

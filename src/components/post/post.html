@@ -4,7 +4,7 @@
             <img (click)="openDetailUserPost(post.user)" src="{{ post.user.avatar_url }}">
         </ion-avatar>
         <h2>{{ post.user.name }}</h2>
-        <p>{{ post.user.age }}, {{ post.user.gender ? "Male": "Female" }}</p>
+        <p>{{ post.user.age ? post.user.age : '18' }}, {{ post.user.gender ? "Male": "Female" }}</p>
         <ion-fab *ngIf="post.ownPost" top right edge fab-fixed class="more-action-post" (click)="openModalEdit(post.post)">
             <button ion-fab mini><ion-icon name="create"></ion-icon></button>
         </ion-fab>
@@ -42,7 +42,7 @@
         <ion-row>
             <ion-col center text-center>
                 <ion-note>
-                    {{  post.post.updatedAt ? (post.post.updatedAt | timeAgo) : post.post.createdAt  | timeAgo }}
+                    {{ post.post.updatedAt ? (post.post.updatedAt | timeAgo) : post.post.createdAt  | timeAgo }}
                 </ion-note>
             </ion-col>
         </ion-row>

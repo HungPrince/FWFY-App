@@ -1,6 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Content } from 'ionic-angular/components/content/content';
+import { Storage } from '@ionic/storage';
 
 import { UserProvider } from '../../providers/user/user';
 import { DetailUserPage } from '../../pages/user/detail-user/detail-user';
@@ -13,11 +14,12 @@ import { CITIES, SCHOOLS, LEVELS, SPECIALIZEDS, EXPERIENCES, TYPES } from '../..
     templateUrl: 'user.html',
 })
 export class UserPage {
-
+    private userCurrent: any;
     private listUser: Array<any> = [];
     private textShowHideAdvanced = "Show";
     private searchAdvandced = false;
     private searched = false;
+    private nameIconHeart = 'heart-outline';
     schools = SCHOOLS;
     levels = LEVELS;
     specializeds = SPECIALIZEDS;
@@ -30,8 +32,13 @@ export class UserPage {
     constructor(public navCtrl: NavController,
         public navParams: NavParams,
         public loaderService: LoaderService,
-        public userProvider: UserProvider) {
+        public userProvider: UserProvider,
+        private storage: Storage) {
         this.loaderService.loaderNoSetTime('loading user ..');
+
+        this.storage.get('auth').then(user => {
+            this.userCurrent = user;
+        });
 
         CITIES.forEach(element => {
             for (let key in element) {
@@ -45,10 +52,6 @@ export class UserPage {
             this.listUser = listUser;
             this.loaderService.dismisLoader();
         });
-    }
-
-    ionViewDidLoad() {
-
     }
 
     viewDetail(user) {
@@ -82,5 +85,33 @@ export class UserPage {
                 || user.specialized == search);
         }
         this.listUser = (lstUser.length > 0) ? lstUser : this.listUserSearch;
+    }
+
+    saveUser(key: string) {
+        if (!this.userCurrent.saveUserFav) {
+            this.userCurrent.saveUserFav = {};
+        }
+        this.userCurrent.saveUserFav[key] = this.userCurrent.saveUserFav[key] ? null : true;
+        this.userProvider.update(this.userCurrent).then(error => {
+            if (!error) {
+                this.storage.set('auth', this.userCurrent);
+                console.log('Save user successfully!');
+            } else {
+                console.log(error);
+            }
+        });
+    }
+
+    getNameIconHeart(key: string) {
+        return (this.userCurrent.saveUserFav && this.userCurrent.saveUserFav[key]) ? 'heart' : 'heart-outline';
+    }
+
+    getUserFav() {
+        this.nameIconHeart = this.nameIconHeart === 'heart' ? 'heart-outline' : 'heart';
+        if (this.nameIconHeart === 'heart') {
+            this.listUser = this.listUser.filter(user => this.userCurrent.saveUserFav && this.userCurrent.saveUserFav[user.uid]);
+        } else {
+            this.listUser = this.listUserSearch;
+        }
     }
 }

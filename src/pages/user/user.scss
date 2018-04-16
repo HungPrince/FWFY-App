@@ -12,4 +12,12 @@ page-user {
         float: right;
         margin-right: 12px;
     }
+
+    #save-user {
+        position: fixed !important;
+        bottom: 0;
+        right: 0 !important;
+        margin: 35px;
+        margin-bottom:40px;
+    }
 }

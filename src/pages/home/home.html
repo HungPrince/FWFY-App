@@ -16,7 +16,9 @@
         <button class="btn-search-advanced" positionV ="bottom" duration = '500' ion-button tooltip="{{textShowHideAdvanced}} search advanced" (click)="showSearchAdvanced()">{{ textShowHideAdvanced }}</button>
     </ion-toolbar>
 </ion-header>
+
 <ion-content *ngIf="listPost">
+    
     <ion-list *ngIf="searchAdvandced">
         <ion-item>
             <ion-label>City</ion-label>
@@ -37,7 +39,9 @@
             </ion-select>
         </ion-item>
     </ion-list>
+
     <post *ngFor="let post of listPost" [postI] ="post"></post>
+
     <button *ngIf="isAllowed()" color="danger" mini ion-fab="" class="fab fab-ios fab-ios-danger" id="add-post" (click)="openModalAdd()">
         <ion-icon class="fab-close-icon icon icon-ios ion-ios-close" name="close" role="img" aria-label="close"></ion-icon>
         <span class="button-inner">

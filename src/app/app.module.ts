@@ -46,6 +46,7 @@ import { ManagerPostPage } from '../pages/manager-post/manager-post';
 import { DetailPostPage } from '../pages/post/detail-post/detail-post';
 import { UpgradePage } from '../pages/upgrade/upgrade';
 import { PostComponent } from '../components/post/post';
+import { StatisticsPage } from '../pages/statistics/statistics';
 
 import { UntilHelper } from '../helpers/until.helper';
 import { FormHelper } from '../helpers/form.helper';
@@ -56,6 +57,7 @@ import { ToastService } from '../services/toastService';
 import { UserProvider } from '../providers/user/user';
 import { DataProvider } from '../providers/data/data';
 import { UserService } from '../services/userService';
+import { NetService } from '../services/netService';
 
 @NgModule({
     declarations: [
@@ -75,7 +77,8 @@ import { UserService } from '../services/userService';
         ManagerPostPage,
         DetailPostPage,
         UpgradePage,
-        PostComponent
+        PostComponent,
+        StatisticsPage
     ],
     imports: [
         BrowserModule,
@@ -112,7 +115,8 @@ import { UserService } from '../services/userService';
         ManagerPostPage,
         DetailPostPage,
         UpgradePage,
-        PostComponent
+        PostComponent,
+        StatisticsPage
     ],
     providers: [
         StatusBar,
@@ -135,7 +139,8 @@ import { UserService } from '../services/userService';
         UserProvider,
         DataProvider,
         UniqueDeviceID,
-        UserService
+        UserService,
+        NetService
     ]
 })
 export class AppModule { }

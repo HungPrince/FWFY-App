@@ -1,5 +1,5 @@
 export class User {
-    uid ?: string;
+    uid?: string;
     userName: string;
     name: string;
     email: string;
@@ -17,8 +17,10 @@ export class User {
     favs: object;
     password: string;
     passwordConfirm: string;
+    createdAt: Date;
+    updatedAt: Date;
 
-    public constructor(Role: string, Name: string, UserName, Phone: object, Email: string, Age: number, School: string, Speciality: string, Address: object, Gender: boolean,  Description: string, Experience: string, Avatar_url: string) {
+    public constructor(Role: string, Name: string, UserName, Phone: object, Email: string, Age: number, School: string, Speciality: string, Address: object, Gender: boolean, Description: string, Experience: string, Avatar_url: string) {
         this.role = Role;
         this.name = Name;
         this.userName = UserName;
