@@ -23,5 +23,5 @@
             </div>
         </ion-slide>
     </ion-slides>
-    <button ion-button [disabled]="user.typeAccount == typeAccount" (click)="upgradeAccount()" block class="btn-upgrade">UPGRADE</button>
+    <button ion-button [disabled]="user.typeAccount == typeAccount" (click)="upgradeAccount()" radius block class="btn-upgrade">{{ textButtonUpgrade }}</button>
 </ion-content>

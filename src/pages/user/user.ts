@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController, ModalOptions } from 'ionic-angular';
 import { Content } from 'ionic-angular/components/content/content';
 import { Storage } from '@ionic/storage';
 
@@ -33,7 +33,8 @@ export class UserPage {
         public navParams: NavParams,
         public loaderService: LoaderService,
         public userProvider: UserProvider,
-        private storage: Storage) {
+        private storage: Storage,
+        private modalCtrl: ModalController) {
         this.loaderService.loaderNoSetTime('loading user ..');
 
         this.storage.get('auth').then(user => {
@@ -55,7 +56,11 @@ export class UserPage {
     }
 
     viewDetail(user) {
-        this.navCtrl.push(DetailUserPage, { "user": user });
+        let modalOptions: ModalOptions = {
+            enableBackdropDismiss: false
+        };
+        let modalDetailUser = this.modalCtrl.create(DetailUserPage, {"user": user}, modalOptions);
+        modalDetailUser.present();
     }
 
     showSearchAdvanced() {

@@ -1,8 +1,8 @@
 <ion-header>
     <ion-navbar>
         <ion-toolbar>
-            <ion-buttons left class="loginnavbtn">
-                <button ion-button class="loginnavbtn" (click)="goBack()">
+            <ion-buttons left (click)="goBack()">
+                <button ion-button class="loginnavbtn">
                     <ion-icon name="md-arrow-back"></ion-icon>
                 </button>
             </ion-buttons>
@@ -23,62 +23,61 @@
 
 </ion-header>
 
-<ion-content>
-
+<ion-content padding>
     <div [ngSwitch]="viewMore">
         <ion-list *ngSwitchCase="'info'">
             <ion-item *ngIf="user.avatar_url">
                 <ion-card>
-                    <img *ngIf="user.avatar_url" src="{{user.avatar_url}}">
+                    <img *ngIf="user.avatar_url" src="{{ user.avatar_url }}">
                 </ion-card>
             </ion-item>
             <ion-item>
-                Name: {{user.name}}
+                Name: {{ user.name }}
             </ion-item>
             <ion-item>
-                Email: {{user.email}}
+                Email: {{ user.email }}
             </ion-item>
             <ion-item *ngIf="user.userName">
-                Username: {{user.userName}}
+                Username: {{ user.userName }}
             </ion-item>
             <ion-item *ngIf="user.gender">
-                Gender: {{user.gender ? 'Male' : 'Female'}}
+                Gender: {{ user.gender ? 'Male' : 'Female'}}
             </ion-item>
             <ion-item *ngIf="user.age">
-                Age: {{user.age}}
+                Age: {{ user.age }}
             </ion-item>
             <ion-item *ngIf="user.school">
-                School: {{user.school}}
+                School: {{ user.school }}
             </ion-item>
             <ion-item *ngIf="user.speciality">
-                Speciality: {{user.speciality}}
+                Speciality: {{ user.speciality }}
             </ion-item>
             <ion-item *ngIf="user.desciption">
-                Description: {{user.description}}
+                Description: {{ user.description }}
             </ion-item>
             <div *ngIf="user.address">
                 <ion-item *ngIf="user.address.city">
-                    Address: {{user.address.city}}, {{user.address.district}}, {{user.address.street}}, {{user.address.landAlleyBuilding}}
+                    Address: {{ user.address.city }}, {{ user.address.district }}, {{ user.address.street }}, {{ user.address.location }}
                 </ion-item>
             </div>
             <div *ngIf="user.phone">
-                <ion-item *ngIf="user.phone.phone1">
-                    Phone number 1: {{user.phone.phone1}}
-                </ion-item>
-                <ion-item *ngIf="user.phone.phone2">
-                    Phone number 2: {{user.phone.phone2}}
+                <ion-item *ngIf="user.phone">
+                    Phone number: {{ user.phone }}
                 </ion-item>
             </div>
+
+            <button ion-button class="submit-btn" round block type="submit" (click)="delete()" color="danger">Delete</button>
+
         </ion-list>
 
         <ion-list *ngSwitchCase="'phone'">
             <div *ngIf="user.phone">
-                <ion-item-sliding #item *ngIf="user.phone.phone">
+                <ion-item-sliding #item *ngIf="user.phone">
                     <ion-item>
-                        {{user.phone.phone}}
+                        {{ user.phone }}
                     </ion-item>
                     <ion-item-options side="left">
-                        <button ion-button (click)="call(user.phone.phone)">
+                        <button ion-button (click)="call(user.phone)">
                             <ion-icon color="balanced" name="call"></ion-icon>
                         </button>
                         <button ion-button color="danger" (click)="share(user)">Share</button>
@@ -89,20 +88,20 @@
                     </ion-item-options>
                 </ion-item-sliding>
             </div>
-            <div (ngSubmit)="sendEmail()" [formGroup]="formEmail">
+            <form (ngSubmit)="sendEmail()" [formGroup]="formEmail">
                 <ion-list>
                     <ion-item class="input-text">
                         <ion-label>
                             <ion-icon name="md-mail"></ion-icon>
                         </ion-label>
-                        <ion-input type="email" formControlName="emailTo" name="emailTo" placeholder="Enter email"></ion-input>
+                        <ion-input type="email" formControlName="emailTo" name="emailTo" placeholder="Enter email to"></ion-input>
                     </ion-item>
 
-                    <div *ngIf="formEmail.controls['emailTo'].errors && (formEmail.controls['emailTo'].dirty || formEmail.controls['emailTo'].touched)">
-                        <div [hidden]="!formEmail.controls['emailTo'].errors.required" class="error">
+                    <div *ngIf="isError('emailTo')">
+                        <div [hidden]="isErrorRequired('emailTo')" class="error">
                             Email is required field!
                         </div>
-                        <div [hidden]="!formEmail.controls['emailTo'].errors.pattern" class="error">
+                        <div [hidden]="isErrorPattern('emailTo')" class="error">
                             Email incorrect format!
                         </div>
                     </div>
@@ -113,8 +112,8 @@
                         </ion-label>
                         <ion-input type="email" formControlName="emailCC" name="emailCC" placeholder="Enter cc email"></ion-input>
                     </ion-item>
-                    <div *ngIf="formEmail.controls['emailCC'].errors && (formEmail.controls['emailCC'].dirty || formEmail.controls['emailCC'].touched)">
-                        <div [hidden]="!formEmail.controls['emailCC'].errors.pattern" class="error">
+                    <div *ngIf="isError('emailCC')">
+                        <div [hidden]="isErrorPattern('emailCC')" class="error">
                             Email CC incorrect format!
                         </div>
                     </div>
@@ -125,8 +124,8 @@
                         </ion-label>
                         <ion-input type="email" formControlName="emailBCC" name="emailBCC" placeholder="Enter bcc email"></ion-input>
                     </ion-item>
-                    <div *ngIf="formEmail.controls['emailBCC'].errors && (formEmail.controls['emailBCC'].dirty || formEmail.controls['emailBCC'].touched)">
-                        <div [hidden]="!formEmail.controls['emailBCC'].errors.pattern" class="error">
+                    <div *ngIf="isError('emailBCC')">
+                        <div [hidden]="isErrorPattern('emailBCC')" class="error">
                             Email BCC incorrect format!
                         </div>
                     </div>
@@ -138,8 +137,8 @@
                         <ion-textarea type="text" formControlName="subject" name="subject" placeholder="Enter your title"></ion-textarea>
                     </ion-item>
 
-                    <div *ngIf="formEmail.controls['subject'].errors && (formEmail.controls['subject'].dirty || formEmail.controls['subject'].touched)">
-                        <div [hidden]="!formEmail.controls['subject'].errors.required" class="error">
+                    <div *ngIf="isError('subject')">
+                        <div [hidden]="isErrorRequired('subject')" class="error">
                             Subject is required field!
                         </div>
                     </div>
@@ -151,8 +150,8 @@
                         <ion-input type="text" formControlName="body" name="body" placeholder="Enter your content"></ion-input>
                     </ion-item>
 
-                    <div *ngIf="formEmail.controls['body'].errors && (formEmail.controls['body'].dirty || formEmail.controls['body'].touched)">
-                        <div [hidden]="!formEmail.controls['body'].errors.required" class="error">
+                    <div *ngIf="isError('body')">
+                        <div [hidden]="isErrorRequired('body')" class="error">
                             Content is required field!
                         </div>
                     </div>
@@ -165,14 +164,8 @@
                     <div padding>
                         <button ion-button color="primary" (click)="sendEmail()" block [disabled]="formEmail.invalid">Send</button>
                     </div>
-
                 </ion-list>
-
-            </div>
+            </form>
         </ion-list>
-
     </div>
-
-    <button style="width:80%; margin:auto" ion-button class="submit-btn" full type="submit" (click)="deleteBus()" color="danger">Delete</button>
-
 </ion-content>

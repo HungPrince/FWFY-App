@@ -16,7 +16,7 @@ import { PostAddPage } from '../post/post-add/post-add';
     templateUrl: 'home.html'
 })
 export class HomePage {
-    private 
+    private
     private listPost: Array<any> = [];
     private listSearch: any;
     private userCurrent: any;
@@ -40,7 +40,7 @@ export class HomePage {
                 this.listCity.push(element[key]);
             }
         });
-        
+
         this.loaderService.loaderNoSetTime('loading ...');
         this.storage.get('auth').then(user => {
             if (user) {
@@ -136,7 +136,7 @@ export class HomePage {
     }
 
     isAllowed() {
-        if(!this.userCurrent) {
+        if (!this.userCurrent) {
             return false;
         }
         return this.userCurrent.role == 'recuiter' || this.userCurrent.role == 'admin';

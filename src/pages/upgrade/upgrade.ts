@@ -16,6 +16,7 @@ export class UpgradePage {
     @ViewChild(Slides) slides: Slides;
     upgrades = UPGRADE;
     user: any;
+    textButtonUpgrade: string = "Upgrade";
     private typeAccount;
 
     constructor(
@@ -40,13 +41,25 @@ export class UpgradePage {
         switch (currentIndex) {
             case 1: {
                 this.typeAccount = "standard";
+                if (this.user.typeAccount === 'enterprise') {
+                    this.textButtonUpgrade = 'DownGrade';
+                } else if (this.user.typeAccount === 'free') {
+                    this.textButtonUpgrade = 'Upgrade';
+                } else {
+                    this.textButtonUpgrade = 'Current';
+                }
                 break;
             }
             case 2: {
                 this.typeAccount = 'enterprise';
+                if (this.user.typeAccount === 'enterprise') {
+                    this.textButtonUpgrade = 'Current';
+                } else {
+                    this.textButtonUpgrade = 'DownGrade';
+                }
                 break;
             }
-            default: this.typeAccount = 'free';
+            default: this.typeAccount = 'free'; this.textButtonUpgrade = 'Upgrade';
         }
     };
 
@@ -56,7 +69,7 @@ export class UpgradePage {
         this.userProvider.update(this.user).then(error => {
             if (!error) {
                 this.loadingService.dismisLoader().then(data => {
-                    this.toastService.toast('You were upgraded successfully!', 1000, 'middle', false);
+                    this.toastService.toast('You were upgraded successfully!', 1000, 'bottom', false);
                     this.storage.set('auth', this.user);
                 }).catch(error => console.log(error));
             }

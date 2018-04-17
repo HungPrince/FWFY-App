@@ -14,6 +14,10 @@ import { TagInputModule } from 'ngx-chips';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TooltipsModule } from 'ionic-tooltips';
 import { UniqueDeviceID } from '@ionic-native/unique-device-id';
+import { File } from '@ionic-native/file';
+import { FileTransfer } from '@ionic-native/file-transfer'; 
+import { FileChooser } from '@ionic-native/file-chooser';
+import { FilePath } from '@ionic-native/file-path';
 
 import { PipesModule } from '../pipes/pipes.module';
 
@@ -140,7 +144,11 @@ import { NetService } from '../services/netService';
         DataProvider,
         UniqueDeviceID,
         UserService,
-        NetService
+        NetService,
+        File,
+        FileChooser,
+        FileTransfer,
+        FilePath
     ]
 })
 export class AppModule { }
