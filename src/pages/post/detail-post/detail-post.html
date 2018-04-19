@@ -19,8 +19,8 @@
 
 <ion-content padding>
     <ion-list>
-        <ion-item>Company name: {{post.company}}</ion-item>
-        <ion-item>Title: {{post.title}}</ion-item>
+        <ion-item>Company name: {{ post.company }}</ion-item>
+        <ion-item>Title: {{ post.title }}</ion-item>
         <ion-item>Email: {{ post.email }} </ion-item>
         <ion-item>Phone: {{ post.phone }} </ion-item>
         <ion-item>Type: {{ post.type }} </ion-item>
@@ -47,7 +47,5 @@
     </ion-list>
     <div>
         <button ion-button round color="primary" block (click)="uploadFile()">Apply</button>        
-        <!-- <button ion-button round color="primary" block (click)="fileInput.click()">Apply</button>
-        <input #fileInput type="file" accept=".doc, .pdf" (change)="chooseFiles($event)" style="display:none;" /> -->
     </div>
 </ion-content>

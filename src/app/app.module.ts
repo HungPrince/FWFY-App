@@ -50,7 +50,9 @@ import { ManagerPostPage } from '../pages/manager-post/manager-post';
 import { DetailPostPage } from '../pages/post/detail-post/detail-post';
 import { UpgradePage } from '../pages/upgrade/upgrade';
 import { PostComponent } from '../components/post/post';
+import { EmailComponent } from '../components/email/email';
 import { StatisticsPage } from '../pages/statistics/statistics';
+import { CommentPage } from '../pages/comment/comment';
 
 import { UntilHelper } from '../helpers/until.helper';
 import { FormHelper } from '../helpers/form.helper';
@@ -62,6 +64,7 @@ import { UserProvider } from '../providers/user/user';
 import { DataProvider } from '../providers/data/data';
 import { UserService } from '../services/userService';
 import { NetService } from '../services/netService';
+import { ChatProvider } from '../providers/chat/chat';
 
 @NgModule({
     declarations: [
@@ -82,7 +85,9 @@ import { NetService } from '../services/netService';
         DetailPostPage,
         UpgradePage,
         PostComponent,
-        StatisticsPage
+        EmailComponent,
+        StatisticsPage,
+        CommentPage
     ],
     imports: [
         BrowserModule,
@@ -120,7 +125,9 @@ import { NetService } from '../services/netService';
         DetailPostPage,
         UpgradePage,
         PostComponent,
-        StatisticsPage
+        EmailComponent,
+        StatisticsPage,
+        CommentPage
     ],
     providers: [
         StatusBar,
@@ -148,7 +155,8 @@ import { NetService } from '../services/netService';
         File,
         FileChooser,
         FileTransfer,
-        FilePath
+        FilePath,
+    ChatProvider
     ]
 })
 export class AppModule { }

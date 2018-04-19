@@ -25,13 +25,20 @@ export class PostPage {
         this.storage.get('posts').then(posts => {
             if (posts) {
                 this.storage.get('auth').then(user => {
-                    this.listPost = posts.filter(post => user.saves[post.post.key]);
-                    this.loaderService.dismisLoader();
+                    this.listPost = posts.filter(post =>  user.saves && user.saves[post.post.key]);
+                    this.showError(null);
                 });
             } else {
-                this.loaderService.dismisLoader();
+                this.showError(null)
             }
-        });
+        }).catch(error => this.showError(error))
+    }
+
+    showError(error) {
+        console.log(error);
+        this.loaderService.dismisLoader().then(data => {
+            console.log(data);
+        }).catch(error => console.log(error));
     }
 
     openModalAdd() {

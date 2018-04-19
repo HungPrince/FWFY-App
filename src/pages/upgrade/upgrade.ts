@@ -55,11 +55,17 @@ export class UpgradePage {
                 if (this.user.typeAccount === 'enterprise') {
                     this.textButtonUpgrade = 'Current';
                 } else {
-                    this.textButtonUpgrade = 'DownGrade';
+                    this.textButtonUpgrade = 'Upgrade';
                 }
                 break;
             }
-            default: this.typeAccount = 'free'; this.textButtonUpgrade = 'Upgrade';
+            default: {
+                this.typeAccount = 'free';
+                this.textButtonUpgrade = 'Upgrade';
+                if (this.user.typeAccount === 'enterprise' || "standard") {
+                    this.textButtonUpgrade = "DownGrade";
+                }
+            }
         }
     };
 

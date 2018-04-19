@@ -9,7 +9,7 @@ import { UserProvider } from '../../providers/user/user';
 import { LoaderService } from '../../services/loaderService';
 import { PostProvider } from '../../providers/post/post';
 import { DetailPostPage } from '../../pages/post/detail-post/detail-post';
-
+import { CommentPage } from '../../pages/comment/comment';
 
 @Component({
     selector: 'post',
@@ -99,7 +99,7 @@ export class PostComponent {
             return "like";
         } else {
             let likesNumber = Object.keys(likes).length;
-            return likesNumber == 0 ? "like" : (likesNumber == 1 ? likesNumber + " like" : likesNumber + " likes");
+            return likesNumber == 1 ? likesNumber + " like" : likesNumber + " likes";
         }
     }
 
@@ -109,6 +109,15 @@ export class PostComponent {
 
     getNameIconHeart(key) {
         return (this.userCurrent.saves && this.userCurrent.saves[key]) ? 'heart' : 'heart-outline';
+    }
+
+    countComment(comments) {
+        if (!comments) {
+            return "comment";
+        } else {
+            let commentNumber = Object.keys(comments).length;
+            return commentNumber === 1 ? commentNumber + " comment" : commentNumber + " comments";
+        }
     }
 
     likePost(post: any) {
@@ -152,5 +161,13 @@ export class PostComponent {
         };
         let myModal: Modal = this.modalCtrl.create(pageName, data, myModalOptions);
         myModal.present();
+    }
+
+    openComment(key: string) {
+        let message = {
+            key: key,
+            user: this.userCurrent
+        }
+        this.openModal(CommentPage, { 'message': message });
     }
 }

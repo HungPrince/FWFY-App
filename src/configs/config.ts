@@ -6,3 +6,5 @@ export const FIREBASE_CONFIG = {
     storageBucket: "findworkforyou-99999.appspot.com",
     messagingSenderId: "857296346364"
 };
+
+export const EMAIL_CONTACT = "buihung160894@gmail.com";

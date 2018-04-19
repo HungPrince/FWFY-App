@@ -13,7 +13,7 @@
 </ion-header>
 
 
-<ion-content padding *ngIf="upgrades && user">
+<ion-content padding *ngIf="upgrades">
     <ion-slides (ionSlideDidChange)="slideChanged()" autoplay=1000>
         <ion-slide *ngFor="let upgrade of upgrades">
             <div class="slide-upgrade">
@@ -23,5 +23,8 @@
             </div>
         </ion-slide>
     </ion-slides>
-    <button ion-button [disabled]="user.typeAccount == typeAccount" (click)="upgradeAccount()" radius block class="btn-upgrade">{{ textButtonUpgrade }}</button>
 </ion-content>
+
+<ion-footer *ngIf="user" padding>
+    <button ion-button [disabled]="user.typeAccount == typeAccount" (click)="upgradeAccount()" round block class="btn-upgrade">{{ textButtonUpgrade }}</button>
+</ion-footer>

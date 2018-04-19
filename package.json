@@ -88,7 +88,8 @@
       "cordova-plugin-uniquedeviceid": {},
       "cordova-plugin-file-transfer": {},
       "cordova-plugin-filechooser": {},
-      "cordova-plugin-filepath": {}
+      "cordova-plugin-filepath": {},
+      "cordova-plugin-file": {}
     },
     "platforms": [
       "android"

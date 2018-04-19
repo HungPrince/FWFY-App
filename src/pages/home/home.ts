@@ -42,6 +42,15 @@ export class HomePage {
         });
 
         this.loaderService.loaderNoSetTime('loading ...');
+    }
+
+    showError(error) {
+        console.log(error);
+        this.loaderService.dismisLoader().then(data => {
+        }).catch(error => console.log(error));
+    }
+
+    ionViewDidLoad() {
         this.storage.get('auth').then(user => {
             if (user) {
                 this.userCurrent = user;
@@ -85,12 +94,6 @@ export class HomePage {
         }).catch(error => {
             this.showError(error);
         });
-    }
-
-    showError(error) {
-        console.log(error);
-        this.loaderService.dismisLoader().then(data => {
-        }).catch(error => console.log(error));
     }
 
     ionViewWillEnter() {

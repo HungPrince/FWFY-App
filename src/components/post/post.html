@@ -32,10 +32,10 @@
                     <div>Save</div>
                 </button>
             </ion-col>
-            <ion-col col-4 class="action-post">
+            <ion-col col-4 class="action-post" (click)="openComment(post.post.key)">
                 <button ion-button icon-left clear small>
                     <ion-icon name="text"></ion-icon>
-                    <div>4 Comments</div>
+                    <div>{{ countComment(post.post.comments) }}</div>
                 </button>
             </ion-col>
         </ion-row>

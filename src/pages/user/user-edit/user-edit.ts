@@ -167,7 +167,7 @@ export class UserEditPage {
                 this.user[key] = this.untilHelper.niceString(user[key]);
             }
         }
-        this.user['updatedAt'] = new Date();
+        this.user['updatedAt'] = Date.now();
         this.userProvider.update(this.user).then(error => {
             if (!error) {
                 this.loaderService.dismisLoader().then(data => {

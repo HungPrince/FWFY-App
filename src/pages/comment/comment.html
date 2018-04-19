@@ -1,0 +1,39 @@
+<ion-header>
+
+    <ion-navbar>
+        <ion-toolbar>
+            <ion-buttons left class="loginnavbtn">
+                <button ion-button class="loginnavbtn" (click)="goBack()">
+                    <ion-icon name="md-arrow-back"></ion-icon>
+                </button>
+            </ion-buttons>
+            <ion-title>Comments</ion-title>
+        </ion-toolbar>
+    </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+    <ion-card *ngFor="let comment of comments">
+        <ion-item>
+            <ion-avatar item-start>
+                <img *ngIf="comment.avatar_url" src="{{ comment.avatar_url }}">
+            </ion-avatar>
+            <h2>{{ comment.username }}</h2>
+            <p>{{ comment.createdAt | timeAgo}}</p>
+        </ion-item>
+        <ion-card-content [ngClass]="uidUser === comment.uid ? 'hight-light': ''">
+            {{ comment.message }}
+        </ion-card-content>
+    </ion-card>
+</ion-content>
+
+<ion-footer>
+    <form>
+        <ion-item>
+            <ion-input type="text" placeholder="Type here..." [(ngModel)]="textMessage" name="textMessage"></ion-input>
+            <button ion-button clear item-right (click)="pushChat()">Send</button>
+        </ion-item>
+    </form>
+</ion-footer>
