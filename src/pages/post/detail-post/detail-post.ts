@@ -61,7 +61,7 @@ export class DetailPostPage {
             this.user.file = "";
         }
         if (!this.post.files) {
-            this.post.files = [];
+            this.post.files = {};
         }
 
         let file;
@@ -129,9 +129,9 @@ export class DetailPostPage {
 
                 fileEntry.file((resFile) => {
 
-                    var reader = new FileReader();
+                    let reader = new FileReader();
                     reader.onloadend = (evt: any) => {
-                        var fileBlob: any = new Blob([evt.target.result], { type: type });
+                        let fileBlob: any = new Blob([evt.target.result], { type: type });
                         fileBlob.name = name;
                         resolve(fileBlob);
                     };

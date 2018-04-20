@@ -24,11 +24,8 @@ export class CommentPage {
     }
 
     ionViewDidLoad() {
-        this.chatProvider.getListChat(this.comment.key).then(data => {
-            data = data.val();
-            for (let key in data) {
-                this.comments.push(data[key]);
-            }
+        this.chatProvider.getListChat(this.comment.key).subscribe(data => {
+            this.comments = data;
         });
     }
 

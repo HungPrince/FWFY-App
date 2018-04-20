@@ -29,9 +29,9 @@ export class PostPage {
                     this.showError(null);
                 });
             } else {
-                this.showError(null)
+                this.showError(null);
             }
-        }).catch(error => this.showError(error))
+        }).catch(error => this.showError(error));
     }
 
     showError(error) {

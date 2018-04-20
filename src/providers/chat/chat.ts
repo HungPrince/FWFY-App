@@ -7,8 +7,8 @@ export class ChatProvider {
     constructor(private af: AngularFireDatabase) {
     }
 
-    getListChat(key: string) {
-        return this.af.database.ref('post').child(key).child('comments').once('value', data => { return data; });
+    getListChat(key: string): Observable<any> {
+        return this.af.list(`post/${key}/comments`).valueChanges();
     }
 
     pushChat(key: string, message: any) {
