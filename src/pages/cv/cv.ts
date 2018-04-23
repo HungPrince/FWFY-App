@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, Platform } from 'ionic-angular';
+import { Storage } from '@ionic/storage';
+import { LoaderService } from '../../services/loaderService';
 
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
@@ -8,19 +10,36 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
 import { File } from '@ionic-native/file';
 import { FileOpener } from '@ionic-native/file-opener';
 
-declare var window;
-
 @IonicPage()
 @Component({
     selector: 'page-cv',
     templateUrl: 'cv.html',
 })
 export class CvPage {
-    private imageUrl = "https://firebasestorage.googleapis.com/v0/b/findworkforyou-99999.appspot.com/o/images%2Fpic927869?alt=media&token=7b0773cc-671d-4e87-a9cb-c651622f2b29";
-    letterObj = {
-        to: '',
-        from: '',
-        text: ''
+    private user: any;
+    showExperience = true;
+    showEducation = true;
+    showEnglish = true;
+    showIt = true;
+
+    private infoCV = {
+        headerTarget: '',
+        contentExp: { company: '', major: '', description: '' },
+        contentEdu: { school: '', certificate: '', grade: '' },
+        contentHobby: '',
+        contentSkill: '',
+        footerEnglish: {
+            listen: 50,
+            read: 50,
+            write: 50,
+            speak: 50
+        },
+        footerIt: {
+            word: 50,
+            excel: 50,
+            powerpoint: 50,
+            outlook: 50
+        }
     };
 
     pdfObj = null;
@@ -30,29 +49,140 @@ export class CvPage {
         public navParams: NavParams,
         private platform: Platform,
         private file: File,
-        private fileOpener: FileOpener) {
+        private fileOpener: FileOpener,
+        private storage: Storage,
+        private loaderService: LoaderService
+    ) {
+        this.storage.get('auth').then(user => {
+            if (user) {
+                this.user = user;
+                this.user.gender = user.gender ? "Male" : "Female";
+            }
+        });
     }
-    createPdf() {
-        this.makeFileIntoBlob(this.imageUrl, 'yourCv', 'image/png').then(blogImage => {
+
+    createCV() {
+        // this.user.avatar_url = 'https://www.gravatar.com/avatar/d50c83cc0c6523b4d3f6085295c953e0';
+        this.loaderService.loaderNoSetTime('Creating cv ...');
+        this.toDataURL(this.user.avatar_url, (dataUrl) => {
+
             var docDefinition = {
                 content: [
-                    { image: blogImage, style: 'image' },
-                    { text: 'REMINDER', style: 'header' },
-                    { text: new Date().toTimeString(), alignment: 'right' },
-
-                    { text: 'From', style: 'subheader' },
-                    { text: this.letterObj.from },
-
-                    { text: 'To', style: 'subheader' },
-                    this.letterObj.to,
-
-                    { text: this.letterObj.text, style: 'story', margin: [0, 20, 0, 20] },
-
                     {
-                        ul: [
-                            'Bacon',
-                            'Rips',
-                            'BBQ',
+                        image: dataUrl,
+                        style: 'header-image',
+                        background: '#773060'
+                    },
+                    {
+                        text: 'TARGET \n ' +
+                            this.infoCV.headerTarget + '\n' +
+                            this.user.description,
+                        style: 'header',
+                        background: '#773060',
+                        color: '#ffffff'
+                    },
+                    '\n \n',
+                    {
+                        alignment: 'justify',
+                        columns: [
+                            {
+                                text: 'EXPERIENCE \n',
+                                style: 'titleColumn'
+                            },
+                            {
+                                text: 'INFORMATION \n',
+                                style: 'titleColumn'
+                            }
+                        ]
+                    },
+                    {
+                        alignment: 'justify',
+                        columns: [
+                            {
+                                text:
+                                    'Company: ' + this.infoCV.contentExp.company + '\n' +
+                                    'Major: ' + this.infoCV.contentExp.major + '\n' +
+                                    'Description: ' + this.infoCV.contentExp.description,
+                                style: 'textColumn'
+                            },
+                            {
+                                text:
+                                    'Name: ' + this.user.name + '\n' +
+                                    'Gender: ' + this.user.gender + '\n' +
+                                    'Email: ' + this.user.email + '\n' +
+                                    'Age: ' + this.user.age + '\n' +
+                                    'Address: ' + this.user.address.street + ' ,' + this.user.address.district + ' ,' + this.user.address.city,
+                                style: 'textColumn'
+                            }
+                        ]
+                    },
+                    '\n \n',
+                    {
+                        columns: [
+                            {
+                                text: 'EDUCATION \n',
+                                style: 'titleColumn'
+                            },
+
+                            {
+                                text: 'HOBBY \n',
+                                style: 'titleColumn'
+                            }
+                        ]
+                    },
+                    {
+                        columns: [
+                            {
+                                text:
+                                    'School: ' + this.infoCV.contentEdu.school + '\n' +
+                                    'Certificate: ' + + this.infoCV.contentEdu.certificate + '\n' +
+                                    'Grade: ' + this.infoCV.contentEdu.grade,
+                                style: 'textColumn'
+                            },
+                            {
+                                text: this.infoCV.contentHobby,
+                                style: 'textColumn'
+                            }
+                        ]
+                    },
+                    '\n \n',
+                    {
+                        text: 'SKILL \n' +
+                            this.infoCV.contentSkill,
+                        style: 'titleColumn'
+                    },
+                    '\n \n',
+                    {
+                        columns: [
+                            {
+                                text: 'ENGLISH \n',
+                                style: 'titleColumn'
+                            },
+
+                            {
+                                text: 'IT \n',
+                                style: 'titleColumn'
+                            }
+                        ]
+                    },
+                    {
+                        columns: [
+                            {
+                                text:
+                                    'Listent: ' + this.convertValueToGrade(this.infoCV.footerEnglish.listen) + '\n' +
+                                    'Read: ' + this.convertValueToGrade(this.infoCV.footerEnglish.read) + '\n' +
+                                    'Speak: ' + this.convertValueToGrade(this.infoCV.footerEnglish.speak) + '\n' +
+                                    'Write: ' + this.convertValueToGrade(this.infoCV.footerEnglish.write) + '\n',
+                                style: 'textColumn'
+                            },
+                            {
+                                text:
+                                    'Word: ' + this.convertValueToGrade(this.infoCV.footerIt.word) + '\n' +
+                                    'Excel: ' + this.convertValueToGrade(this.infoCV.footerIt.excel) + '\n' +
+                                    'Powerpoint: ' + this.convertValueToGrade(this.infoCV.footerIt.powerpoint) + '\n' +
+                                    'Outlook: ' + this.convertValueToGrade(this.infoCV.footerIt.outlook) + '\n',
+                                style: 'textColumn'
+                            }
                         ]
                     }
                 ],
@@ -61,71 +191,71 @@ export class CvPage {
                         fontSize: 18,
                         bold: true,
                     },
-                    subheader: {
-                        fontSize: 14,
-                        bold: true,
-                        margin: [0, 15, 0, 0]
-                    },
-                    story: {
-                        italic: true,
-                        alignment: 'center',
-                        width: '50%',
-                    },
                     image: {
                         width: '250 px',
                         height: '250 px',
+                    },
+                    text: {
+                        fontSize: 20,
+                        color: 'purple',
+                    },
+                    titleColumn: {
+                        fontSize: 20,
+                        color: 'purple',
                     }
                 }
             }
             this.pdfObj = pdfMake.createPdf(docDefinition);
-            // this.viewPdf();
-        }).catch(error => {
-            console.log(error);
+            this.loaderService.dismisLoader().then(data => {
+                this.pdfObj.open();
+            })
         });
     }
 
-    viewPdf() {
-        this.pdfObj.open();
-    }
-
-    downloadPdf() {
+    downloadCV() {
         if (this.platform.is('cordova')) {
+            let nameCv = this.user.name + '_cv.pdf';
             this.pdfObj.getBuffer((buffer) => {
                 var blob = new Blob([buffer], { type: 'application/pdf' });
 
-                // Save the PDF to the data Directory of our App
-                this.file.writeFile(this.file.dataDirectory, 'myletter.pdf', blob, { replace: true }).then(fileEntry => {
-                    // Open the PDf with the correct OS tools
-                    this.fileOpener.open(this.file.dataDirectory + 'myletter.pdf', 'application/pdf');
-                })
+                this.file.writeFile(this.file.dataDirectory, nameCv, blob, { replace: true }).then(fileEntry => {
+                    this.fileOpener.open(this.file.dataDirectory + nameCv, 'application/pdf');
+                });
             });
         } else {
-            // On a browser simply use download!
             this.pdfObj.download();
         }
     }
 
-    makeFileIntoBlob(_filePath, name, type) {
-        return new Promise((resolve, reject) => {
-            window.resolveLocalFileSystemURL(_filePath, (fileEntry) => {
-
-                fileEntry.file((resFile) => {
-                    let reader = new FileReader();
-                    reader.onloadend = (evt: any) => {
-                        let fileBlob: any = new Blob([evt.target.result], { type: type });
-                        fileBlob.name = name;
-                        resolve(fileBlob);
-                    };
-
-                    reader.onerror = (e) => {
-                        alert('Failed file read: ' + e.toString());
-                        reject(e);
-                    };
-
-                    reader.readAsArrayBuffer(resFile);
-                });
-            });
-        });
+    toDataURL(url, callback) {
+        var xhr = new XMLHttpRequest();
+        xhr.onload = function () {
+            var reader = new FileReader();
+            reader.onloadend = function () {
+                callback(reader.result);
+            }
+            reader.readAsDataURL(xhr.response);
+        };
+        xhr.open('GET', url);
+        xhr.responseType = 'blob';
+        xhr.send();
     }
 
+    toggleInfo(item) {
+        this[item] = !this[item];
+    }
+
+    convertValueToGrade(val) {
+        if (val < 25) {
+            return 'D';
+        }
+        else if (val >= 25 && val < 50) {
+            return 'B';
+        }
+        else if (val >= 50 && val < 75) {
+            return 'C';
+        } else {
+            return 'A';
+        }
+    }
 }

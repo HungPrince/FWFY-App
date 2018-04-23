@@ -123,7 +123,7 @@ export class MyApp {
 
     logout() {
         this.storage.set('auth', null).then(data => {
-            this.rootPage = LoginPage;
+            this.nav.push(LoginPage);
         });
     }
 }
