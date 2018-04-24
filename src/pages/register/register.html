@@ -1,5 +1,5 @@
 <ion-header>
-    <ion-navbar hideBackButton>
+    <ion-navbar hideBackButton color="primary">
         <ion-buttons left class="loginnavbtn">
             <button ion-button class="loginnavbtn" (click)="goBack()">
                 <ion-icon name="md-arrow-back"></ion-icon>
@@ -7,7 +7,7 @@
         </ion-buttons>
         <ion-title>Form Register</ion-title>
         <ion-buttons right>
-            <button ion-button [disabled]="formRegister.invalid" (click)="doRegister()">
+            <button ion-button (click)="doRegister()">
                 <ion-icon name="md-checkmark"></ion-icon>
             </button>
         </ion-buttons>
@@ -225,7 +225,7 @@
             </ion-item>
 
             <div padding>
-                <button [disabled]="formRegister.invalid" ion-button color="primary" block>Register</button>
+                <button  ion-button color="primary" block>Register</button>
             </div>
 
         </ion-list>

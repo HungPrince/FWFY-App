@@ -3,8 +3,8 @@ page-user {
         text-align: center;
     }
     .img-card {
-        width: 230px;
-        height: 200px;
+        width: 280px;
+        height: 280px;
         margin: auto;
         margin-top: 20px;
     }
@@ -19,5 +19,9 @@ page-user {
         right: 0 !important;
         margin: 35px;
         margin-bottom:40px;
+    }
+
+    .description {
+        margin: auto;
     }
 }

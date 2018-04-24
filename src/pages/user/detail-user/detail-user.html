@@ -1,13 +1,11 @@
 <ion-header>
-    <ion-navbar>
-        <ion-toolbar>
-            <ion-buttons left (click)="goBack()">
-                <button ion-button class="loginnavbtn">
-                    <ion-icon name="md-arrow-back"></ion-icon>
-                </button>
-            </ion-buttons>
-            <ion-title>Detail User</ion-title>
-        </ion-toolbar>
+    <ion-navbar color="primary">
+        <ion-buttons left (click)="goBack()">
+            <button ion-button class="loginnavbtn">
+                <ion-icon name="md-arrow-back"></ion-icon>
+            </button>
+        </ion-buttons>
+        <ion-title>Detail User</ion-title>
     </ion-navbar>
 
     <ion-toolbar>
@@ -27,7 +25,7 @@
     <div [ngSwitch]="viewMore">
         <ion-list *ngSwitchCase="'info'">
             <ion-item *ngIf="user.avatar_url">
-                <ion-card>
+                <ion-card class="image-user">
                     <img *ngIf="user.avatar_url" src="{{ user.avatar_url }}">
                 </ion-card>
             </ion-item>
@@ -57,7 +55,8 @@
             </ion-item>
             <div *ngIf="user.address">
                 <ion-item *ngIf="user.address.city">
-                    Address: {{ user.address.city }}, {{ user.address.district }}, {{ user.address.street }}, {{ user.address.location }}
+                    <ion-textarea readonly rows="3" value="Address: {{ user.address.city }}, {{ user.address.district }}, {{ user.address.street }}, {{ user.address.location }}">
+                    </ion-textarea>
                 </ion-item>
             </div>
             <div *ngIf="user.phone">
@@ -65,8 +64,9 @@
                     Phone number: {{ user.phone }}
                 </ion-item>
             </div>
-
-            <button ion-button class="submit-btn" round block type="submit" (click)="delete()" color="danger">Delete</button>
+            <div padding>
+                <button ion-button class="submit-btn" round block type="submit" (click)="delete()" color="danger">Delete</button>
+            </div>
 
         </ion-list>
 
@@ -158,11 +158,11 @@
 
                     <ion-item>
                         <ion-label id="profile_image" color="primary" stacked>Attachment</ion-label>
-                        <ion-input type="file" id="upload" formControlName="attachment"></ion-input>
+                        <ion-input color="primary" block type="file" formControlName="attachment"></ion-input>
                     </ion-item>
 
                     <div padding>
-                        <button ion-button color="primary" (click)="sendEmail()" block [disabled]="formEmail.invalid">Send</button>
+                        <button ion-button color="primary" (click)="sendEmail()" round block [disabled]="formEmail.invalid">Send</button>
                     </div>
                 </ion-list>
             </form>

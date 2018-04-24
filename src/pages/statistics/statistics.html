@@ -4,7 +4,7 @@
             <ion-icon name="menu"></ion-icon>
         </button>
         <ion-title>
-            Charts User
+            Statistics
         </ion-title>
     </ion-navbar>
 </ion-header>
@@ -13,7 +13,7 @@
 
     <ion-card>
         <ion-card-header>
-            Sttistics user active per month
+            Statistics user active per month
         </ion-card-header>
         <ion-card-content>
             <canvas #barCanvas></canvas>
@@ -26,6 +26,15 @@
         </ion-card-header>
         <ion-card-content>
             <canvas #doughnutCanvas></canvas>
+        </ion-card-content>
+    </ion-card>
+
+    <ion-card>
+        <ion-card-header>
+            Number you were posted / month
+        </ion-card-header>
+        <ion-card-content>
+            <canvas #lineCanvas></canvas>
         </ion-card-content>
     </ion-card>
 

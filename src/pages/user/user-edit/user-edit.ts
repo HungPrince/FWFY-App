@@ -70,7 +70,7 @@ export class UserEditPage {
 
         this.formEditUser = this.formBuilder.group({
             'uid': new FormControl(this.user.uid),
-            'role': new FormControl({ value: this.user.role, 'disabled': true }),
+            'role': new FormControl(this.user.role),
             'name': new FormControl(this.user.name, [Validators.required, Validators.minLength(8), Validators.maxLength(100)]),
             'userName': new FormControl(this.user.userName, [Validators.required, Validators.minLength(4), Validators.maxLength(24)]),
             'companyName': new FormControl(this.user.companyName, [Validators.required, Validators.minLength(4), Validators.maxLength(24)]),

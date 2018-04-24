@@ -4,7 +4,7 @@
             <img (click)="openDetailUserPost(post.user)" src="{{ post.user.avatar_url }}">
         </ion-avatar>
         <h2>{{ post.user.name }}</h2>
-        <p>{{ post.user.age ? post.user.age : '18' }}, {{ post.user.gender ? "Male": "Female" }}</p>
+        <p>{{ post.user.age ? post.user.age : '18' }}, {{ post.user.gender ? "Male" : "Female" }}</p>
         <ion-fab *ngIf="post.ownPost" top right edge fab-fixed class="more-action-post" (click)="openModalEdit(post.post)">
             <button ion-fab mini><ion-icon name="create"></ion-icon></button>
         </ion-fab>
@@ -13,12 +13,25 @@
     <img *ngIf="post.post.image_url" (click)="openModalDetail(post.post)" class="img-post" src="{{ post.post.image_url }}">
 
     <ion-card-content (click)="openModalDetail(post.post)">
-        <h2><ion-icon color="primary" ios="ios-archive" md="md-archive"></ion-icon>  {{ post.post.title }}</h2><br/>
-        <p><ion-icon color="primary" name="md-calendar"></ion-icon>  {{ post.post.dateFrom | moment:['ll'] }} - {{ post.post.dateTo | moment:['ll'] }}</p><br/>
-        <p><ion-icon color="primary" ios="ios-book" md="md-book"></ion-icon>  {{ post.post.description }}</p>
+        <h2><ion-icon color="primary" name="md-archive" md="md-archive"></ion-icon><span>{{ post.post.title }}</span></h2>
+        <p><ion-icon color="primary" name="md-calendar"></ion-icon><span>{{ post.post.dateFrom | moment:['ll'] }} - {{ post.post.dateTo | moment:['ll'] }}</span></p>
+        <p><ion-icon color="primary" name="md-book" md="md-book" class="icon-func"></ion-icon>
+            <span *ngFor="let func of post.post.function">#{{ func.display }} </span>
+        </p>
     </ion-card-content>
 
     <ion-grid>
+        <div *ngIf="post.listCv">
+            <ion-row *ngFor="let cv of post.listCv">
+                <ion-col col-6>
+                    {{ cv.user.name }}
+                </ion-col>
+                <ion-col col-6>
+                    <a href="{{ cv.linkCv }}">Open cv</a>
+                </ion-col>
+            </ion-row>
+        </div>
+       
         <ion-row>
             <ion-col col-4 class="action-post">
                 <button ion-button icon-left clear small (click)="likePost(post.post)">

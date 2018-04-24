@@ -5,57 +5,58 @@
         </button>
         <ion-title>List Applicant</ion-title>
         <ion-buttons right>
-            <button ion-button class="btn-search-advanced" positionV ="bottom" duration = '500' ion-button tooltip="{{textShowHideAdvanced}} search advanced" (click)="showSearchAdvanced()">
+            <button ion-button class="btn-search-advanced" positionV="bottom" duration='500' ion-button tooltip="{{ textShowHideAdvanced }} search advanced"
+                (click)="showSearchAdvanced()">
                 <ion-icon name="md-checkmark"></ion-icon>
             </button>
         </ion-buttons>
     </ion-navbar>
     <ion-toolbar>
-        <ion-searchbar  (ionInput)="getListUser($event)" autocorrect="off"></ion-searchbar>
+        <ion-searchbar (ionInput)="getListUser($event)" autocorrect="off"></ion-searchbar>
     </ion-toolbar>
 </ion-header>
 
 <ion-content *ngIf="listUser && userCurrent">
     <ion-list *ngIf="searchAdvandced">
-            <ion-item>
-                <ion-label>City</ion-label>
-                <ion-select [(ngModel)]="city" name="city">
-                    <ion-option *ngFor="let city of listCity" (ionSelect)="searchUser(city.name_with_type)" value="{{city.name_with_type}}">{{city.name_with_type}}</ion-option>
-                </ion-select>
-            </ion-item>
-            <ion-item>
-                <ion-label>Employment Type</ion-label>
-                <ion-select [(ngModel)]="type" name="type">
-                    <ion-option  *ngFor="let type of types" value="{{ type }}" (ionSelect)="searchUser(type)">{{ type }}</ion-option>
-                </ion-select>
-            </ion-item>
-            <ion-item>
-                <ion-label>Seniority level</ion-label>
-                <ion-select [(ngModel)]="level" name="level">
-                    <ion-option *ngFor="let level of levels" value="{{ level }}" (ionSelect)="searchUser(level)">{{ level }}</ion-option>
-                </ion-select>
-            </ion-item>
-            <ion-item>
-                <ion-label>School</ion-label>
-                <ion-select [(ngModel)]="school" name="school">
-                    <ion-option  *ngFor="let school of schools" value="{{ school }}" (ionSelect)="searchUser(school)">{{ school }}</ion-option>
-                </ion-select>
-            </ion-item>
-            <ion-item>
-                <ion-label>Experience</ion-label>
-                <ion-select [(ngModel)]="experience" name="experience">
-                    <ion-option *ngFor="let experience of experiences" value="{{ experience }}" (ionSelect)="searchUser(experience)">{{ experience }}</ion-option>
-                </ion-select>
-            </ion-item>
-            <ion-item>
-                <ion-label>Specialized</ion-label>
-                <ion-select [(ngModel)]="specialized" name="specialized">
-                    <ion-option *ngFor="let specialized of specializeds" value="{{ specialized }}" (ionSelect)="searchUser(specialized)">{{ specialized }}</ion-option>
-                </ion-select>
-            </ion-item>
-        </ion-list>
+        <ion-item>
+            <ion-label>City</ion-label>
+            <ion-select [(ngModel)]="city" name="city">
+                <ion-option *ngFor="let city of listCity" (ionSelect)="searchUser(city.name_with_type)" value="{{city.name_with_type}}">{{city.name_with_type}}</ion-option>
+            </ion-select>
+        </ion-item>
+        <ion-item>
+            <ion-label>Employment Type</ion-label>
+            <ion-select [(ngModel)]="type" name="type">
+                <ion-option *ngFor="let type of types" value="{{ type }}" (ionSelect)="searchUser(type)">{{ type }}</ion-option>
+            </ion-select>
+        </ion-item>
+        <ion-item>
+            <ion-label>Seniority level</ion-label>
+            <ion-select [(ngModel)]="level" name="level">
+                <ion-option *ngFor="let level of levels" value="{{ level }}" (ionSelect)="searchUser(level)">{{ level }}</ion-option>
+            </ion-select>
+        </ion-item>
+        <ion-item>
+            <ion-label>School</ion-label>
+            <ion-select [(ngModel)]="school" name="school">
+                <ion-option *ngFor="let school of schools" value="{{ school }}" (ionSelect)="searchUser(school)">{{ school }}</ion-option>
+            </ion-select>
+        </ion-item>
+        <ion-item>
+            <ion-label>Experience</ion-label>
+            <ion-select [(ngModel)]="experience" name="experience">
+                <ion-option *ngFor="let experience of experiences" value="{{ experience }}" (ionSelect)="searchUser(experience)">{{ experience }}</ion-option>
+            </ion-select>
+        </ion-item>
+        <ion-item>
+            <ion-label>Specialized</ion-label>
+            <ion-select [(ngModel)]="specialized" name="specialized">
+                <ion-option *ngFor="let specialized of specializeds" value="{{ specialized }}" (ionSelect)="searchUser(specialized)">{{ specialized }}</ion-option>
+            </ion-select>
+        </ion-item>
+    </ion-list>
     <ion-card *ngFor="let user of listUser">
-        <img class="img-card" src="{{user.avatar_url}}">
+        <img class="img-card" src="{{ user.avatar_url }}">
         <ion-card-content>
             <ion-card-title>
                 {{ user.name }}
@@ -70,18 +71,24 @@
                     </ion-col>
                 </ion-row>
                 <ion-row>
-                    <ion-col *ngIf="user.speciality" col-6>
-                        Speciality
+                    <ion-col *ngIf="user.specialized" col-6>
+                        Specialized
                     </ion-col>
                     <ion-col>
-                        {{ user.speciality }}
+                        {{ user.specialized }}
                     </ion-col>
                 </ion-row>
-                <ion-row *ngIf="user.description">
-                    {{ user.description }}
-                </ion-row>
                 <ion-row>
-                    <ion-col col-4 class="action-post" >
+                    <ion-col *ngIf="user.experience" col-6>
+                        Experience
+                    </ion-col>
+                    <ion-col>
+                        {{ user.experience }}
+                    </ion-col>
+                </ion-row>
+               
+                <ion-row>
+                    <ion-col col-4 class="action-post">
                         <button ion-button icon-left clear small (click)="saveUser(user.uid)">
                             <ion-icon name="{{ getNameIconHeart(user.uid) }}"></ion-icon>
                             <div>Save</div>
@@ -101,7 +108,7 @@
     <button color="danger" mini ion-fab="" class="fab fab-ios fab-ios-danger" id="save-user" (click)="getUserFav()">
         <ion-icon class="fab-close-icon icon icon-ios ion-ios-close" name="close" role="img" aria-label="close"></ion-icon>
         <span class="button-inner">
-            <ion-icon name="{{ nameIconHeart }}" role="img"  aria-label="heart"></ion-icon>
+            <ion-icon name="{{ nameIconHeart }}" role="img" aria-label="heart"></ion-icon>
         </span>
         <div class="button-effect">
         </div>

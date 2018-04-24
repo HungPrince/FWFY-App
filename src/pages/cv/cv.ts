@@ -62,26 +62,28 @@ export class CvPage {
     }
 
     createCV() {
-        // this.user.avatar_url = 'https://www.gravatar.com/avatar/d50c83cc0c6523b4d3f6085295c953e0';
+        this.user.avatar_url = 'https://www.gravatar.com/avatar/d50c83cc0c6523b4d3f6085295c953e0';
         this.loaderService.loaderNoSetTime('Creating cv ...');
         this.toDataURL(this.user.avatar_url, (dataUrl) => {
 
             var docDefinition = {
                 content: [
                     {
-                        image: dataUrl,
-                        style: 'header-image',
-                        background: '#773060'
-                    },
-                    {
-                        text: 'TARGET \n ' +
-                            this.infoCV.headerTarget + '\n' +
-                            this.user.description,
                         style: 'header',
-                        background: '#773060',
-                        color: '#ffffff'
+                        columns: [
+                            {
+                                image: dataUrl,
+                                style: 'header-image',
+                            },
+                            {
+                                text: 'TARGET \n' +
+                                    this.infoCV.headerTarget + '\n' +
+                                    this.user.description,
+                                style: 'textColumn',
+                            }
+                        ]
                     },
-                    '\n \n',
+                    '\n \n \n \n',
                     {
                         alignment: 'justify',
                         columns: [
@@ -145,11 +147,25 @@ export class CvPage {
                             }
                         ]
                     },
-                    '\n \n',
                     {
-                        text: 'SKILL \n' +
-                            this.infoCV.contentSkill,
-                        style: 'titleColumn'
+                        columns: [
+                            {
+
+                            }, {
+                                text: 'SKILL \n',
+                                style: 'titleColumn'
+                            }
+                        ]
+                    },
+                    {
+                        columns: [
+                            {
+
+                            }, {
+                                text: this.infoCV.contentSkill,
+                                style: 'textColumn'
+                            }
+                        ]
                     },
                     '\n \n',
                     {
@@ -188,16 +204,15 @@ export class CvPage {
                 ],
                 styles: {
                     header: {
-                        fontSize: 18,
                         bold: true,
+                        color: 'purple'
                     },
                     image: {
                         width: '250 px',
                         height: '250 px',
                     },
-                    text: {
-                        fontSize: 20,
-                        color: 'purple',
+                    textColumn: {
+                        fontSize: 16,
                     },
                     titleColumn: {
                         fontSize: 20,
@@ -208,7 +223,7 @@ export class CvPage {
             this.pdfObj = pdfMake.createPdf(docDefinition);
             this.loaderService.dismisLoader().then(data => {
                 this.pdfObj.open();
-            })
+            }).catch(e => console.log(e));
         });
     }
 

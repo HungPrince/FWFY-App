@@ -1,35 +1,9 @@
 page-user-edit {
-    ion-select {
-        margin-right: 10px;
-        max-width: 70%;
-    }
-    .logo {
-		height: 140px;
-		background: green;
-		text-align: center;
-		position: relative;
-		p {
-			margin: auto;
-		    color: white;
-		    font-size: 20px;
-		    padding-top: 16px;
-		    margin-bottom: 10px;
-		}
-		img {
-			height: 80px;
-		}
-	}
-
-	ion-icon {
-		color: #3c3c3c;
-	}
-
 	ion-col {
 		ion-label {
 			float: left;
 		}
 	}
-
 	.item-custom {
 		margin-left: 10px;
 		border-bottom: 1px solid #ddd;
@@ -49,7 +23,6 @@ page-user-edit {
 			margin-top: 4px !important;
 		}
 	}
-
 	.upload-avatar {
 		button {
 			 position: relative;

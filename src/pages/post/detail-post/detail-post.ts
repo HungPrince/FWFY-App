@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, Modal, ModalOptions, ModalController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Modal, ModalOptions, ModalController, ActionSheetController } from 'ionic-angular';
 import { AngularFireStorage } from 'angularfire2/storage';
 import { Storage } from '@ionic/storage';
+import { ViewController } from 'ionic-angular/navigation/view-controller';
 
 import { FileChooser } from '@ionic-native/file-chooser';
 import { FilePath } from '@ionic-native/file-path';
@@ -11,7 +12,7 @@ import { UserProvider } from '../../../providers/user/user';
 import { ToastService } from "../../../services/toastService";
 import { LoaderService } from "../../../services//loaderService";
 import { PostAddPage } from '../post-add/post-add';
-import { ViewController } from 'ionic-angular/navigation/view-controller';
+import { CvPage } from '../../cv/cv';
 
 declare var window;
 
@@ -35,7 +36,8 @@ export class DetailPostPage {
         private viewCtrl: ViewController,
         private loaderService: LoaderService,
         private fileChoose: FileChooser,
-        private filePath: FilePath) {
+        private filePath: FilePath,
+        private actionSheetCtrl: ActionSheetController) {
         this.post = navParams.get('post');
         this.storage.get('auth').then(user => {
             this.userProvider.getUserByKey(user.uid).then(data => {
@@ -54,6 +56,35 @@ export class DetailPostPage {
         };
         let myModal: Modal = this.modalCtrl.create(PostAddPage, { 'post': this.post }, myModalOptions);
         myModal.present();
+    }
+
+    chooseApply() {
+        let actionSheetCtrl = this.actionSheetCtrl.create({
+            title: 'Please choose your method want to apply.',
+            buttons:
+                [
+                    {
+                        text: 'Create cv',
+                        handler: () => {
+                            this.navCtrl.push(CvPage);
+                        }
+                    },
+                    {
+                        text: 'Upload file',
+                        handler: () => {
+                            this.uploadFile();
+                        }
+                    },
+                    {
+                        text: 'Cancel',
+                        role: 'cancel',
+                        handler: () => {
+                            console.log('Clicked cancel');
+                        }
+                    }
+                ]
+        });
+        actionSheetCtrl.present();
     }
 
     uploadFile() {
