@@ -8,14 +8,7 @@ export class NetService {
     ) {
     }
 
-    checkNetwork() {
-        let connectedRef = firebase.database().ref(".info/connected");
-        connectedRef.on("value", function (snap) {
-            if (snap.val() === true) {
-                alert("connected");
-            } else {
-                alert("not connected");
-            }
-        });
+    checkNetwork(): any {
+        return firebase.database().ref(".info/connected").on("value", snap => { console.log(snap.val()); return snap.val(); });
     }
 }

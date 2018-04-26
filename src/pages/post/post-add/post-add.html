@@ -14,7 +14,7 @@
     </ion-navbar>
 </ion-header>
 
-<ion-content class="post-add">
+<ion-content class="post-add" padding>
     <form [formGroup]="formPost" action="">
         <ion-list>
             <ion-item>
@@ -174,7 +174,7 @@
             <div padding>
                 <button ion-button round color="primary" [disabled]="formPost.invalid" block (click)="save()">Save</button>
             </div>
-            <div ppading>
+            <div padding>
                 <button ion-button round color="danger" [hidden]="!this.post.key" block (click)="delete()">Delete</button>
             </div>
         </ion-list>

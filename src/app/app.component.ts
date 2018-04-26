@@ -7,8 +7,6 @@ import { Storage } from '@ionic/storage';
 import { UniqueDeviceID } from '@ionic-native/unique-device-id';
 
 import { UserProvider } from '../providers/user/user';
-import { NetService } from '../services/netService';
-
 import { TabsPage } from '../pages/tabs/tabs';
 import { LoginPage } from '../pages/login/login';
 import { UserPage } from '../pages/user/user';
@@ -42,9 +40,7 @@ export class MyApp {
         private uniqueDeviceID: UniqueDeviceID,
         public modalCtrl: ModalController,
         private events: Events,
-        private netService: NetService
     ) {
-        // this.netService.checkNetwork();
         this.initializeApp();
         this.storage.get('auth').then((user) => {
             if (user) {
@@ -103,7 +99,7 @@ export class MyApp {
             this.pages = [
                 { title: 'Home', component: TabsPage },
                 { title: 'List Favorite Jobs', component: PostPage },
-                { title: 'Creat CV', component: CvPage }
+                { title: 'Create Curriculum Vitae', component: CvPage }
             ];
         }
     }

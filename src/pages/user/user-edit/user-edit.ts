@@ -219,18 +219,12 @@ export class UserEditPage {
         }
 
         this.camera.getPicture(options).then((imageData) => {
-            this.loaderService.loaderNoSetTime('uploading ...');
             let base64Image = 'data:image/jpeg;base64,' + imageData;
             this.user.avatar_url = base64Image;
             let filename = Math.floor(Date.now() / 1000);
             let imageRef = this.storageFB.child(`images/${filename}.jpg`);
             imageRef.putString(base64Image, firebase.storage.StringFormat.DATA_URL).then((imageSnapshot) => {
-                this.loaderService.dismisLoader().then((data) => {
-                    this.user.avatar_url = imageSnapshot.downloadURL;
-                }).catch(error => {
-                    console.log(error);
-                    this.loaderService.dismisLoader();
-                });
+                this.user.avatar_url = imageSnapshot.downloadURL;
             });
         }, (err) => {
             console.log(err);
