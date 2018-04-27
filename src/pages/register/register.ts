@@ -11,10 +11,10 @@ import { UntilHelper } from '../../helpers/until.helper';
 import { FormHelper } from '../../helpers/form.helper';
 import { LoaderService } from '../../services/loaderService';
 import { LoginPage } from '../login/login';
-import { MyApp } from '../../app/app.component';
 import { User } from './../../models/user';
 import { UserProvider } from './../../providers/user/user';
 import { ToastService } from '../../services/toastService';
+import { TabsPage } from '../tabs/tabs';
 
 @IonicPage()
 @Component({
@@ -46,9 +46,8 @@ export class RegisterPage {
         private events: Events,
         private storage: Storage) {
         this.user = new User('applicant', '', '', null, '', 18, '', '', null, true, '', '', '');
-
+    
         this.user.avatar_url = "https://placehold.it/150x150";
-
         this.formRegister = this.formBuilder.group({
             'role': new FormControl(this.user.role, [Validators.required]),
             'name': new FormControl(this.user.name, [Validators.required, Validators.minLength(8), Validators.maxLength(100)]),
@@ -140,7 +139,7 @@ export class RegisterPage {
     doRegister() {
         this.loaderService.loaderNoSetTime('loading');
         this.user.address = {};
-
+        this.user['createdAt'] = new Date();
         let user = this.formRegister.value;
         for (let key in user) {
             if (key == 'city' || key == 'district' || key == 'street' || key == 'location') {
@@ -160,7 +159,7 @@ export class RegisterPage {
                     this.storage.set('auth', this.user);
                     this.loaderService.dismisLoader().then(data => {
                         this.toastService.toast('Create account successfully!', 500, 'bottom', false);
-                        this.navCtrl.setRoot(MyApp);
+                        this.navCtrl.setRoot(TabsPage);
                         this.events.publish('userLoggedIn', this.user);
                     });
                 }).catch(error => {

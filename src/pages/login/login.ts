@@ -11,7 +11,7 @@ import { LoaderService } from '../../services/loaderService';
 import { ToastService } from '../../services/toastService';
 
 import { UntilHelper } from '../../helpers/until.helper';
-import { MyApp } from '../../app/app.component'
+import { TabsPage } from '../tabs/tabs';
 
 import { RegisterPage } from './../register/register';
 import { UserProvider } from '../../providers/user/user';
@@ -38,7 +38,7 @@ export class LoginPage {
         public formBuilder: FormBuilder,
         private userProvider: UserProvider,
         private untilHelpr: UntilHelper,
-        private events: Events
+        private events: Events,
     ) {
         this.storage.get('accountUser').then(user => {
             if (user) {
@@ -88,7 +88,7 @@ export class LoginPage {
                 let userI = user.val();
                 userI.uid = result.uid;
                 this.storage.set('auth', userI).then(data => {
-                    this.navCtrl.setRoot(MyApp);
+                    this.navCtrl.setRoot(TabsPage);
                     this.events.publish('userLoggedIn', userI);
                 });
             });
@@ -108,19 +108,18 @@ export class LoginPage {
             let user = {
                 name: result.user.displayName,
                 email: result.user.email,
-                phone: {
-                    phone1: result.user.phoneNumber
-                },
+                phone: result.user.phoneNumber,
                 avatar_url: result.user.photoURL,
                 type: typeName,
                 uid: result.user.uid
             };
-            this.af.database.ref('users').child(result.user.uid).set(user).then((error) => {
+            this.af.database.ref('users').child(user.uid).set(user).then((error) => {
                 if (!error) {
-                    this.userProvider.getUserByKey(result.uid).then(user => {
-                        this.storage.set('auth', user).then(data => {
-                            this.events.publish('userLoggedIn', user);
-                            this.navCtrl.setRoot(MyApp);
+                    this.userProvider.getUserByKey(user.uid).then(data => {
+                        data = data.val();
+                        this.storage.set('auth', data).then(data => {
+                            this.events.publish('userLoggedIn', data);
+                            this.navCtrl.setRoot(TabsPage);
                         });
                     });
                 }

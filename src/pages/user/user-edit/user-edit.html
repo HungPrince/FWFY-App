@@ -1,31 +1,26 @@
 <ion-header>
-    <ion-navbar>
-        <ion-toolbar>
-            <ion-buttons left class="loginnavbtn">
-                <button ion-button class="loginnavbtn" (click)="goBack()">
-                    <ion-icon name="md-arrow-back"></ion-icon>
-                </button>
-            </ion-buttons>
-            <ion-title>Edit Profile</ion-title>
-            <ion-buttons right>
-                <button ion-button [disabled]="formEditUser.invalid" (click)="save()">
-                    <ion-icon name="md-checkmark"></ion-icon>
-                </button>
-            </ion-buttons>
-        </ion-toolbar>
+    <ion-navbar color="primary">
+        <ion-buttons left (click)="goBack()">
+            <button ion-button class="loginnavbtn">
+                <ion-icon name="md-arrow-back"></ion-icon>
+            </button>
+        </ion-buttons>
+        <ion-title>Update Profile</ion-title>
+        <ion-buttons right>
+            <button ion-button [disabled]="formEditUser.invalid" (click)="save()">
+                <ion-icon name="md-checkmark"></ion-icon>
+            </button>
+        </ion-buttons>
     </ion-navbar>
-
 </ion-header>
 
-<ion-content padding>
+<ion-content>
     <form (ngSubmit)="save()" [formGroup]="formEditUser" novalidate>
         <ion-list>
             <ion-item>
-                <ion-label>Choose Role</ion-label>
-                <ion-select formControlName="role" name="role">
-                    <ion-option value="applicant">Applicant</ion-option>
-                    <ion-option value="recuiter">Recuiter</ion-option>
-                </ion-select>
+                <ion-label>Role</ion-label>
+                <ion-input type="text" readonly formControlName="role">
+                </ion-input>
             </ion-item>
 
             <ion-item>
@@ -108,9 +103,9 @@
 
             <ion-item class="input-text">
                 <ion-label>
-                   Age
+                    Age
                 </ion-label>
-                <ion-input formControlName="age" name="age" type="number" ></ion-input>
+                <ion-input formControlName="age" name="age" type="number"></ion-input>
             </ion-item>
 
             <div *ngIf="formEditUser.controls['role'].value == 'applicant'">
@@ -154,7 +149,7 @@
 
             <ion-item id="upload-boxes" class="input-text">
                 <button style="margin-bottom: 30px;" type="button" ion-button (click)="chooseAvatar()">Upload Avatar</button>
-                <img class="avatar-upload" style="height: 100px; width: 100px;" src="{{user.avatar_url}}">
+                <img class="upload-avatar" style="height: 100px; width: 100px;" src="{{user.avatar_url}}">
             </ion-item>
 
             <ion-item>
@@ -190,7 +185,7 @@
             </ion-item>
 
             <div padding>
-                <button [disabled]="formEditUser.invalid" ion-button color="primary" block>Update</button>
+                <button  [disabled]="formEditUser.invalid" ion-button color="primary" round block>Update</button>
             </div>
 
         </ion-list>

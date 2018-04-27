@@ -4,18 +4,13 @@
             <ion-icon name="menu"></ion-icon>
         </button>
         <ion-title>Upgrade</ion-title>
-        <ion-buttons end color="Secondary" (click)="logout()">
-            <button ion-button>
-                <ion-icon name="md-log-out"></ion-icon>
-            </button>
-        </ion-buttons>
     </ion-navbar>
 </ion-header>
 
 
-<ion-content padding>
-    <ion-slides (ionSlideDidChange)="slideChanged()" autoplay = 2500>
-        <ion-slide *ngFor = "let upgrade of upgrades">
+<ion-content padding *ngIf="upgrades">
+    <ion-slides (ionSlideDidChange)="slideChanged()" autoplay=1000>
+        <ion-slide *ngFor="let upgrade of upgrades">
             <div class="slide-upgrade">
                 <h1 class="type">{{ upgrade.type }}</h1>
                 <h3 class="price">{{ upgrade.price }}</h3>
@@ -23,5 +18,8 @@
             </div>
         </ion-slide>
     </ion-slides>
-    <button ion-button [disabled]="user && user.typeAccount == typeAccount" (click)="upgradeAccount()" block class="btn-upgrade" (click)="upgradeAccount()">UPGRADE</button>
 </ion-content>
+
+<ion-footer *ngIf="user" padding>
+    <button ion-button [disabled]="user.typeAccount == typeAccount" (click)="upgradeAccount()" round block class="btn-upgrade">{{ textButtonUpgrade }}</button>
+</ion-footer>

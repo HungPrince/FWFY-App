@@ -47,27 +47,30 @@ export class UserEditPage {
         private formHelper: FormHelper,
         private storage: Storage) {
         this.user = this.navParams.get('user');
-
-        CITIES.forEach(element => {
-            for (let key in element) {
-                if (element[key].name_with_type == this.user.city) {
-                    this.changeCity(element[key]);
-                    break;
+        if (this.user) {
+            CITIES.forEach(element => {
+                for (let key in element) {
+                    if (element[key].name_with_type == this.user.city) {
+                        this.changeCity(element[key]);
+                        break;
+                    }
                 }
+            });
+            if (this.user.address) {
+                DISTRICTS.forEach(element => {
+                    for (let key in element) {
+                        if (element[key].name == this.user.address.district) {
+                            this.changeDistrict(element[key]);
+                            break;
+                        }
+                    }
+                });
             }
-        });
-        DISTRICTS.forEach(element => {
-            for (let key in element) {
-                if (element[key].name == this.user.address.district) {
-                    this.changeDistrict(element[key]);
-                    break;
-                }
-            }
-        });
+        }
 
         this.formEditUser = this.formBuilder.group({
             'uid': new FormControl(this.user.uid),
-            'role': new FormControl({ value: this.user.role, 'disabled': true }),
+            'role': new FormControl(this.user.role),
             'name': new FormControl(this.user.name, [Validators.required, Validators.minLength(8), Validators.maxLength(100)]),
             'userName': new FormControl(this.user.userName, [Validators.required, Validators.minLength(4), Validators.maxLength(24)]),
             'companyName': new FormControl(this.user.companyName, [Validators.required, Validators.minLength(4), Validators.maxLength(24)]),
@@ -122,7 +125,6 @@ export class UserEditPage {
         return this.formHelper.isErrorPattern(this.formEditUser, inputName);
     }
 
-
     changeCity(city) {
         this.listDistrict = [];
         DISTRICTS.forEach(district => {
@@ -153,6 +155,7 @@ export class UserEditPage {
 
     save() {
         this.loaderService.loaderNoSetTime("saving profile ...");
+        this.user.address = {};
         let user = this.formEditUser.value;
         for (let key in user) {
             if (key == 'city' || key == 'district' || key == 'street' || key == 'location') {
@@ -164,7 +167,8 @@ export class UserEditPage {
                 this.user[key] = this.untilHelper.niceString(user[key]);
             }
         }
-        this.userProvider.update(user).then(error => {
+        this.user['updatedAt'] = Date.now();
+        this.userProvider.update(this.user).then(error => {
             if (!error) {
                 this.loaderService.dismisLoader().then(data => {
                     this.goBack();
@@ -215,18 +219,12 @@ export class UserEditPage {
         }
 
         this.camera.getPicture(options).then((imageData) => {
-            this.loaderService.loaderNoSetTime('uploading ...');
             let base64Image = 'data:image/jpeg;base64,' + imageData;
             this.user.avatar_url = base64Image;
             let filename = Math.floor(Date.now() / 1000);
             let imageRef = this.storageFB.child(`images/${filename}.jpg`);
             imageRef.putString(base64Image, firebase.storage.StringFormat.DATA_URL).then((imageSnapshot) => {
-                this.loaderService.dismisLoader().then((data) => {
-                    this.user.avatar_url = imageSnapshot.downloadURL;
-                }).catch(error => {
-                    console.log(error);
-                    this.loaderService.dismisLoader();
-                });
+                this.user.avatar_url = imageSnapshot.downloadURL;
             });
         }, (err) => {
             console.log(err);

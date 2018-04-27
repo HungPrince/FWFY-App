@@ -1,0 +1,174 @@
+<ion-header>
+    <ion-navbar color="primary">
+        <button ion-button menuToggle>
+            <ion-icon name="menu"></ion-icon>
+        </button>
+        <ion-title>
+            Create Curriculum Vitae
+        </ion-title>
+    </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+    <ion-list>
+        <span>
+            Experience
+            <ion-icon item-right name="arrow-dropdown" float-right (click)="toggleInfo('showExperience')"></ion-icon>
+        </span>
+        <div *ngIf="showExperience">
+            <ion-item>
+                <ion-label stacked>Company</ion-label>
+                <ion-input [(ngModel)]="infoCV.contentExp.company"></ion-input>
+            </ion-item>
+
+            <ion-item>
+                <ion-label stacked>Specialized</ion-label>
+                <ion-input [(ngModel)]="infoCV.contentExp.major"></ion-input>
+            </ion-item>
+
+            <ion-item>
+                <ion-label stacked>Description</ion-label>
+                <ion-input [(ngModel)]="infoCV.contentExp.description"></ion-input>
+            </ion-item>
+        </div>
+
+        <span>
+            Education
+            <ion-icon name="arrow-dropdown" end float-right (click)="toggleInfo('showEducation')"></ion-icon>
+        </span>
+        <div *ngIf="showEducation">
+            <ion-item>
+                <ion-label stacked>School</ion-label>
+                <ion-input [(ngModel)]="infoCV.contentEdu.school"></ion-input>
+            </ion-item>
+            <ion-item>
+                <ion-label stacked>Certificate</ion-label>
+                <ion-input [(ngModel)]="infoCV.contentEdu.certificate"></ion-input>
+            </ion-item>
+            <ion-item>
+                <ion-label stacked>Grade</ion-label>
+                <ion-input [(ngModel)]="infoCV.contentEdu.grade"></ion-input>
+            </ion-item>
+        </div>
+
+        <ion-item>
+            <ion-label stacked>Hobby</ion-label>
+            <ion-textarea [(ngModel)]="infoCV.contentHobby" rows="3"></ion-textarea>
+        </ion-item>
+
+        <ion-item>
+            <ion-label stacked>Skill</ion-label>
+            <ion-textarea [(ngModel)]="infoCV.contentSkill" rows="3"></ion-textarea>
+        </ion-item>
+
+        <ion-item>
+            <ion-label stacked>Target</ion-label>
+            <ion-textarea [(ngModel)]="infoCV.headerTarget" rows="3"></ion-textarea>
+        </ion-item>
+
+        <span>
+            English
+            <ion-icon name="arrow-dropdown" float-right (click)="toggleInfo('showEnglish')"></ion-icon>
+        </span>
+        <div *ngIf="showEnglish">
+            <ion-item>
+                <ion-label stacked>
+                    Listen
+                    <span>{{ infoCV.footerEnglish.listen }} %</span>
+                </ion-label>
+
+                <ion-range min="0" max="100" [(ngModel)]="infoCV.footerEnglish.listen" placeholder="listen" color="secondary">
+                    <ion-label range-left>0</ion-label>
+                    <ion-label range-right>100</ion-label>
+                </ion-range>
+            </ion-item>
+
+            <ion-item>
+                <ion-label stacked>
+                    Speak {{ infoCV.footerEnglish.speak }} %
+                </ion-label>
+
+                <ion-range min="0" max="100" [(ngModel)]="infoCV.footerEnglish.speak" placeholder="speak" color="secondary">
+                    <ion-label range-left>0</ion-label>
+                    <ion-label range-right>100</ion-label>
+                </ion-range>
+            </ion-item>
+
+            <ion-item>
+                <ion-label stacked>
+                    Read {{ infoCV.footerEnglish.read }} %
+                </ion-label>
+
+                <ion-range min="0" max="100" [(ngModel)]="infoCV.footerEnglish.read" placeholder="read" color="secondary">
+                    <ion-label range-left>0</ion-label>
+                    <ion-label range-right>100</ion-label>
+                </ion-range>
+            </ion-item>
+
+            <ion-item>
+                <ion-label stacked>
+                    Write {{ infoCV.footerEnglish.write }} %
+                </ion-label>
+
+                <ion-range min="0" max="100" [(ngModel)]="infoCV.footerEnglish.write" placeholder="write" color="secondary">
+                    <ion-label range-left>0</ion-label>
+                    <ion-label range-right>100</ion-label>
+                </ion-range>
+            </ion-item>
+        </div>
+
+        <span>
+            Informartion Technology
+            <ion-icon name="arrow-dropdown" float-right (click)="toggleInfo('showIt')"></ion-icon>
+        </span>
+        <div *ngIf="showIt">
+            <ion-item>
+                <ion-label stacked>
+                    Word {{ infoCV.footerIt.word }} %
+                </ion-label>
+
+                <ion-range min="0" max="100" [(ngModel)]="infoCV.footerIt.word" placeholder="word" color="secondary">
+                    <ion-label range-left>0</ion-label>
+                    <ion-label range-right>100</ion-label>
+                </ion-range>
+            </ion-item>
+
+            <ion-item>
+                <ion-label stacked>
+                    Excel {{ infoCV.footerIt.excel }} %
+                </ion-label>
+                <ion-range min="0" max="100" [(ngModel)]="infoCV.footerIt.excel" placeholder="excel" color="secondary">
+                    <ion-label range-left>0</ion-label>
+                    <ion-label range-right>100</ion-label>
+                </ion-range>
+            </ion-item>
+
+            <ion-item>
+                <ion-label stacked>
+                    PowerPoint {{ infoCV.footerIt.powerpoint }} %
+                </ion-label>
+
+                <ion-range min="0" max="100" [(ngModel)]="infoCV.footerIt.powerpoint" placeholder="powerpoint" color="secondary">
+                    <ion-label range-left name="infoCV.footerIt.powerpoint">0</ion-label>
+                    <ion-label range-right name="infoCV.footerIt.powerpoint">100</ion-label>
+                </ion-range>
+            </ion-item>
+
+            <ion-item>
+                <ion-label stacked>
+                    Outlook {{ infoCV.footerIt.outlook }} %
+                </ion-label>
+
+                <ion-range min="0" max="100" [(ngModel)]="infoCV.footerIt.outlook" placeholder="outlook" color="secondary">
+                    <ion-label range-left name="infoCV.footerIt.outlook">0</ion-label>
+                    <ion-label range-right name="infoCV.footerIt.outlook">100</ion-label>
+                </ion-range>
+            </ion-item>
+        </div>
+
+    </ion-list>
+
+    <button ion-button full (click)="createCV()">Create CV</button>
+    <button ion-button full (click)="downloadCV()" color="secondary" [disabled]="!pdfObj">Download CV</button>
+
+</ion-content>

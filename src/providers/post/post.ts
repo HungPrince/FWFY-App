@@ -2,19 +2,11 @@ import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { Observable } from 'rxjs/Observable';
 
-import { AutoCompleteService } from 'ionic2-auto-complete';
-import { ADDRESS } from '../../configs/data';
-
 @Injectable()
-export class PostProvider implements AutoCompleteService {
+export class PostProvider {
 
-    private address = ADDRESS;
-    constructor(public af: AngularFireDatabase) {
-    }
-
-    getResults(keywords: string) {
-        return this.address.filter(item => item[0].name.toLowerCase().startsWith(keywords).toLowerCase());
-    }
+    constructor(
+        public af: AngularFireDatabase) { }
 
     getAll(): Observable<any> {
         return this.af.list('post').snapshotChanges().
@@ -26,7 +18,7 @@ export class PostProvider implements AutoCompleteService {
     }
 
     update(post: any) {
-        return this.af.database.ref(`post/${post.key}`).set(post);
+        return this.af.database.ref(`post`).child(post.key).update(post);
     }
 
     delete(post: any) {

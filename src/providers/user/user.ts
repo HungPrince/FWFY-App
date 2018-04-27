@@ -46,4 +46,8 @@ export class UserProvider {
     create(user: any): any {
         return this.af.database.ref('users').child(user.uid).set(user);
     }
+
+    delete(user: any) {
+        return this.af.database.ref('users').child(user.uid).remove();
+    }
 }

@@ -1,0 +1,41 @@
+<ion-header>
+    <ion-navbar color="primary">
+        <button ion-button menuToggle>
+            <ion-icon name="menu"></ion-icon>
+        </button>
+        <ion-title>
+            Statistics
+        </ion-title>
+    </ion-navbar>
+</ion-header>
+
+<ion-content>
+
+    <ion-card>
+        <ion-card-header>
+            Statistics user active per month
+        </ion-card-header>
+        <ion-card-content>
+            <canvas #barCanvas></canvas>
+        </ion-card-content>
+    </ion-card>
+
+    <ion-card>
+        <ion-card-header>
+            Number post created per month
+        </ion-card-header>
+        <ion-card-content>
+            <canvas #doughnutCanvas></canvas>
+        </ion-card-content>
+    </ion-card>
+
+    <ion-card>
+        <ion-card-header>
+            Number you were posted / month
+        </ion-card-header>
+        <ion-card-content>
+            <canvas #lineCanvas></canvas>
+        </ion-card-content>
+    </ion-card>
+
+</ion-content>

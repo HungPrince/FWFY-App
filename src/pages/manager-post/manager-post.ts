@@ -49,7 +49,8 @@ export class ManagerPostPage {
                         }
                         this.listPost.push({
                             post: post,
-                            listCv: listCv
+                            listCv: listCv,
+                            user: user
                         });
                     }
                 }, (error) => {
@@ -59,7 +60,7 @@ export class ManagerPostPage {
             }, error => { console.log(error); this.loaderService.dismisLoader(); });
         }).catch(error => { console.log(error); this.loaderService.dismisLoader() });
     }
-    
+
     openModalAdd() {
         let myModalOptions: ModalOptions = {
             enableBackdropDismiss: false

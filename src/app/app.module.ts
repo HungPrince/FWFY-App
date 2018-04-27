@@ -14,6 +14,11 @@ import { TagInputModule } from 'ngx-chips';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TooltipsModule } from 'ionic-tooltips';
 import { UniqueDeviceID } from '@ionic-native/unique-device-id';
+import { File } from '@ionic-native/file';
+import { FileTransfer } from '@ionic-native/file-transfer';
+import { FileChooser } from '@ionic-native/file-chooser';
+import { FilePath } from '@ionic-native/file-path';
+import { FileOpener } from '@ionic-native/file-opener';
 
 import { PipesModule } from '../pipes/pipes.module';
 
@@ -45,6 +50,11 @@ import { UserEditPage } from '../pages/user/user-edit/user-edit';
 import { ManagerPostPage } from '../pages/manager-post/manager-post';
 import { DetailPostPage } from '../pages/post/detail-post/detail-post';
 import { UpgradePage } from '../pages/upgrade/upgrade';
+import { PostComponent } from '../components/post/post';
+import { EmailComponent } from '../components/email/email';
+import { StatisticsPage } from '../pages/statistics/statistics';
+import { CommentPage } from '../pages/comment/comment';
+import { CvPage } from '../pages/cv/cv';
 
 import { UntilHelper } from '../helpers/until.helper';
 import { FormHelper } from '../helpers/form.helper';
@@ -54,6 +64,9 @@ import { LoaderService } from '../services/loaderService';
 import { ToastService } from '../services/toastService';
 import { UserProvider } from '../providers/user/user';
 import { DataProvider } from '../providers/data/data';
+import { UserService } from '../services/userService';
+import { NetService } from '../services/netService';
+import { ChatProvider } from '../providers/chat/chat';
 
 @NgModule({
     declarations: [
@@ -72,7 +85,12 @@ import { DataProvider } from '../providers/data/data';
         UserEditPage,
         ManagerPostPage,
         DetailPostPage,
-        UpgradePage
+        UpgradePage,
+        PostComponent,
+        EmailComponent,
+        StatisticsPage,
+        CommentPage,
+        CvPage
     ],
     imports: [
         BrowserModule,
@@ -108,7 +126,12 @@ import { DataProvider } from '../providers/data/data';
         UserEditPage,
         ManagerPostPage,
         DetailPostPage,
-        UpgradePage
+        UpgradePage,
+        PostComponent,
+        EmailComponent,
+        StatisticsPage,
+        CommentPage,
+        CvPage
     ],
     providers: [
         StatusBar,
@@ -130,7 +153,15 @@ import { DataProvider } from '../providers/data/data';
         ToastService,
         UserProvider,
         DataProvider,
-        UniqueDeviceID
+        UniqueDeviceID,
+        UserService,
+        NetService,
+        File,
+        FileChooser,
+        FileTransfer,
+        FilePath,
+        FileOpener,
+        ChatProvider,
     ]
 })
 export class AppModule { }

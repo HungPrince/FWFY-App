@@ -1,11 +1,11 @@
 page-upgrade {
     ion-slides {
-        height: 90%;
+        height: 80%;
         ion-slide{
             height: 70% !important;
         }
         .slide-upgrade {
-            height: 300px;
+            height: 250px;
             background-color: #488aff;
             color: #ffffff;
             font-weight: bold;
@@ -15,10 +15,10 @@ page-upgrade {
             }
             .price {
                 margin: auto;
-                margin-top: 25%;
+                margin-top: 15%;
             }
             .description {
-               margin-top: 35%;
+                margin-top: 20%;
                 text-align: center;
             }
         }

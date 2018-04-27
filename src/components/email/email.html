@@ -1,0 +1,64 @@
+<form (ngSubmit)="sendEmail()" [formGroup]="formEmail">
+    <ion-list>
+        <ion-item class="input-text" hidden>
+            <ion-label>
+                <ion-icon name="md-mail"></ion-icon>
+            </ion-label>
+            <ion-input type="email" formControlName="emailTo" name="emailTo" placeholder="Enter email to"></ion-input>
+        </ion-item>
+
+        <ion-item class="input-text">
+            <ion-label>
+                <ion-icon name="md-mail"></ion-icon>
+            </ion-label>
+            <ion-input type="email" formControlName="emailCC" name="emailCC" placeholder="Enter cc email"></ion-input>
+        </ion-item>
+        <div *ngIf="isError('emailCC')">
+            <div [hidden]="isErrorPattern('emailCC')" class="error">
+                Email CC incorrect format!
+            </div>
+        </div>
+
+        <ion-item class="input-text">
+            <ion-label>
+                <ion-icon name="md-mail"></ion-icon>
+            </ion-label>
+            <ion-input type="email" formControlName="emailBCC" name="emailBCC" placeholder="Enter bcc email"></ion-input>
+        </ion-item>
+        <div *ngIf="isError('emailBCC')">
+            <div [hidden]="isErrorPattern('emailBCC')" class="error">
+                Email BCC incorrect format!
+            </div>
+        </div>
+
+        <ion-item>
+            <ion-label>
+                <ion-icon name="md-contact"></ion-icon>
+            </ion-label>
+            <ion-textarea type="text" formControlName="subject" name="subject" placeholder="Enter your title"></ion-textarea>
+        </ion-item>
+
+        <div *ngIf="isError('subject')">
+            <div [hidden]="isErrorRequired('subject')" class="error">
+                Subject is required field!
+            </div>
+        </div>
+
+        <ion-item>
+            <ion-label>
+                <ion-icon name="md-contact"></ion-icon>
+            </ion-label>
+            <ion-input type="text" formControlName="body" name="body" placeholder="Enter your content"></ion-input>
+        </ion-item>
+
+        <div *ngIf="isError('body')">
+            <div [hidden]="isErrorRequired('body')" class="error">
+                Content is required field!
+            </div>
+        </div>
+
+        <div padding>
+            <button ion-button color="primary" (click)="sendEmail()" block [disabled]="formEmail.invalid">Send</button>
+        </div>
+    </ion-list>
+</form>

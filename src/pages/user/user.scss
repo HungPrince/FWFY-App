@@ -3,8 +3,8 @@ page-user {
         text-align: center;
     }
     .img-card {
-        width: 230px;
-        height: 200px;
+        width: 280px;
+        height: 280px;
         margin: auto;
         margin-top: 20px;
     }
@@ -12,8 +12,16 @@ page-user {
         float: right;
         margin-right: 12px;
     }
-    ion-searchbar {
-        width: 75%;
-        float: left;
+
+    #save-user {
+        position: fixed !important;
+        bottom: 0;
+        right: 0 !important;
+        margin: 35px;
+        margin-bottom:40px;
+    }
+
+    .description {
+        margin: auto;
     }
 }
