@@ -73,8 +73,7 @@
         <div *ngIf="showEnglish">
             <ion-item>
                 <ion-label stacked>
-                    Listen
-                    <span>{{ infoCV.footerEnglish.listen }} %</span>
+                    Listen {{ infoCV.footerEnglish.listen }} %
                 </ion-label>
 
                 <ion-range min="0" max="100" [(ngModel)]="infoCV.footerEnglish.listen" placeholder="listen" color="secondary">

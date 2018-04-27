@@ -8,7 +8,6 @@ import { FormsModule } from '@angular/forms'
 import { HttpModule, Http } from '@angular/http';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { IonicStorageModule } from '@ionic/storage';
-import { AutoCompleteModule } from 'ionic2-auto-complete';
 import { IonTagsInputModule } from "ionic-tags-input";
 import { TagInputModule } from 'ngx-chips';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -103,7 +102,6 @@ import { ChatProvider } from '../providers/chat/chat';
         IonicStorageModule.forRoot(),
         HttpModule,
         HttpClientModule,
-        AutoCompleteModule,
         IonTagsInputModule,
         TagInputModule,
         BrowserAnimationsModule,
