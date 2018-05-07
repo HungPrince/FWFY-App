@@ -5,9 +5,10 @@
         </ion-avatar>
         <h2>{{ post.user.name }}</h2>
         <p>{{ post.user.age ? post.user.age : '18' }}, {{ post.user.gender ? "Male" : "Female" }}</p>
-        <ion-fab *ngIf="post.ownPost" top right edge fab-fixed class="more-action-post" (click)="openModalEdit(post.post)">
+        <ion-fab *ngIf="post.ownPost && post.user.role != 'applicant'" top right edge fab-fixed class="more-action-post" (click)="openModalEdit(post.post)">
             <button ion-fab mini><ion-icon name="create"></ion-icon></button>
         </ion-fab>
+        <ion-icon *ngIf="post.user.role == 'applicant'" item-end name="chatbubbles"></ion-icon>
     </ion-item>
 
     <img *ngIf="post.post.image_url" (click)="openModalDetail(post.post)" class="img-post" src="{{ post.post.image_url }}">

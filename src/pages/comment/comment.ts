@@ -45,7 +45,7 @@ export class CommentPage {
             };
             this.chatProvider.pushChat(this.comment.key, msg).then(data => {
                 if (data.key) {
-                    this.comments.push(msg);
+                    // this.comments.push(msg);
                     this.textMessage = "";
                     console.log('Your message were send successfully!');
                 }
