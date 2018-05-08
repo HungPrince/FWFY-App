@@ -66,6 +66,8 @@ import { DataProvider } from '../providers/data/data';
 import { UserService } from '../services/userService';
 import { NetService } from '../services/netService';
 import { ChatProvider } from '../providers/chat/chat';
+import { ChatPage } from '../pages/chat/chat';
+import { UserChatPage } from '../pages/user-chat/user-chat';
 
 @NgModule({
     declarations: [
@@ -89,7 +91,9 @@ import { ChatProvider } from '../providers/chat/chat';
         EmailComponent,
         StatisticsPage,
         CommentPage,
-        CvPage
+        CvPage,
+        ChatPage,
+        UserChatPage
     ],
     imports: [
         BrowserModule,
@@ -129,7 +133,9 @@ import { ChatProvider } from '../providers/chat/chat';
         EmailComponent,
         StatisticsPage,
         CommentPage,
-        CvPage
+        CvPage,
+        ChatPage,
+        UserChatPage
     ],
     providers: [
         StatusBar,

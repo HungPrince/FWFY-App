@@ -10,6 +10,11 @@ import { LoaderService } from '../../services/loaderService';
 import { PostProvider } from '../../providers/post/post';
 import { DetailPostPage } from '../../pages/post/detail-post/detail-post';
 import { CommentPage } from '../../pages/comment/comment';
+import { ChatPage } from '../../pages/chat/chat';
+import { ChatProvider } from '../../providers/chat/chat';
+import { UserChatPage } from '../../pages/user-chat/user-chat';
+import * as _ from 'lodash';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
     selector: 'post',
@@ -18,6 +23,7 @@ import { CommentPage } from '../../pages/comment/comment';
 
 export class PostComponent {
 
+    private userUnsubcribe: Subscription;
     private userCurrent: any;
     @Input('postI') post: any;
     constructor(
@@ -27,6 +33,7 @@ export class PostComponent {
         public loaderService: LoaderService,
         private userProvider: UserProvider,
         private postProvider: PostProvider,
+        private chatProvider: ChatProvider,
         private socialSharing: SocialSharing
     ) {
         this.storage.get('auth').then(user => {
@@ -39,7 +46,7 @@ export class PostComponent {
             title: "Share this post",
             buttons: [
                 {
-                    text: "Share on Facebook",
+                    text: "Facebook",
                     icon: "logo-facebook",
                     handler: () => {
                         this.socialSharing.shareViaFacebook(
@@ -169,5 +176,40 @@ export class PostComponent {
             user: this.userCurrent
         }
         this.openModal(CommentPage, { 'message': message });
+    }
+
+    openChat(userTo: any, post: any) {
+        if (post.userId == this.userCurrent.uid) {
+            let users = [];
+            this.userUnsubcribe = this.chatProvider.getListUserChat(post.key).subscribe(data => {
+                _.mapKeys(data, (val, key) => {
+                    _.mapKeys(val, (v, k) => {
+                        if (v.user.uid != post.userId) {
+                            users.push({
+                                userCurrent: this.userCurrent,
+                                userTo: v.user,
+                                postId: post.key,
+                                keyChat: v.user.uid,
+                            });
+                        }
+                    });
+                    this.openModal(UserChatPage, { 'users': users });
+                });
+            });
+        } else {
+            let user = {
+                userCurrent: this.userCurrent,
+                userTo: userTo,
+                postId: post.key,
+                keyChat: this.userCurrent.uid
+            }
+            this.openModal(ChatPage, { 'chatUser': user });
+        }
+    }
+
+    ngOnDestroy() {
+        if (this.userUnsubcribe) {
+            this.userUnsubcribe.unsubscribe();
+        }
     }
 }

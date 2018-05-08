@@ -5,45 +5,42 @@ import { UntilHelper } from '../../helpers/until.helper';
 
 @IonicPage()
 @Component({
-    selector: 'page-comment',
-    templateUrl: 'comment.html',
+    selector: 'page-chat',
+    templateUrl: 'chat.html',
 })
-export class CommentPage {
-    comment: any;
-    comments: any = [];
+export class ChatPage {
+
+    chat: any;
+    chats: any = [];
     textMessage: string;
-    private uidUser: string;
     constructor(
         private viewCtrl: ViewController,
         public navCtrl: NavController,
         public navParams: NavParams,
         private chatProvider: ChatProvider,
         private untilHelper: UntilHelper) {
-        this.comment = this.navParams.get('message');
-        this.uidUser = this.comment.user.uid;
+        this.chat = this.navParams.get('chatUser');
     }
 
     ionViewDidLoad() {
-        this.chatProvider.getListComment(this.comment.key).subscribe(data => {
-            this.comments = data;
+        this.chatProvider.getListChat(this.chat.keyChat, this.chat.postId).subscribe(data => {
+            this.chats = data;
         });
     }
 
-    goBack() {
+    closeModal() {
         this.viewCtrl.dismiss();
     }
 
-    pushComment() {
+    pushChat() {
         this.textMessage = this.untilHelper.niceString(this.textMessage);
         if (this.textMessage) {
             let msg = {
-                uid: this.comment.user.uid,
-                username: this.comment.user.name,
+                user: this.chat.userCurrent,
                 message: this.textMessage,
-                avatar_url: this.comment.user.avatar_url,
                 createdAt: Date.now()
             };
-            this.chatProvider.pushComment(this.comment.key, msg).then(data => {
+            this.chatProvider.pushChat(this.chat.keyChat, this.chat.postId, msg).then(data => {
                 if (data.key) {
                     this.textMessage = "";
                     console.log('Your message were send successfully!');

@@ -1,0 +1,26 @@
+<ion-header>
+
+    <ion-navbar>
+        <ion-toolbar>
+            <ion-buttons left class="loginnavbtn">
+                <button ion-button class="loginnavbtn" (click)="goBack()">
+                    <ion-icon name="md-arrow-back"></ion-icon>
+                </button>
+            </ion-buttons>
+            <ion-title>List User Chat</ion-title>
+        </ion-toolbar>
+    </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+    <ion-card *ngFor="let userChat of users" (click)="openChat(userChat)">
+        <ion-item>
+            <ion-avatar item-start>
+                <img *ngIf="userChat.userTo.avatar_url" src="{{ userChat.userTo.avatar_url }}">
+            </ion-avatar>
+            <h2>{{ userChat.userTo.name }}</h2>
+        </ion-item>
+    </ion-card>
+</ion-content>

@@ -46,9 +46,9 @@ export class MyApp {
             if (user) {
                 if (!this.isSetRooted) {
                     this.rootPage = TabsPage;
+                    this.user = user;
+                    this.authorized(this.user);
                 }
-                this.user = user;
-                this.authorized(this.user);
             }
         });
 

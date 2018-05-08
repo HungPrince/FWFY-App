@@ -10,6 +10,7 @@ import { CITIES, TYPES, LEVELS } from '../../configs/data';
 
 import { LoaderService } from '../../services/loaderService';
 import { PostAddPage } from '../post/post-add/post-add';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
     selector: 'page-home',
@@ -25,6 +26,7 @@ export class HomePage {
     levels = LEVELS;
     private textShowHideAdvanced = "Show";
     private searchAdvandced = false;
+    private unSubcrible: Subscription;
     @ViewChild(Content) content: Content;
     constructor(
         public navCtrl: NavController,
@@ -54,7 +56,7 @@ export class HomePage {
         this.storage.get('auth').then(user => {
             if (user) {
                 this.userCurrent = user;
-                this.postProvider.getAll().subscribe((posts) => {
+                this.unSubcrible = this.postProvider.getAll().subscribe((posts) => {
                     let listPostFree = [];
                     this.listPost = [];
                     let count = 0;
@@ -89,7 +91,7 @@ export class HomePage {
                     }).catch(error => console.log(error));
                 }, (error) => {
                     this.showError(error);
-                });
+                })
             }
         }).catch(error => {
             this.showError(error);
@@ -144,4 +146,9 @@ export class HomePage {
         }
         return this.userCurrent.role == 'recuiter' || this.userCurrent.role == 'admin';
     }
+
+    ngOnDestroy() {
+        this.unSubcrible.unsubscribe();
+    }
+
 }
