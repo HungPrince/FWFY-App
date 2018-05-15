@@ -46,9 +46,9 @@ export class MyApp {
             if (user) {
                 if (!this.isSetRooted) {
                     this.rootPage = TabsPage;
+                    this.user = user;
+                    this.authorized(this.user);
                 }
-                this.user = user;
-                this.authorized(this.user);
             }
         });
 
@@ -86,7 +86,7 @@ export class MyApp {
     }
 
     authorized(user) {
-        if (user.role == 'admin' || user.role == 'recuiter') {
+        if (user.roles && user.roles.admin || user.roles && user.roles.author) {
             this.pages = [
                 { title: 'Home', component: TabsPage },
                 { title: 'List Favorite Jobs', component: PostPage },

@@ -4,8 +4,12 @@
             <img (click)="openDetailUserPost(post.user)" src="{{ post.user.avatar_url }}">
         </ion-avatar>
         <h2>{{ post.user.name }}</h2>
-        <p>{{ post.user.age ? post.user.age : '18' }}, {{ post.user.gender ? "Male" : "Female" }}</p>
-        <ion-fab *ngIf="post.ownPost" top right edge fab-fixed class="more-action-post" (click)="openModalEdit(post.post)">
+        <p>
+             <ion-note>
+                {{ post.post.updatedAt ? (post.post.updatedAt | timeAgo) : post.post.createdAt  | timeAgo }}
+            </ion-note>
+        </p>
+        <ion-fab *ngIf="post.ownPost && !userCurrent.roles.reader" top right edge fab-fixed class="more-action-post" (click)="openModalEdit(post.post)">
             <button ion-fab mini><ion-icon name="create"></ion-icon></button>
         </ion-fab>
     </ion-item>
@@ -53,15 +57,11 @@
             </ion-col>
         </ion-row>
         <ion-row>
-            <ion-col center text-center>
-                <ion-note>
-                    {{ post.post.updatedAt ? (post.post.updatedAt | timeAgo) : post.post.createdAt  | timeAgo }}
-                </ion-note>
-            </ion-col>
-        </ion-row>
-        <ion-row>
-            <ion-col center text-center>
+            <ion-col col-6 center text-center>
                 <button (click)="sharePost(post.post)" small ion-button outline><ion-icon name="md-share"></ion-icon></button>
+            </ion-col>
+            <ion-col col-6 center text-center class="ion-chat">
+                 <ion-icon color="primary" (click)="openChat(post.user, post.post)" name="md-chatbubbles"></ion-icon>
             </ion-col>
         </ion-row>
     </ion-grid>

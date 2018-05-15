@@ -99,15 +99,13 @@ export class DetailPostPage {
         let typeFile;
 
         this.fileChoose.open().then(uri => {
-            this.loaderService.loaderNoSetTime('applying...');
+            this.loaderService.loader('applying...', 500);
             this.filePath.resolveNativePath(uri).then(fileentry => {
                 let filename = this.getfilename(fileentry);
                 let fileext = this.getfileext(fileentry);
                 if (fileext.length < 5 && fileext != "doc" && fileext != "pdf" && fileext != "docx") {
-                    this.loaderService.dismisLoader().then(data => {
-                        this.toastService.toast("File is incorrect extension!", 1000, "bottom", false);
-                        return;
-                    }).catch(error => console.log(error));
+                    this.toastService.toast("File is incorrect extension!", 1000, "bottom", false);
+                    return;
                 } else {
                     if (fileext == "doc") {
                         typeFile = "application/msword";
@@ -132,10 +130,11 @@ export class DetailPostPage {
                                 if (!error) {
                                     this.postProvider.update(this.post).then(error => {
                                         if (!error) {
-                                            this.loaderService.dismisLoader().then(data => {
-                                                this.goBack();
-                                                this.toastService.toast("Apply successfully!", 1000, "bottom", false);
-                                            }).catch(error => console.log(error));
+                                            this.userProvider.pushCV({ name: this.user.name, link: uploadTask.downloadURL }).then(data => {
+                                                console.log(data);
+                                            })
+                                            this.goBack();
+                                            this.toastService.toast("Apply successfully!", 1000, "bottom", false);
                                         } else {
                                             this.user.file = "";
                                             this.userProvider.update(this.user).then(data => {
@@ -191,8 +190,6 @@ export class DetailPostPage {
 
     showError(error) {
         console.log(error);
-        this.loaderService.dismisLoader().then(data => {
-            this.toastService.toast("Something went wrong!", 1000, "bottom", false);
-        }).catch(error => console.log(error));
+        this.toastService.toast("Something went wrong!", 1000, "bottom", false);
     }
 }

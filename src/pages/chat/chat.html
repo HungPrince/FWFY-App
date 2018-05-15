@@ -3,28 +3,28 @@
     <ion-navbar>
         <ion-toolbar>
             <ion-buttons left class="loginnavbtn">
-                <button ion-button class="loginnavbtn" (click)="goBack()">
+                <button ion-button class="loginnavbtn" (click)="closeModal()">
                     <ion-icon name="md-arrow-back"></ion-icon>
                 </button>
             </ion-buttons>
-            <ion-title>Comments</ion-title>
+            <ion-title>Chats</ion-title>
         </ion-toolbar>
     </ion-navbar>
 
 </ion-header>
 
 
-<ion-content padding>
-    <ion-card *ngFor="let comment of comments">
+<ion-content>
+    <ion-card>
         <ion-item>
             <ion-avatar item-start>
-                <img *ngIf="comment.avatar_url" src="{{ comment.avatar_url }}">
+                <img *ngIf="chat.userTo.avatar_url" src="{{ chat.userTo.avatar_url }}">
             </ion-avatar>
-            <h2>{{ comment.username }}</h2>
-            <p>{{ comment.createdAt | timeAgo}}</p>
+            <h2>{{ chat.userTo.name }}</h2>
         </ion-item>
-        <ion-card-content [ngClass]="uidUser === comment.uid ? 'hight-light': ''">
-            {{ comment.message }}
+        <ion-card-content *ngFor="let c of chats" [ngClass]="chat.userCurrent.uid === c.user.uid ? 'hight-light': ''">
+            {{ c.message }}
+            <p>{{ c.createdAt | timeAgo}}</p>
         </ion-card-content>
     </ion-card>
 </ion-content>
@@ -33,7 +33,7 @@
     <form>
         <ion-item>
             <ion-input type="text" placeholder="Type here..." [(ngModel)]="textMessage" name="textMessage"></ion-input>
-            <button ion-button clear item-right (click)="pushComment()">Send</button>
+            <button ion-button clear item-right (click)="pushChat()">Send</button>
         </ion-item>
     </form>
 </ion-footer>

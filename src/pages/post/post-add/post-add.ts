@@ -139,7 +139,6 @@ export class PostAddPage implements OnInit {
         return this.formHelper.isErrorPattern(this.formPost, inputName);
     }
 
-
     changeCity(city) {
         this.listDistrict = [];
         DISTRICTS.forEach(district => {
@@ -286,22 +285,15 @@ export class PostAddPage implements OnInit {
         }
 
         this.camera.getPicture(options).then((imageData) => {
-            this.loaderService.loaderNoSetTime('uploading ...');
             let base64Image = 'data:image/jpeg;base64,' + imageData;
             this.post.image_url = base64Image;
             let filename = Math.floor(Date.now() / 1000);
             let imageRef = this.storageFB.child(`images/${filename}.jpg`);
             imageRef.putString(base64Image, firebase.storage.StringFormat.DATA_URL).then((imageSnapshot) => {
-                this.loaderService.dismisLoader().then((data) => {
-                    this.post.image_url = imageSnapshot.downloadURL;
-                }).catch(error => {
-                    console.log(error);
-                    this.loaderService.dismisLoader();
-                });
+                this.post.image_url = imageSnapshot.downloadURL;
             });
         }, (err) => {
             console.log(err);
-            this.loaderService.dismisLoader();
         });
     }
 }

@@ -50,4 +50,8 @@ export class UserProvider {
     delete(user: any) {
         return this.af.database.ref('users').child(user.uid).remove();
     }
+
+    pushCV(cv: any): any {
+        return this.af.database.ref('cv').push(cv);
+    }
 }
