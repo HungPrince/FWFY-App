@@ -80,6 +80,7 @@ export class HomePage {
                                 this.listPost = this.listPost.concat(listPostFree);
                                 this.storage.set('posts', this.listPost);
                                 this.listSearch = this.listPost;
+                                this.unSubcrible.unsubscribe();
                             }
                         }).catch(error => {
                             this.showError(error);
@@ -144,7 +145,7 @@ export class HomePage {
         if (!this.userCurrent) {
             return false;
         }
-        return this.userCurrent.role == 'recuiter' || this.userCurrent.role == 'admin';
+        return this.userCurrent.roles.admin || this.userCurrent.roles.author;
     }
 
     ngOnDestroy() {

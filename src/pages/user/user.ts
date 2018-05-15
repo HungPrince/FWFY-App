@@ -48,7 +48,7 @@ export class UserPage {
         });
 
         this.userProvider.getAll().subscribe(listUser => {
-            listUser = listUser.filter(user => user.role == "applicant");
+            listUser = listUser.filter(user => user.roles.reader);
             this.listUserSearch = listUser;
             this.listUser = listUser;
             this.loaderService.dismisLoader();

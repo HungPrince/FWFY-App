@@ -77,6 +77,7 @@ export class LoginPage {
     doLogin() {
         var email = this.untilHelpr.niceString(this.formLogin.value.email);
         var password = this.untilHelpr.niceString(this.formLogin.value.password);
+        this.loaderService.loaderNoSetTime('login');
         this.afAuth.auth.signInWithEmailAndPassword(email, password).then(result => {
             if (this.formLogin.value.rememberCbx) {
                 this.storage.set('accountUser', { email: email, password: password });
@@ -90,9 +91,10 @@ export class LoginPage {
                 this.storage.set('auth', userI).then(data => {
                     this.navCtrl.setRoot(TabsPage);
                     this.events.publish('userLoggedIn', userI);
+                    this.loaderService.dismisLoader();
                 });
             });
-        }).catch(e => { this.toastService.toast(e.message, 1000, 'middle', false) });
+        }).catch(e => { this.loaderService.dismisLoader(); this.toastService.toast(e.message, 1000, 'middle', false) });
     }
 
     doGoogleLogin() {
@@ -111,6 +113,7 @@ export class LoginPage {
                 phone: result.user.phoneNumber,
                 avatar_url: result.user.photoURL,
                 type: typeName,
+                roles: { reader: true },
                 uid: result.user.uid
             };
             this.af.database.ref('users').child(user.uid).set(user).then((error) => {

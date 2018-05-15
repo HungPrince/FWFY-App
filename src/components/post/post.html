@@ -9,7 +9,7 @@
                 {{ post.post.updatedAt ? (post.post.updatedAt | timeAgo) : post.post.createdAt  | timeAgo }}
             </ion-note>
         </p>
-        <ion-fab *ngIf="post.ownPost && userCurrent.role != 'applicant'" top right edge fab-fixed class="more-action-post" (click)="openModalEdit(post.post)">
+        <ion-fab *ngIf="post.ownPost && !userCurrent.roles.reader" top right edge fab-fixed class="more-action-post" (click)="openModalEdit(post.post)">
             <button ion-fab mini><ion-icon name="create"></ion-icon></button>
         </ion-fab>
     </ion-item>

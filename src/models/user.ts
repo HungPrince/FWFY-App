@@ -10,7 +10,7 @@ export class User {
     address: object;
     city: string;
     gender: boolean;
-    role: string;
+    roles: string;
     description: string;
     experience: string;
     avatar_url: string;
@@ -21,7 +21,7 @@ export class User {
     updatedAt: Date;
 
     public constructor(Role: string, Name: string, UserName, Phone: object, Email: string, Age: number, School: string, Speciality: string, Address: object, Gender: boolean, Description: string, Experience: string, Avatar_url: string) {
-        this.role = Role;
+        this.roles = Role;
         this.name = Name;
         this.userName = UserName;
         this.email = Email;
