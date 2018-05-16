@@ -46,10 +46,10 @@ export class RegisterPage {
         private events: Events,
         private storage: Storage) {
         this.user = new User('applicant', '', '', null, '', 18, '', '', null, true, '', '', '');
-    
+
         this.user.avatar_url = "https://placehold.it/150x150";
         this.formRegister = this.formBuilder.group({
-            'role': new FormControl(this.user.roles, [Validators.required]),
+            'role': new FormControl(this.user.role, [Validators.required]),
             'name': new FormControl(this.user.name, [Validators.required, Validators.minLength(8), Validators.maxLength(100)]),
             'userName': new FormControl(this.user.userName, [Validators.required, Validators.minLength(4), Validators.maxLength(24)]),
             'companyName': new FormControl('', [Validators.required, Validators.minLength(4), Validators.maxLength(24)]),

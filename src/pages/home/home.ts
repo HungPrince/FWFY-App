@@ -145,7 +145,7 @@ export class HomePage {
         if (!this.userCurrent) {
             return false;
         }
-        return this.userCurrent.roles.admin || this.userCurrent.roles.author;
+        return this.userCurrent.role === 'admin'  || this.userCurrent.role === 'author';
     }
 
     ngOnDestroy() {

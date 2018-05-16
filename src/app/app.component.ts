@@ -86,7 +86,7 @@ export class MyApp {
     }
 
     authorized(user) {
-        if (user.roles && user.roles.admin || user.roles && user.roles.author) {
+        if (user.role === 'admin' || user.role === "author") {
             this.pages = [
                 { title: 'Home', component: TabsPage },
                 { title: 'List Favorite Jobs', component: PostPage },
