@@ -16,6 +16,7 @@ import { ManagerPostPage } from '../pages/manager-post/manager-post';
 import { UpgradePage } from '../pages/upgrade/upgrade';
 import { StatisticsPage } from '../pages/statistics/statistics';
 import { CvPage } from '../pages/cv/cv';
+import { InterviewPage } from '../pages/interview/interview';
 
 
 @Component({
@@ -99,6 +100,7 @@ export class MyApp {
             this.pages = [
                 { title: 'Home', component: TabsPage },
                 { title: 'List Favorite Jobs', component: PostPage },
+                { title: 'Interview', component: InterviewPage },
                 { title: 'Create Curriculum Vitae', component: CvPage }
             ];
         }

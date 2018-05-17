@@ -181,8 +181,8 @@ export class PostComponent {
     openChat(userTo: any, post: any) {
         if (post.userId == this.userCurrent.uid) {
             let users = [];
-            this.userUnsubcribe = this.chatProvider.getListUserChat(post.key).subscribe(data => {
-                _.mapKeys(data, (val, key) => {
+            this.userUnsubcribe = this.chatProvider.getListUserChat(post.key).then(data => {
+                _.mapKeys(data.val(), (val, key) => {
                     _.mapKeys(val, (v, k) => {
                         if (v.user.uid != post.userId) {
                             users.push({

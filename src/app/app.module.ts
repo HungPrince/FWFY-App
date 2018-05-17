@@ -54,6 +54,10 @@ import { EmailComponent } from '../components/email/email';
 import { StatisticsPage } from '../pages/statistics/statistics';
 import { CommentPage } from '../pages/comment/comment';
 import { CvPage } from '../pages/cv/cv';
+import { ChatPage } from '../pages/chat/chat';
+import { UserChatPage } from '../pages/user-chat/user-chat';
+import { InterviewPage } from '../pages/interview/interview';
+import { DetailInterviewPage } from '../pages/interview/detail-interview/detail-interview';
 
 import { UntilHelper } from '../helpers/until.helper';
 import { FormHelper } from '../helpers/form.helper';
@@ -66,8 +70,7 @@ import { DataProvider } from '../providers/data/data';
 import { UserService } from '../services/userService';
 import { NetService } from '../services/netService';
 import { ChatProvider } from '../providers/chat/chat';
-import { ChatPage } from '../pages/chat/chat';
-import { UserChatPage } from '../pages/user-chat/user-chat';
+
 
 @NgModule({
     declarations: [
@@ -93,7 +96,9 @@ import { UserChatPage } from '../pages/user-chat/user-chat';
         CommentPage,
         CvPage,
         ChatPage,
-        UserChatPage
+        UserChatPage,
+        InterviewPage,
+        DetailInterviewPage
     ],
     imports: [
         BrowserModule,
@@ -135,7 +140,9 @@ import { UserChatPage } from '../pages/user-chat/user-chat';
         CommentPage,
         CvPage,
         ChatPage,
-        UserChatPage
+        UserChatPage,
+        InterviewPage,
+        DetailInterviewPage
     ],
     providers: [
         StatusBar,

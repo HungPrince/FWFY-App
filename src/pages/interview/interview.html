@@ -1,0 +1,20 @@
+<ion-header>
+    <ion-navbar color="primary">
+        <button ion-button menuToggle>
+            <ion-icon name="menu"></ion-icon>
+        </button>
+        <ion-title>Interview</ion-title>
+    </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+    <ion-card *ngFor="let interview of listInterview" (click)="openDetail(interview.invitation)">
+        <ion-item>
+            <ion-avatar item-start>
+                <img *ngIf="interview.recuiter.avatar_url" src="{{ interview.recuiter.avatar_url }}">
+            </ion-avatar>
+            <h2>{{ interview.recuiter.name }}</h2>
+            <p>{{ interview.recuiter.title }}</p>
+        </ion-item>
+    </ion-card>
+</ion-content>

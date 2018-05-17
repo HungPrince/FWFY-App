@@ -54,4 +54,8 @@ export class UserProvider {
     pushCV(cv: any): any {
         return this.af.database.ref('cv').push(cv);
     }
+
+    getInterview(key: string): any {
+        return this.af.database.ref(`users/${key}`).child('interview').once('value', data => { return data.val() });
+    }
 }

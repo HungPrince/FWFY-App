@@ -1,0 +1,19 @@
+<ion-header>
+    <ion-navbar color="primary">
+        <ion-title>Detail interview</ion-title>
+    </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+    <ion-card *ngFor="let invitation of listInvitation">
+        <ion-card-header>
+            {{ invitation.title }}
+            <ion-note *ngIf="invitation.createdAt">
+                {{ invitation.createdAt | timeAgo }}
+            </ion-note>
+        </ion-card-header>
+        <ion-list>
+            <p class="content" [innerHTML]="invitation.content"></p>
+        </ion-list>
+    </ion-card>
+</ion-content>

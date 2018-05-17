@@ -23,7 +23,7 @@ export class ChatProvider {
         return this.af.database.ref(`post/${postId}/chat/${userFrom}`).push(message);
     }
 
-    getListUserChat(postId: string): Observable<any> {
-        return this.af.list(`post/${postId}/chat`).valueChanges();
+    getListUserChat(postId: string): any {
+        return this.af.database.ref(`post/${postId}/chat`).once('value', data => { return data.val(); });
     }
 }
